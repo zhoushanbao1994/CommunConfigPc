@@ -1,4 +1,6 @@
 #include "app.h"
+#include <QRandomGenerator>
+#include <QTime>
 
 const QString App::PointTableTypeModbus = "Modbus";
 const QString App::PointTableTypeDlt645 = "Dlt645";
@@ -106,4 +108,21 @@ App::DevType_E App::DevTypeStr2Id(QString type)
     else {
         return kDevType_None;
     }
+}
+
+QString App::GenerateRandomString(int length)
+{
+    const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
+    QString randomString;
+    randomString.reserve(length);
+
+    // 初始化随机数生成器
+    QRandomGenerator *generator = QRandomGenerator::global();
+
+    for (int i = 0; i < length; ++i) {
+        int index = generator->bounded(possibleCharacters.length());
+        randomString.append(possibleCharacters.at(index));
+    }
+
+    return randomString;
 }

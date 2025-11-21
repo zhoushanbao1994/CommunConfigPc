@@ -17,7 +17,7 @@ public:
     void Remove(QTreeWidgetItem *item);
     FormPointTable *GetForm(QTreeWidgetItem *item);
     // 获取所有工程名
-    QStringList GetAllPrjName();
+    QStringList GetAllPrjCustomName();
 
 private:
     App::PointTabType_E type_;

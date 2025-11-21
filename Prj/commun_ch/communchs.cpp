@@ -37,7 +37,7 @@ FormCommunCh *CommunChs::GetForm(QTreeWidgetItem *item)
 }
 
 // 获取所有工程名
-QStringList CommunChs::GetAllPrjName()
+QStringList CommunChs::GetAllPrjCustomName()
 {
     QStringList name_list;
     // 使用 const_iterator 只读遍历

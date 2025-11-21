@@ -37,7 +37,7 @@ FormPointTable *PointTables::GetForm(QTreeWidgetItem *item)
 }
 
 // 获取所有工程名
-QStringList PointTables::GetAllPrjName()
+QStringList PointTables::GetAllPrjCustomName()
 {
     QStringList name_list;
     // 使用 const_iterator 只读遍历

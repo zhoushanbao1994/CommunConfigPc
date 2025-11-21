@@ -52,6 +52,9 @@ public:
     static QString DevTypeId2Str(DevType_E type);
     static DevType_E DevTypeStr2Id(QString type);
 
+    // 生成指定长度的随机字符串
+    static QString GenerateRandomString(int length);
+
 signals:
 };
 

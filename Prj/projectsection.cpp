@@ -178,9 +178,9 @@ void ProjectSection::CommunDevTypeClick(
         return;
     }
     // 获取指定类型设备依赖的点表工程名，内部处理函数
-    QStringList point_tab_name = GetRelyPointTabPrjName(devs);
+    QStringList point_tab_name = GetRelyPointTabPrjCustomName(devs);
     // 获取指定类型设备依赖的通道工程名
-    QStringList ch_name = GetRelyCommunChPrjName(devs);
+    QStringList ch_name = GetRelyCommunChPrjCustomName(devs);
     // 刷新页面的下拉选项
     form->RefreshCbOption(point_tab_name, ch_name);
     // 单击设备类型-发送信号
@@ -233,9 +233,9 @@ void ProjectSection::CommunDevItemFindForm(
         return;
     }
     // 获取指定类型设备依赖的点表工程名，内部处理函数
-    QStringList point_tab_name = GetRelyPointTabPrjName(devs);
+    QStringList point_tab_name = GetRelyPointTabPrjCustomName(devs);
     // 获取指定类型设备依赖的通道工程名
-    QStringList ch_name = GetRelyCommunChPrjName(devs);
+    QStringList ch_name = GetRelyCommunChPrjCustomName(devs);
     // 刷新页面的下拉选项
     form->RefreshCbOption(point_tab_name, ch_name);
     // 子设备单击或右键删除-发送信号
@@ -367,35 +367,35 @@ void ProjectSection::RightCheckedActionNew()
 
     // 当前操作的是Dlt645点表
     if(twitem_current_ == twitem_pointdlt645_) {
-        NewPointTab(twitem_current_, App::kPointTabType_Dlt645, "dlt645_point", point_tabs_dlt645_);
+        NewPointTab(twitem_current_, App::kPointTabType_Dlt645, point_tabs_dlt645_);
     }
     // 当前操作的是Modbus点表
     else if(twitem_current_ == twitem_pointmodbus_) {
-        NewPointTab(twitem_current_, App::kPointTabType_Modbus, "modbus_point", point_tabs_modbus_);
+        NewPointTab(twitem_current_, App::kPointTabType_Modbus, point_tabs_modbus_);
     }
     // 当前操作的是ModbusRtu通讯通道
     else if(twitem_current_ == twitem_chmrtu_) {
-        NewCommunCh(twitem_current_, App::kChType_ModbusRtu, "modbusrtu_ch", ch_modbusrtu_);
+        NewCommunCh(twitem_current_, App::kChType_ModbusRtu, ch_modbusrtu_);
     }
     // 当前操作的是ModbusTcp通讯通道
     else if(twitem_current_ == twitem_chmtcp_) {
-        NewCommunCh(twitem_current_, App::kChType_ModbusTcp, "modbustcp_ch", ch_modbustcp_);
+        NewCommunCh(twitem_current_, App::kChType_ModbusTcp, ch_modbustcp_);
     }
     // 当前操作的是Dlt645通讯通道
     else if(twitem_current_ == twitem_chdlt645_) {
-        NewCommunCh(twitem_current_, App::kChType_Dlt645, "dlt645_ch", ch_dlt645_);
+        NewCommunCh(twitem_current_, App::kChType_Dlt645, ch_dlt645_);
     }
     // 当前操作的是ModbusRtu通讯设备
     else if(twitem_current_ == twitem_devmrtu_) {
-        NewCommunDev(twitem_current_, App::kDevType_ModbusRtu, "modbusrtu_dev", dev_modbusrtu_);
+        NewCommunDev(twitem_current_, App::kDevType_ModbusRtu, dev_modbusrtu_);
     }
     // 当前操作的是ModbusTcp通讯设备
     else if(twitem_current_ == twitem_devmtcp_) {
-        NewCommunDev(twitem_current_, App::kDevType_ModbusTcp, "modbustcp_dev", dev_modbustcp_);
+        NewCommunDev(twitem_current_, App::kDevType_ModbusTcp, dev_modbustcp_);
     }
     // 当前操作的是ModbusRtu通讯设备
     else if(twitem_current_ == twitem_devdlt645_) {
-        NewCommunDev(twitem_current_, App::kDevType_Dlt645, "dlt645_dev", dev_dlt645_);
+        NewCommunDev(twitem_current_, App::kDevType_Dlt645, dev_dlt645_);
     }
     // 未知
     else {
@@ -486,36 +486,36 @@ bool ProjectSection::HasChild(const QTreeWidgetItem *parent_item, const QString 
     return false; // 遍历完所有子节点都没有找到
 }
 
-// 生成第一个未使用的节点名称
-QString ProjectSection::GenerateUnusedName(const QTreeWidgetItem *item, const QString &name_prefix)
-{
-    for(int i = 1; i < 1000; i++) {
-        // 生成名字
-        QString name = QString("%1%2").arg(name_prefix).arg(i, 3, 10, QChar('0'));
-        // 如果找到同名的，则continue
-        if(HasChild(item, name) == true) {
-            continue;
-        }
-        // 没找到则返回当前名字
-        return name;
-    }
-
-    // 返回空
-    return "";
-}
+//// 生成第一个未使用的节点名称
+//QString ProjectSection::GenerateUnusedName(const QTreeWidgetItem *item, const QString &name_prefix)
+//{
+//    for(int i = 1; i < 1000; i++) {
+//        // 生成名字
+//        QString name = QString("%1%2").arg(name_prefix).arg(i, 3, 10, QChar('0'));
+//        // 如果找到同名的，则continue
+//        if(HasChild(item, name) == true) {
+//            continue;
+//        }
+//        // 没找到则返回当前名字
+//        return name;
+//    }
+//
+//    // 返回空
+//    return "";
+//}
 
 // 新建点表
 void ProjectSection::NewPointTab(
-    QTreeWidgetItem *parent_item, App::PointTabType_E type, QString prj_name_prefix, PointTables *point_tabs)
+    QTreeWidgetItem *parent_item, App::PointTabType_E type, PointTables *point_tabs)
 {
-    QString name = GenerateUnusedName(parent_item, prj_name_prefix);
-    qDebug() << __FUNCTION__ << __LINE__ << name;
+    // 生成随机名称
+    QString random_name = App::GenerateRandomString(16);
+    qDebug() << __FUNCTION__ << __LINE__ << random_name;
     // 创建子节点
-    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(name));
+    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));
     parent_item->setExpanded(true);
     // 创建点表窗口
-    FormPointTable *form = new FormPointTable(type);
-    form->SetPrjName(name);
+    FormPointTable *form = new FormPointTable(type, item, random_name);
     // Map存储 节点 与 窗口 的关系
     point_tabs->Add(item, form);
     // 新建点表-发送显示信号
@@ -524,16 +524,16 @@ void ProjectSection::NewPointTab(
 
 // 新建通讯通道
 void ProjectSection::NewCommunCh(
-    QTreeWidgetItem *parent_item, App::ChType_E type, QString prj_name_prefix, CommunChs *chs)
+    QTreeWidgetItem *parent_item, App::ChType_E type, CommunChs *chs)
 {
-    QString name = GenerateUnusedName(parent_item, prj_name_prefix);
-    qDebug() << __FUNCTION__ << __LINE__ << name;
+    // 生成随机名称
+    QString random_name = App::GenerateRandomString(16);
+    qDebug() << __FUNCTION__ << __LINE__ << random_name;
     // 创建子节点
-    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(name));
+    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));
     parent_item->setExpanded(true);
     // 创建通讯通道窗口
-    FormCommunCh *form = new FormCommunCh(type);
-    form->SetPrjName(name);
+    FormCommunCh *form = new FormCommunCh(type, item, random_name);
     // Map存储 节点 与 窗口 的关系
     chs->Add(item, form);
     // 新建通道-发送显示信号
@@ -542,20 +542,20 @@ void ProjectSection::NewCommunCh(
 
 // 新建通讯设备
 void ProjectSection::NewCommunDev(
-    QTreeWidgetItem *parent_item, App::DevType_E type, QString prj_name_prefix, CommunDevs *devs)
+    QTreeWidgetItem *parent_item, App::DevType_E type, CommunDevs *devs)
 {
-    QString name = GenerateUnusedName(parent_item, prj_name_prefix);
-    qDebug() << __FUNCTION__ << __LINE__ << name;
+    // 生成随机名称
+    QString random_name = App::GenerateRandomString(16);
+    qDebug() << __FUNCTION__ << __LINE__ << random_name;
     // 创建子节点
-    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(name));
+    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));
     parent_item->setExpanded(true);
     // 获取指定类型设备依赖的点表工程名，内部处理函数
-    QStringList point_tab_name = GetRelyPointTabPrjName(devs);
+    QStringList point_tab_name = GetRelyPointTabPrjCustomName(devs);
     // 获取指定类型设备依赖的通道工程名
-    QStringList ch_name = GetRelyCommunChPrjName(devs);
+    QStringList ch_name = GetRelyCommunChPrjCustomName(devs);
     // 创建通讯通道窗口
-    FormCommunDev *form = new FormCommunDev(type);
-    form->SetPrjName(name);
+    FormCommunDev *form = new FormCommunDev(type, item, random_name);
     form->RefreshCbOption(point_tab_name, ch_name);
     // Map存储 节点 与 窗口 的关系
     devs->Add(item, form);
@@ -598,15 +598,15 @@ CommunChs *ProjectSection::GetRelyCommunChMap(CommunDevs *devs)
 }
 
 // 获取指定类型设备依赖的点表工程名，内部处理函数
-QStringList ProjectSection::GetRelyPointTabPrjName(CommunDevs *devs)
+QStringList ProjectSection::GetRelyPointTabPrjCustomName(CommunDevs *devs)
 {
     PointTables *point_tab = GetRelyPointTabMap(devs);
-    return point_tab->GetAllPrjName();
+    return point_tab->GetAllPrjCustomName();
 }
 
 // 获取指定类型设备依赖的通道工程名，内部处理函数
-QStringList ProjectSection::GetRelyCommunChPrjName(CommunDevs *devs)
+QStringList ProjectSection::GetRelyCommunChPrjCustomName(CommunDevs *devs)
 {
     CommunChs *ch = GetRelyCommunChMap(devs);
-    return ch->GetAllPrjName();
+    return ch->GetAllPrjCustomName();
 }

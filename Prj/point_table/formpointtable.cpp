@@ -5,22 +5,38 @@
 #include "qwidgetcombox.h"
 //#include "qwidgetcheckbox.h"
 
-FormPointTable::FormPointTable(App::PointTabType_E type, QWidget *parent)
+FormPointTable::FormPointTable(
+    App::PointTabType_E type, QTreeWidgetItem *item, QString &prj_name, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::FormPointTable)
     , type_(type)
+    , item_(item)
 {
     ui->setupUi(this);
 
+    // 1. 定义正则表达式：允许 A-Z、a-z、0-9、_，并且长度在 0 到 16 位之间
+    QRegExp regExp("^[A-Za-z0-9_]{0,16}$");
+    // 2. 创建验证器
+    QRegExpValidator *validator = new QRegExpValidator(regExp, ui->lineEdit_PrjName);
+    // 3. 设置验证器到 QLineEdit
+    ui->lineEdit_PrjName->setValidator(validator);
+    // 设置提示字符
+    ui->lineEdit_PrjName->setPlaceholderText("请输入字母、数字或下划线（最多16位）...");
+    // 设置工程名
+    ui->lineEdit_PrjName->setText(prj_name);
     // 工程名设置为只读
-    ui->lineEdit_PrjName->setReadOnly(true);
+    //ui->lineEdit_PrjName->setReadOnly(true);
+    // 连接 textEdited 信号
+    QObject::connect(ui->lineEdit_PrjName, &QLineEdit::textEdited,
+                     this, &FormPointTable::PrjNameTextEdited_Slot);
+    QObject::connect(ui->lineEdit_CustomName, &QLineEdit::textEdited,
+                     this, &FormPointTable::CustomNameTextEdited_Slot);
+
     // 禁用下拉框
     ui->comboBox_Type->setEnabled(false);
     // 添加下拉框选项
     ui->comboBox_Type->addItem(App::PointTableTypeDlt645);
     ui->comboBox_Type->addItem(App::PointTableTypeModbus);
-
-    ui->comboBox_Type->setCurrentText(App::PointTabTypeId2Str(type_));
 
     QStringList str1, str2;
     str1 << "起始地址" << "点数量" << "功能码" << "数据类型" << "读取周期ms" << "名称";
@@ -61,17 +77,13 @@ FormPointTable::FormPointTable(App::PointTabType_E type, QWidget *parent)
     QString sreg_d1 = "^(?:6553[0-5]|655[0-2]\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|\\d{1,4})$";
     HexDecValidatorDelegate *delegate_d1 = new HexDecValidatorDelegate(sreg_d1, 4, HexDecValidatorDelegate::kResultFormat_Dec);
     modbus_tab_->setItemDelegateForColumn(4, delegate_d1); // 仅一列生效
+
+    ui->comboBox_Type->setCurrentText(App::PointTabTypeId2Str(type_));
 }
 
 FormPointTable::~FormPointTable()
 {
     delete ui;
-}
-
-// 设置工程名
-void FormPointTable::SetPrjName(const QString &name)
-{
-    ui->lineEdit_PrjName->setText(name);
 }
 
 // 下拉框槽函数
@@ -85,6 +97,24 @@ void FormPointTable::on_comboBox_Type_currentTextChanged(const QString &arg1)
         //ui->stackedWidget->setCurrentWidget(ui->page_Modbus);
         ui->stackedWidget->setCurrentWidget(modbus_tab_);
     }
+}
+
+void FormPointTable::PrjNameTextEdited_Slot(const QString &text)
+{
+    if(item_ == nullptr) {
+        return;
+    }
+    QString custom_name = ui->lineEdit_CustomName->text();
+    item_->setText(0, text + ":" + custom_name);
+}
+
+void FormPointTable::CustomNameTextEdited_Slot(const QString &text)
+{
+    if(item_ == nullptr) {
+        return;
+    }
+    QString prj_name = ui->lineEdit_PrjName->text();
+    item_->setText(0, prj_name + ":" + text);
 }
 
 // 填充一行数据

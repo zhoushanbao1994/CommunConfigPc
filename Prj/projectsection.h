@@ -32,17 +32,17 @@ private slots:
 private:
     // 判断父节点是否包含指定名称的直接子节点
     bool HasChild(const QTreeWidgetItem *parent_item, const QString &child_name, int column = 0);
-    // 生成第一个未使用的节点名称
-    QString GenerateUnusedName(const QTreeWidgetItem *item, const QString &name_prefix);
+    //// 生成第一个未使用的节点名称
+    //QString GenerateUnusedName(const QTreeWidgetItem *item, const QString &name_prefix);
     // 新建点表
     void NewPointTab(QTreeWidgetItem *parent_item,
-                    App::PointTabType_E type, QString prj_name_prefix, PointTables *point_tabs);
+                    App::PointTabType_E type, PointTables *point_tabs);
     // 新建通讯通道
     void NewCommunCh(QTreeWidgetItem *parent_item,
-                     App::ChType_E type, QString prj_name_prefix, CommunChs *chs);
+                     App::ChType_E type, CommunChs *chs);
     // 新建通讯设备
     void NewCommunDev(QTreeWidgetItem *parent_item,
-                      App::DevType_E type, QString prj_name_prefix, CommunDevs *devs);
+                      App::DevType_E type, CommunDevs *devs);
 
     // 点表类型单击，内部处理函数
     void PointTabTypeClick(QTreeWidgetItem *item, PointTables *point_tabs, int action);
@@ -63,9 +63,9 @@ private:
     // 获取指定类型设备依赖的通道Map，内部处理函数
     CommunChs *GetRelyCommunChMap(CommunDevs *devs);
     // 获取指定类型设备依赖的点表工程名，内部处理函数
-    QStringList GetRelyPointTabPrjName(CommunDevs *devs);
+    QStringList GetRelyPointTabPrjCustomName(CommunDevs *devs);
     // 获取指定类型设备依赖的通道工程名，内部处理函数
-    QStringList GetRelyCommunChPrjName(CommunDevs *devs);
+    QStringList GetRelyCommunChPrjCustomName(CommunDevs *devs);
 
 private:
     void initTreeWidget();

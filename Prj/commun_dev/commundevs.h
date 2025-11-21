@@ -17,7 +17,7 @@ public:
     void Remove(QTreeWidgetItem *item);
     FormCommunDev *GetForm(QTreeWidgetItem *item);
     // 获取所有工程名
-    QStringList GetAllPrjName();
+    QStringList GetAllPrjCustomName();
 
 private:
     App::DevType_E type_;

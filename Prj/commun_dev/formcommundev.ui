@@ -79,7 +79,40 @@
        </item>
        <item row="1" column="1">
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="spinBox_MrtuDevAddr">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>255</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboBox_MrtuCh">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>设备地址：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QLabel" name="label_7">
            <property name="minimumSize">
             <size>
@@ -93,39 +126,19 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="comboBox_MrtuCh">
+          <widget class="QComboBox" name="comboBox_MrtuPointTab">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="0" column="0">
           <widget class="QLabel" name="label_8">
            <property name="text">
             <string>通讯点表：</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="comboBox_MrtuPointTab"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string>设备地址：</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="spinBox_MrtuDevAddr">
-           <property name="maximum">
-            <number>255</number>
-           </property>
-           <property name="value">
-            <number>1</number>
            </property>
           </widget>
          </item>
@@ -201,8 +214,8 @@
         </spacer>
        </item>
        <item row="1" column="1">
-        <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0">
-         <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label_4">
            <property name="minimumSize">
             <size>
@@ -215,35 +228,52 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="1" column="1">
           <widget class="QComboBox" name="comboBox_DltCh">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>0</width>
              <height>0</height>
             </size>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>通讯点表：</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="comboBox_DltPointTab"/>
-         </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="label_6">
            <property name="text">
             <string>设备地址：</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="lineEdit_DltDevAddr"/>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="lineEdit_DltDevAddr">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>111122223333</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="comboBox_DltPointTab">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>通讯点表：</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -318,7 +348,40 @@
        </item>
        <item row="1" column="1">
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
+         <item row="1" column="1">
+          <widget class="QComboBox" name="comboBox_MtcpCh">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="spinBox_MtcpDevAddr">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>255</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>设备地址：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QLabel" name="label_10">
            <property name="minimumSize">
             <size>
@@ -332,39 +395,19 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="comboBox_MtcpCh">
+          <widget class="QComboBox" name="comboBox_MtcpPointTab">
            <property name="minimumSize">
             <size>
-             <width>120</width>
+             <width>200</width>
              <height>0</height>
             </size>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="0" column="0">
           <widget class="QLabel" name="label_11">
            <property name="text">
             <string>通讯点表：</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="comboBox_MtcpPointTab"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_12">
-           <property name="text">
-            <string>设备地址：</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QSpinBox" name="spinBox_MtcpDevAddr">
-           <property name="maximum">
-            <number>255</number>
-           </property>
-           <property name="value">
-            <number>1</number>
            </property>
           </widget>
          </item>

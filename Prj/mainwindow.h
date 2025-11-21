@@ -22,9 +22,6 @@ public:
 
 public slots:
     void Form_Slot(QWidget *form, int action); // action:1新增;0显示,-1删除;
-    //void PointTab_Slot(FormPointTable *form, int action); // action:1新增;0显示,-1删除;
-    //void CommunCh_Slot(FormCommunCh *form, int action);   // action:1新增;0显示,-1删除;
-    //void CommunDev_Slot(FormCommunDev *form, int action); // action:1新增;0显示,-1删除;
 
 private:
     Ui::MainWindow *ui;
