@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>png/export.png</file>
+        <file>png/find.png</file>
+        <file>png/generate.png</file>
+        <file>png/import.png</file>
+        <file>png/new.png</file>
+        <file>png/batt.png</file>
+        <file>png/pcs.png</file>
+        <file>png/snow.png</file>
+    </qresource>
+</RCC>
