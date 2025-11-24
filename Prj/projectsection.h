@@ -19,6 +19,8 @@ public:
     explicit ProjectSection(QWidget *parent = nullptr);
     ~ProjectSection();
 
+    void ClearAll();
+
 signals:
     void Form_Signal(QWidget *form, int action); // action:1新增;0显示,-1删除;
 
@@ -66,6 +68,9 @@ private:
     QStringList GetRelyPointTabPrjCustomName(CommunDevs *devs);
     // 获取指定类型设备依赖的通道工程名，内部处理函数
     QStringList GetRelyCommunChPrjCustomName(CommunDevs *devs);
+
+    // 移除子节点，并作内存释放，内部处理函数
+    void RemoveChildItem(QTreeWidgetItem *top_item);
 
 private:
     void initTreeWidget();

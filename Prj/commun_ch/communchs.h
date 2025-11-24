@@ -15,6 +15,7 @@ public:
     QMap<QTreeWidgetItem *, FormCommunCh *> *GetMap();
     void Add(QTreeWidgetItem *item, FormCommunCh *form);
     void Remove(QTreeWidgetItem *item);
+    void RemoveAll();
     FormCommunCh *GetForm(QTreeWidgetItem *item);
     // 获取所有工程名
     QStringList GetAllPrjCustomName();

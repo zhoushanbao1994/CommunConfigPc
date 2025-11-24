@@ -4,6 +4,7 @@
 #include "hexdecvalidatordelegate.h"
 #include "qwidgetcombox.h"
 //#include "qwidgetcheckbox.h"
+#include <QDebug>
 
 FormPointTable::FormPointTable(
     App::PointTabType_E type, QTreeWidgetItem *item, QString &prj_name, QWidget *parent)
@@ -83,6 +84,7 @@ FormPointTable::FormPointTable(
 
 FormPointTable::~FormPointTable()
 {
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "析构函数";
     delete ui;
 }
 

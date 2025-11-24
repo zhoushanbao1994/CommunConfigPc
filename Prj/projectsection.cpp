@@ -2,6 +2,7 @@
 #include "ui_projectsection.h"
 #include <QMenu>
 #include <QDebug>
+#include <QList>
 #include "app.h"
 
 ProjectSection::ProjectSection(QWidget *parent)
@@ -26,6 +27,59 @@ ProjectSection::ProjectSection(QWidget *parent)
 ProjectSection::~ProjectSection()
 {
     delete ui;
+
+    delete point_tabs_modbus_;
+    delete point_tabs_dlt645_;
+
+    delete ch_modbusrtu_;
+    delete ch_modbustcp_;
+    delete ch_dlt645_;
+
+    delete dev_modbusrtu_;
+    delete dev_modbustcp_;
+    delete dev_dlt645_;
+}
+
+void ProjectSection::ClearAll()
+{
+    point_tabs_modbus_->RemoveAll();
+    point_tabs_dlt645_->RemoveAll();
+
+    ch_modbusrtu_->RemoveAll();
+    ch_modbustcp_->RemoveAll();
+    ch_dlt645_->RemoveAll();
+
+    dev_modbusrtu_->RemoveAll();
+    dev_modbustcp_->RemoveAll();
+    dev_dlt645_->RemoveAll();
+
+    RemoveChildItem(twitem_pointmodbus_);   // 工程栏  - Modbus点表Item
+    RemoveChildItem(twitem_pointdlt645_);   // 工程栏  - Dlt645点表Item
+
+    RemoveChildItem(twitem_chmrtu_);        // 工程栏  - MRTU通道Item
+    RemoveChildItem(twitem_chmtcp_);        // 工程栏  - MTCP通道Item
+    RemoveChildItem(twitem_chdlt645_);      // 工程栏  - DLT645通道Item
+
+    RemoveChildItem(twitem_devmrtu_);       // 工程栏  - MRTU设备Item
+    RemoveChildItem(twitem_devmtcp_);       // 工程栏  - MTCP设备Item
+    RemoveChildItem(twitem_devdlt645_);     // 工程栏  - DLT645设备Item
+}
+
+void ProjectSection::RemoveChildItem(QTreeWidgetItem *top_item)
+{
+    qDebug() << "删除前，顶层节点的子节点数:" << top_item->childCount();
+    // 使用 takeChildren() 移除所有子节点
+    QList<QTreeWidgetItem *> children = top_item->takeChildren();
+
+    qDebug() << "删除后，顶层节点的子节点数:" << top_item->childCount();
+    qDebug() << "从 takeChildren() 返回的子节点数:" << children.size();
+
+    // 遍历并手动删除子节点，释放内存
+    qDebug() << "手动删除子节点...";
+    qDeleteAll(children); // 这是一个非常方便的 Qt 函数，可以安全地删除列表中的所有指针
+    children.clear(); // 清空列表，避免悬挂指针
+
+    qDebug() << "子节点已删除。";
 }
 
 void ProjectSection::initTreeWidget()
@@ -191,6 +245,7 @@ void ProjectSection::CommunDevTypeClick(
 void ProjectSection::PointTabItemFindForm(
     QTreeWidgetItem *item, PointTables *point_tabs, int action, int del)
 {
+    qDebug() << __FUNCTION__ << item << point_tabs << ", action:" << action << ", del:" << del;
     // 取节点关联的窗口
     FormPointTable *form = point_tabs->GetForm(item);
     if(form == nullptr) {
@@ -209,6 +264,7 @@ void ProjectSection::PointTabItemFindForm(
 void ProjectSection::CommunChItemFindForm(
     QTreeWidgetItem *item, CommunChs *chs, int action, int del)
 {
+    qDebug() << __FUNCTION__ << item << chs << ", action:" << action << ", del:" << del;
     // 取节点关联的窗口
     FormCommunCh *form = chs->GetForm(item);
     if(form == nullptr) {
@@ -227,6 +283,7 @@ void ProjectSection::CommunChItemFindForm(
 void ProjectSection::CommunDevItemFindForm(
     QTreeWidgetItem *item,  CommunDevs *devs, int action, int del)
 {
+    qDebug() << __FUNCTION__ << item << devs << ", action:" << action << ", del:" << del;
     // 取节点关联的窗口
     FormCommunDev *form = devs->GetForm(item);
     if(form == nullptr) {
@@ -413,46 +470,71 @@ void ProjectSection::RightCheckedActionDel()
     }
     qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << twitem_current_->text(0);
 
-
     // 根据当前子节点，查找对应窗口，并将窗口从页面删除
-    ItemFindForm(twitem_current_, -1, 1);
+    ItemFindForm(twitem_current_, -1, 0);
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << twitem_current_->text(0);
     // 当前节点查找父节点
     QTreeWidgetItem *parent_item = twitem_current_->parent();
     if(parent_item == nullptr) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "parent_item == nullptr";
         return;
     }
+
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_current_:" << twitem_current_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "parent_item:" << parent_item;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_pointdlt645_:" << twitem_pointdlt645_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_pointmodbus_:" << twitem_pointmodbus_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_chmrtu_:" << twitem_chmrtu_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_chmtcp_:" << twitem_chmtcp_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_chdlt645_:" << twitem_chdlt645_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_devmrtu_:" << twitem_devmrtu_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_devmtcp_:" << twitem_devmtcp_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_devdlt645_:" << twitem_devdlt645_;
     // 当前父节点是Dlt645点表
-    if(twitem_current_ == twitem_pointdlt645_) {
+    if(parent_item == twitem_pointdlt645_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "点表DLT645：parent_item == twitem_pointdlt645_";
         point_tabs_dlt645_->Remove(twitem_current_);
     }
     // 当前父节点是Modbus点表
     else if(parent_item == twitem_pointmodbus_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "点表Modbus：twitem_current_ == twitem_pointmodbus_";
         point_tabs_modbus_->Remove(twitem_current_);
     }
     // 当前父节点是ModbusRtu通讯通道
     else if(parent_item == twitem_chmrtu_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道ModbusRtu：twitem_current_ == twitem_chmrtu_";
         ch_modbusrtu_->Remove(twitem_current_);
     }
     // 当前父节点是ModbusTcp通讯通道
     else if(parent_item == twitem_chmtcp_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道ModbusTcp：twitem_current_ == twitem_chmtcp_";
         ch_modbustcp_->Remove(twitem_current_);
     }
     // 当前父节点是Dlt645通讯通道
     else if(parent_item == twitem_chdlt645_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道DLT645：twitem_current_ == twitem_chdlt645_";
         ch_dlt645_->Remove(twitem_current_);
     }
     // 当前父节点是ModbusRtu通讯设备
     else if(parent_item == twitem_devmrtu_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备ModbusRtu：twitem_current_ == twitem_devmrtu_";
         dev_modbusrtu_->Remove(twitem_current_);
     }
     // 当前父节点是ModbusTcp通讯设备
     else if(parent_item == twitem_devmtcp_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备ModbusTcp：twitem_current_ == twitem_devmtcp_";
         dev_modbustcp_->Remove(twitem_current_);
     }
     // 当前父节点是ModbusRtu通讯设备
     else if(parent_item == twitem_devdlt645_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备DLT645：twitem_current_ == twitem_devdlt645_";
         dev_dlt645_->Remove(twitem_current_);
     }
+    // 未知父节点
+    else {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "未知父节点：" << parent_item;
+    }
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__;
 
     // 从父节点中删除当前子节点
     parent_item->removeChild(twitem_current_);

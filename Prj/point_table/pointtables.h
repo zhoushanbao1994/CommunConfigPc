@@ -15,6 +15,7 @@ public:
     QMap<QTreeWidgetItem *, FormPointTable *> *GetMap();
     void Add(QTreeWidgetItem *item, FormPointTable *form);
     void Remove(QTreeWidgetItem *item);
+    void RemoveAll();
     FormPointTable *GetForm(QTreeWidgetItem *item);
     // 获取所有工程名
     QStringList GetAllPrjCustomName();

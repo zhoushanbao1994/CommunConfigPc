@@ -1,4 +1,5 @@
 #include "communchs.h"
+#include <QDebug>
 
 CommunChs::CommunChs(App::ChType_E type, QObject *parent)
     : QObject(parent)
@@ -24,7 +25,44 @@ void CommunChs::Add(QTreeWidgetItem *item, FormCommunCh *form)
 
 void CommunChs::Remove(QTreeWidgetItem *item)
 {
-    map_ch_.remove(item);
+    qDebug() << __FUNCTION__ << __LINE__ << "删除...";
+    // 手动删除指针指向的对象，避免内存泄漏
+    for (auto it = map_ch_.begin(); it != map_ch_.end(); ++it) {
+        QTreeWidgetItem *tmp_item = it.key();
+        FormCommunCh *tmp_form = it.value();
+        qDebug() << __FUNCTION__ << __LINE__ << "item:" << tmp_item
+                 << ", form:" << tmp_form;
+        if((tmp_item == item) && (tmp_form != nullptr)) {
+            qDebug() << __FUNCTION__ << __LINE__ << "item:" << tmp_item
+                     << ", form:" << tmp_form;
+            // 关键步骤 1: 删除值对象 (FormPointTable *)
+            delete tmp_form; // 删除 Person 对象
+            // 关键步骤 2: 从 map 中移除该键值对
+            map_ch_.erase(it);
+            break;
+        }
+    }
+}
+
+void CommunChs::RemoveAll()
+{
+    qDebug() << __FUNCTION__ << __LINE__ << "准备清空 map...";
+    int count = 0;
+
+    // 手动删除指针指向的对象，避免内存泄漏
+    for (auto it = map_ch_.begin(); it != map_ch_.end(); ++it) {
+        QTreeWidgetItem *tmp_item = it.key();
+        FormCommunCh * tmp_form = it.value();
+        qDebug() << __FUNCTION__ << __LINE__ << "item:" << tmp_item
+                 << ", form:" << tmp_form << ", count: " << count++;
+        if(tmp_form != nullptr) {
+            delete tmp_form; // 删除 Person 对象
+        }
+    }
+
+    // 清空 map（此时只移除指针本身）
+    map_ch_.clear();
+    qDebug() << "map 已清空";
 }
 
 FormCommunCh *CommunChs::GetForm(QTreeWidgetItem *item)

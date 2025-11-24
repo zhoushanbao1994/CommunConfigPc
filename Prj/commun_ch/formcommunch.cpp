@@ -1,6 +1,7 @@
 #include "formcommunch.h"
 #include "ui_formcommunch.h"
 #include "app.h"
+#include <QDebug>
 
 FormCommunCh::FormCommunCh(
     App::ChType_E type, QTreeWidgetItem *item, QString &prj_name, QWidget *parent)
@@ -40,6 +41,7 @@ FormCommunCh::FormCommunCh(
 
 FormCommunCh::~FormCommunCh()
 {
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "析构函数";
     delete ui;
 }
 
