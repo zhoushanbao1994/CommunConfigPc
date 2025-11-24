@@ -135,6 +135,24 @@ public:
     static const QString kDltDataId07_02800005;
 
 public:
+    // Modbus表格的总列数
+    static const int kModbusTabColumns;
+    // 每个数据类型的列号(位于表格中的哪一列)
+    static const int kModbusTabColumnId_StartAddr;  // 起始地址
+    static const int kModbusTabColumnId_PointNum;   // 点数量
+    static const int kModbusTabColumnId_Code;       // 功能码
+    static const int kModbusTabColumnId_DataType;   // 数据类型
+    static const int kModbusTabColumnId_ReadCycle;  // 读取周期
+    static const int kModbusTabColumnId_Name;       // 名称
+
+    // Dlt645表格的总列数
+    static const int kDlt645TabColumns;
+    // 每个数据类型的列号(位于表格中的哪一列)
+    static const int kDlt645TabColumnId_DataIdent;  // 数据标识
+    static const int kDlt645TabColumnId_ReadCycle;  // 点数量
+    static const int kDlt645TabColumnId_Name;       // 功能码
+
+public:
     explicit App(QObject *parent = nullptr);
 
     // 点表类型互转

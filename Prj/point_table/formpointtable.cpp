@@ -127,11 +127,11 @@ void FormPointTable::ModbusTableWidget_RowSet(
     // ************ 填充列：起始地址 ************
     QTableWidgetItem *item_start_addr = new QTableWidgetItem(
         QString("0x") + QString("%1").arg(start_addr, 4, 16, QChar('0')).toUpper() );
-    modbus_tab_->setItem(row, kModbusTabColumnId_StartAddr, item_start_addr);
+    modbus_tab_->setItem(row, App::kModbusTabColumnId_StartAddr, item_start_addr);
     // ************ 填充列：点数量 ************
     QTableWidgetItem *item_point_num = new QTableWidgetItem(
         QString("%1").arg(point_num) );
-    modbus_tab_->setItem(row, kModbusTabColumnId_PointNum, item_point_num);
+    modbus_tab_->setItem(row, App::kModbusTabColumnId_PointNum, item_point_num);
     // ************ 填充列：功能码 ************
     QStringList text_code;
     text_code.append(App::kModbusFunCode_01H);
@@ -140,7 +140,7 @@ void FormPointTable::ModbusTableWidget_RowSet(
     text_code.append(App::kModbusFunCode_04H);
     QWidgetComBox *item_func_code = new QWidgetComBox(text_code);
     item_func_code->setCurrentText(code);
-    modbus_tab_->setCellWidget(row, kModbusTabColumnId_Code, item_func_code);
+    modbus_tab_->setCellWidget(row, App::kModbusTabColumnId_Code, item_func_code);
     // ************ 填充列：数据类型 ************
     QStringList text_type;
     text_type.append(App::kModbusDateType_U16);
@@ -149,15 +149,15 @@ void FormPointTable::ModbusTableWidget_RowSet(
     text_type.append(App::kModbusDateType_S32);
     QWidgetComBox *item_date_type = new QWidgetComBox(text_type);
     item_date_type->setCurrentText(data_type);
-    modbus_tab_->setCellWidget(row, kModbusTabColumnId_DataType, item_date_type);
+    modbus_tab_->setCellWidget(row, App::kModbusTabColumnId_DataType, item_date_type);
     // ************ 填充列：读取周期 ************
     QTableWidgetItem *item_read_cycle = new QTableWidgetItem(
         QString("%1").arg(read_cycle) );
-    modbus_tab_->setItem(row, kModbusTabColumnId_ReadCycle, item_read_cycle);
+    modbus_tab_->setItem(row, App::kModbusTabColumnId_ReadCycle, item_read_cycle);
     // ************ 填充列：名称 ************
     QTableWidgetItem *item_name = new QTableWidgetItem(
         QString("%1").arg(name) );
-    modbus_tab_->setItem(row, kModbusTabColumnId_Name, item_name);
+    modbus_tab_->setItem(row, App::kModbusTabColumnId_Name, item_name);
     //// ************ 填充复选框:"使能" ************
     //QWidgetCheckBox *enable = new QWidgetCheckBox ();    // 创建CheckBox
     //enable->setCheckState(enable == "true"?Qt::Checked:Qt::Unchecked);
@@ -246,13 +246,13 @@ void FormPointTable::Dlt645TableWidget_RowSet(
     text_code.append(App::kDltDataId07_02800005);    // "0x02800005_当前无功需量";
     QWidgetComBox *item_func_code = new QWidgetComBox(text_code);
     item_func_code->setCurrentText(code);
-    dlt645_tab_->setCellWidget(row, kDlt645TabColumnId_DataIdent, item_func_code);
+    dlt645_tab_->setCellWidget(row, App::kDlt645TabColumnId_DataIdent, item_func_code);
     // ************ 填充列：读取周期 ************
     QTableWidgetItem *item_read_cycle = new QTableWidgetItem(
         QString("%1").arg(read_cycle) );
-    dlt645_tab_->setItem(row, kDlt645TabColumnId_ReadCycle, item_read_cycle);
+    dlt645_tab_->setItem(row, App::kDlt645TabColumnId_ReadCycle, item_read_cycle);
     // ************ 填充列：名称 ************
     QTableWidgetItem *item_name = new QTableWidgetItem(
         QString("%1").arg(name) );
-    dlt645_tab_->setItem(row, kDlt645TabColumnId_Name, item_name);
+    dlt645_tab_->setItem(row, App::kDlt645TabColumnId_Name, item_name);
 }

@@ -107,6 +107,24 @@ const QString App::kDltDataId07_02800002 = "0x02800002_电网频率";
 const QString App::kDltDataId07_02800004 = "0x02800004_当前有功需量";
 const QString App::kDltDataId07_02800005 = "0x02800005_当前无功需量";
 
+// Modbus表格的总列数
+const int App::kModbusTabColumns             = 6;
+// 每个数据类型的列号(位于表格中的哪一列)
+const int App::kModbusTabColumnId_StartAddr  = 0;    // 起始地址
+const int App::kModbusTabColumnId_PointNum   = 1;    // 点数量
+const int App::kModbusTabColumnId_Code       = 2;    // 功能码
+const int App::kModbusTabColumnId_DataType   = 3;    // 数据类型
+const int App::kModbusTabColumnId_ReadCycle  = 4;    // 读取周期
+const int App::kModbusTabColumnId_Name       = 5;    // 名称
+
+// Dlt645表格的总列数
+const int App::kDlt645TabColumns             = 3;
+// 每个数据类型的列号(位于表格中的哪一列)
+const int App::kDlt645TabColumnId_DataIdent  = 0;    // 数据标识
+const int App::kDlt645TabColumnId_ReadCycle  = 1;    // 点数量
+const int App::kDlt645TabColumnId_Name       = 2;    // 功能码
+
+
 App::App(QObject *parent)
     : QObject{parent}
 {
