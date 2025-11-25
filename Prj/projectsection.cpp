@@ -42,27 +42,89 @@ ProjectSection::~ProjectSection()
 
 void ProjectSection::ClearAll()
 {
-    pointTabsModbus_->RemoveAll();
-    pointTabsDlt645_->RemoveAll();
+    pointTabsModbus_->RemoveAll();          // 页面 - Modbus点表
+    pointTabsDlt645_->RemoveAll();          // 页面 - Dlt645点表
 
-    chModbusRtu_->RemoveAll();
-    chModbusTcp_->RemoveAll();
-    chDlt645_->RemoveAll();
+    chModbusRtu_->RemoveAll();              // 页面 - MRTU通道
+    chModbusTcp_->RemoveAll();              // 页面 - MTCP通道
+    chDlt645_->RemoveAll();                 // 页面 - DLT645通道
 
-    devModbusRtu_->RemoveAll();
-    devModbusTcp_->RemoveAll();
-    devDlt645_->RemoveAll();
+    devModbusRtu_->RemoveAll();             // 页面 - MRTU设备
+    devModbusTcp_->RemoveAll();             // 页面 - MTCP设备
+    devDlt645_->RemoveAll();                // 页面 - DLT645设备
 
-    RemoveChildItem(twitemPointModbus_);   // 工程栏  - Modbus点表Item
-    RemoveChildItem(twitemPointDlt645_);   // 工程栏  - Dlt645点表Item
+    RemoveChildItem(twitemPointModbus_);    // 工程栏  - Modbus点表Item
+    RemoveChildItem(twitemPointDlt645_);    // 工程栏  - Dlt645点表Item
 
-    RemoveChildItem(twitemChMrtu_);        // 工程栏  - MRTU通道Item
-    RemoveChildItem(twitemChMtcp_);        // 工程栏  - MTCP通道Item
-    RemoveChildItem(twitemChDlt645_);      // 工程栏  - DLT645通道Item
+    RemoveChildItem(twitemChMrtu_);         // 工程栏  - MRTU通道Item
+    RemoveChildItem(twitemChMtcp_);         // 工程栏  - MTCP通道Item
+    RemoveChildItem(twitemChDlt645_);       // 工程栏  - DLT645通道Item
 
-    RemoveChildItem(twitemDevMrtu_);       // 工程栏  - MRTU设备Item
-    RemoveChildItem(twitemDevMtcp_);       // 工程栏  - MTCP设备Item
-    RemoveChildItem(twitemDevDlt645_);     // 工程栏  - DLT645设备Item
+    RemoveChildItem(twitemDevMrtu_);        // 工程栏  - MRTU设备Item
+    RemoveChildItem(twitemDevMtcp_);        // 工程栏  - MTCP设备Item
+    RemoveChildItem(twitemDevDlt645_);      // 工程栏  - DLT645设备Item
+}
+
+// Modbus点表
+void ProjectSection::SetModbusPointTabs(const QMap<QString, ModbusPointStruct::PointTab_T> &mpts)
+{
+    pointTabsModbus_->RemoveAll();          // 页面 - Modbus点表
+    RemoveChildItem(twitemPointModbus_);    // 工程栏  - Modbus点表Item
+    QMap<QString, ModbusPointStruct::PointTab_T>::const_iterator it;
+    for (it = mpts.cbegin(); it != mpts.cend(); ++it) {
+        QString name = it.key();
+        ModbusPointStruct::PointTab_T pt = it.value();
+        NewPointTab(name, twitemPointModbus_, App::kPointTabType_Modbus, pointTabsModbus_, &pt);
+    }
+}
+// DLT645点表
+void ProjectSection::SetDlt645PointTabs(const QMap<QString, Dlt645PointStruct::PointTab_T> &dpts)
+{
+    pointTabsDlt645_->RemoveAll();          // 页面 - Dlt645点表
+    RemoveChildItem(twitemPointDlt645_);    // 工程栏  - Dlt645点表Item
+    QMap<QString, Dlt645PointStruct::PointTab_T>::const_iterator it;
+    for (it = dpts.cbegin(); it != dpts.cend(); ++it) {
+        QString name = it.key();
+        Dlt645PointStruct::PointTab_T pt = it.value();
+        NewPointTab(name, twitemPointDlt645_, App::kPointTabType_Dlt645, pointTabsDlt645_, &pt);
+    }
+}
+// ModbusRtu通道
+void ProjectSection::SetModbusRtuChs(const QMap<QString, ModbusRtuChStruct::Ch_T> &mrcs)
+{
+    chModbusRtu_->RemoveAll();              // 页面 - MRTU通道
+    RemoveChildItem(twitemChMrtu_);         // 工程栏  - MRTU通道Item
+}
+// ModbusTcp通道
+void ProjectSection::SetModbusTcpChs(const QMap<QString, ModbusTcpChStruct::Ch_T> &mtcs)
+{
+    chModbusTcp_->RemoveAll();              // 页面 - MTCP通道
+    RemoveChildItem(twitemChMtcp_);         // 工程栏  - MTCP通道Item
+}
+// DLT645通道
+void ProjectSection::SetDlt645Chs(const QMap<QString, Dlt645ChStruct::Ch_T> &dlcs)
+{
+    chDlt645_->RemoveAll();                 // 页面 - DLT645通道
+    RemoveChildItem(twitemChDlt645_);       // 工程栏  - DLT645通道Item
+}
+// ModbusRtu设备
+void ProjectSection::SetModbusRtuDevs(const QMap<QString, ModbusRtuDevStruct::Dev_T> &mrds)
+{
+    devModbusRtu_->RemoveAll();             // 页面 - MRTU设备
+    RemoveChildItem(twitemDevMrtu_);        // 工程栏  - MRTU设备Item
+}
+// ModbusTcp设备
+void ProjectSection::SetModbusTcpDevs(const QMap<QString, ModbusTcpDevStruct::Dev_T> &mtds)
+{
+    devModbusTcp_->RemoveAll();             // 页面 - MTCP设备
+    RemoveChildItem(twitemDevMtcp_);        // 工程栏  - MTCP设备Item
+
+}
+// DLT645设备
+void ProjectSection::SetDlt645Devs(const QMap<QString, Dlt645DevStruct::Dev_T> &dlds)
+{
+    devDlt645_->RemoveAll();                // 页面 - DLT645设备
+    RemoveChildItem(twitemDevDlt645_);      // 工程栏  - DLT645设备Item
 }
 
 void ProjectSection::RemoveChildItem(QTreeWidgetItem *top_item)
@@ -424,35 +486,35 @@ void ProjectSection::RightCheckedActionNew()
 
     // 当前操作的是Dlt645点表
     if(twitemCurrent_ == twitemPointDlt645_) {
-        NewPointTab(twitemCurrent_, App::kPointTabType_Dlt645, pointTabsDlt645_);
+        NewPointTab("", twitemCurrent_, App::kPointTabType_Dlt645, pointTabsDlt645_, nullptr);
     }
     // 当前操作的是Modbus点表
     else if(twitemCurrent_ == twitemPointModbus_) {
-        NewPointTab(twitemCurrent_, App::kPointTabType_Modbus, pointTabsModbus_);
+        NewPointTab("", twitemCurrent_, App::kPointTabType_Modbus, pointTabsModbus_, nullptr);
     }
     // 当前操作的是ModbusRtu通讯通道
     else if(twitemCurrent_ == twitemChMrtu_) {
-        NewCommunCh(twitemCurrent_, App::kChType_ModbusRtu, chModbusRtu_);
+        NewCommunCh("", twitemCurrent_, App::kChType_ModbusRtu, chModbusRtu_, nullptr);
     }
     // 当前操作的是ModbusTcp通讯通道
     else if(twitemCurrent_ == twitemChMtcp_) {
-        NewCommunCh(twitemCurrent_, App::kChType_ModbusTcp, chModbusTcp_);
+        NewCommunCh("", twitemCurrent_, App::kChType_ModbusTcp, chModbusTcp_, nullptr);
     }
     // 当前操作的是Dlt645通讯通道
     else if(twitemCurrent_ == twitemChDlt645_) {
-        NewCommunCh(twitemCurrent_, App::kChType_Dlt645, chDlt645_);
+        NewCommunCh("", twitemCurrent_, App::kChType_Dlt645, chDlt645_, nullptr);
     }
     // 当前操作的是ModbusRtu通讯设备
     else if(twitemCurrent_ == twitemDevMrtu_) {
-        NewCommunDev(twitemCurrent_, App::kDevType_ModbusRtu, devModbusRtu_);
+        NewCommunDev("", twitemCurrent_, App::kDevType_ModbusRtu, devModbusRtu_, nullptr);
     }
     // 当前操作的是ModbusTcp通讯设备
     else if(twitemCurrent_ == twitemDevMtcp_) {
-        NewCommunDev(twitemCurrent_, App::kDevType_ModbusTcp, devModbusTcp_);
+        NewCommunDev("", twitemCurrent_, App::kDevType_ModbusTcp, devModbusTcp_, nullptr);
     }
     // 当前操作的是ModbusRtu通讯设备
     else if(twitemCurrent_ == twitemDevDlt645_) {
-        NewCommunDev(twitemCurrent_, App::kDevType_Dlt645, devDlt645_);
+        NewCommunDev("", twitemCurrent_, App::kDevType_Dlt645, devDlt645_, nullptr);
     }
     // 未知
     else {
@@ -587,11 +649,11 @@ bool ProjectSection::HasChild(const QTreeWidgetItem *parent_item, const QString 
 //}
 
 // 新建点表
-void ProjectSection::NewPointTab(
-    QTreeWidgetItem *parent_item, App::PointTabType_E type, PointTables *point_tabs)
+void ProjectSection::NewPointTab(QString name,
+    QTreeWidgetItem *parent_item, App::PointTabType_E type, PointTables *point_tabs, void *arg)
 {
     // 生成随机名称
-    QString random_name = App::GenerateRandomString(16);
+    QString random_name = (name != "") ? name : App::GenerateRandomString(16);
     qDebug() << __FUNCTION__ << __LINE__ << random_name;
     // 创建子节点
     QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));
@@ -602,14 +664,34 @@ void ProjectSection::NewPointTab(
     point_tabs->Add(item, form);
     // 新建点表-发送显示信号
     emit Form_Signal(form, 1);  // 新建点表
+
+    // 是否填充表格内容
+    if(arg == nullptr) {
+        return;
+    }
+    if(type == App::kPointTabType_Modbus) {
+        ModbusPointStruct::PointTab_T *pt = static_cast<ModbusPointStruct::PointTab_T *>(arg);
+        for (int i = 0; i < pt->points.size(); i++) {
+            ModbusPointStruct::Point_T point = pt->points.at(i);
+            form->ModbusTableWidget_RowSet(i, point.startAddr, point.pointNum,
+                    point.code, point.dataType, point.readCycle, point.customName);
+        }
+    }
+    else if(type == App::kPointTabType_Dlt645) {
+        Dlt645PointStruct::PointTab_T *pt = static_cast<Dlt645PointStruct::PointTab_T *>(arg);
+        for (int i = 0; i < pt->points.size(); i++) {
+            Dlt645PointStruct::Point_T point = pt->points.at(i);
+            form->Dlt645TableWidget_RowSet(i, point.dataIdent, point.readCycle, point.customName);
+        }
+    }
 }
 
 // 新建通讯通道
-void ProjectSection::NewCommunCh(
-    QTreeWidgetItem *parent_item, App::ChType_E type, CommunChs *chs)
+void ProjectSection::NewCommunCh(QString name,
+    QTreeWidgetItem *parent_item, App::ChType_E type, CommunChs *chs, void *arg)
 {
     // 生成随机名称
-    QString random_name = App::GenerateRandomString(16);
+    QString random_name = (name != "") ? name : App::GenerateRandomString(16);
     qDebug() << __FUNCTION__ << __LINE__ << random_name;
     // 创建子节点
     QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));
@@ -623,11 +705,11 @@ void ProjectSection::NewCommunCh(
 }
 
 // 新建通讯设备
-void ProjectSection::NewCommunDev(
-    QTreeWidgetItem *parent_item, App::DevType_E type, CommunDevs *devs)
+void ProjectSection::NewCommunDev(QString name,
+    QTreeWidgetItem *parent_item, App::DevType_E type, CommunDevs *devs, void *arg)
 {
     // 生成随机名称
-    QString random_name = App::GenerateRandomString(16);
+    QString random_name = (name != "") ? name : App::GenerateRandomString(16);
     qDebug() << __FUNCTION__ << __LINE__ << random_name;
     // 创建子节点
     QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));

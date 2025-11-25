@@ -42,6 +42,77 @@ JsonParse::JsonParse(QObject *parent)
     ParseIndex(fileName);
 }
 
+// Modbus点表
+QMap<QString, ModbusPointStruct::PointTab_T> JsonParse::GetModbusPointTabs()
+{
+    return modbusPointTabs_;
+}
+// DLT645点表
+QMap<QString, Dlt645PointStruct::PointTab_T> JsonParse::GetDlt645PointTabs()
+{
+    return dlt645PointTabs_;
+}
+// ModbusRtu通道的文件名
+QString JsonParse::GetModbusRtuChFileName()
+{
+    return modbusRtuChFileName_;
+}
+// ModbusTcp通道的文件名
+QString JsonParse::GetModbusTcpChFileName()
+{
+    return modbusTcpChFileName_;
+}
+// DLT645通道的文件名
+QString JsonParse::GetDlt645ChFileName()
+{
+    return dlt645ChFileName_;
+}
+// ModbusRtu通道
+QMap<QString, ModbusRtuChStruct::Ch_T> JsonParse::GetModbusRtuChs()
+{
+    return modbusRtuChs_;
+}
+// ModbusTcp通道
+QMap<QString, ModbusTcpChStruct::Ch_T> JsonParse::GetModbusTcpChs()
+{
+    return modbusTcpChs_;
+}
+// DLT645通道
+QMap<QString, Dlt645ChStruct::Ch_T> JsonParse::GetDlt645Chs()
+{
+    return dlt645Chs_;
+}
+// ModbusRtu设备的文件名
+QString JsonParse::GetModbusRtuDevFileName()
+{
+    return modbusRtuDevFileName_;
+}
+// ModbusTcp设备的文件名
+QString JsonParse::GetModbusTcpDevFileName()
+{
+    return modbusTcpDevFileName_;
+}
+// DLT645设备的文件名
+QString JsonParse::GetDlt645DevFileName()
+{
+    return dlt645DevFileName_;
+}
+// ModbusRtu设备
+QMap<QString, ModbusRtuDevStruct::Dev_T> JsonParse::GetModbusRtuDevs()
+{
+    return modbusRtuDevs_;
+}
+// ModbusTcp设备
+QMap<QString, ModbusTcpDevStruct::Dev_T> JsonParse::GetModbusTcpDevs()
+{
+    return modbusTcpDevs_;
+}
+// DLT645设备
+QMap<QString, Dlt645DevStruct::Dev_T> JsonParse::GetDlt645Devs()
+{
+    return dlt645Devs_;
+}
+
 
 QJsonObject JsonParse::JsonFile2JsonObj(const QString &fileName)
 {
@@ -120,9 +191,9 @@ void JsonParse::ParseIndex(const QString &fileName)
                 modbusPointTabs_.insert(it.key(), pointTab);
                 qDebug() << "Modbus点表名称：" << pointTab.name;
                 for(auto &it : pointTab.points) {
-                    qDebug() << "    " << QString("起始地址:%1, 点位数量:%2, 功能码:%3, 数据类型:%4, 读取周期:%5, 名称:%6")
-                              .arg(it.startAddr, it.pointNum, it.code, it.dataType)
-                              .arg(it.readCycle).arg(it.customName);
+                    qDebug() << "    " << QString("起始地址:0x%1, 点位数量:%2, 功能码:%3, 数据类型:%4, 读取周期:%5, 名称:%6")
+                        .arg(it.startAddr, 4, 16, QChar('0')).arg(it.pointNum, 4, 16, QChar('0')).arg(it.code, it.dataType)
+                        .arg(it.readCycle).arg(it.customName);
                 }
             }
         }
@@ -288,6 +359,7 @@ ModbusPointStruct::PointTab_T JsonParse::ParseModbusPoint(const QString &fileNam
 
 QList<ModbusPointStruct::Point_T> JsonParse::ParseModbusPointArray(const QJsonArray &pointsArray)
 {
+    bool ok;
     QList<ModbusPointStruct::Point_T> list;
     for (int i = 0; i < pointsArray.size(); ++i) {
         QJsonValue value = pointsArray.at(i); // 获取第 i 个元素
@@ -304,12 +376,12 @@ QList<ModbusPointStruct::Point_T> JsonParse::ParseModbusPointArray(const QJsonAr
         // 起始地址
         QJsonValue jsonStartAddr = pointArray.at(App::kModbusTabColumnId_StartAddr);
         if(jsonStartAddr.isString()) {
-            mps.startAddr = jsonStartAddr.toString();
+            mps.startAddr = App::StringToNumber(jsonStartAddr.toString(), ok);
         }
         // 点数量
         QJsonValue jsonPointNum = pointArray.at(App::kModbusTabColumnId_PointNum);
         if(jsonPointNum.isString()) {
-            mps.pointNum = jsonPointNum.toString();
+            mps.pointNum = App::StringToNumber(jsonPointNum.toString(), ok);
         }
         // 功能码
         QJsonValue jsonCode = pointArray.at(App::kModbusTabColumnId_Code);

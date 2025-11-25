@@ -9,8 +9,8 @@ public:
     explicit ModbusPointStruct();
 
     typedef struct Point_ {
-        QString startAddr = "0x000";    // 起始地址
-        QString pointNum = "0x0001";    // 点数量
+        quint16 startAddr = 0x0000;     // 起始地址
+        quint16 pointNum = 0x0001;      // 点数量
         QString code = "0x03";          // 功能码
         QString dataType = "U16";       // 数据类型
         int readCycle = 1000;           // 读取周期ms

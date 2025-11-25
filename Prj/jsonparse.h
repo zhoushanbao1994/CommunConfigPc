@@ -18,6 +18,23 @@ class JsonParse : public QObject
 public:
     explicit JsonParse(QObject *parent = nullptr);
 
+    QMap<QString, ModbusPointStruct::PointTab_T> GetModbusPointTabs();  // Modbus点表
+    QMap<QString, Dlt645PointStruct::PointTab_T> GetDlt645PointTabs();  // DLT645点表
+
+    QString GetModbusRtuChFileName();                                   // ModbusRtu通道的文件名
+    QString GetModbusTcpChFileName();                                   // ModbusTcp通道的文件名
+    QString GetDlt645ChFileName();                                      // DLT645通道的文件名
+    QMap<QString, ModbusRtuChStruct::Ch_T> GetModbusRtuChs();           // ModbusRtu通道
+    QMap<QString, ModbusTcpChStruct::Ch_T> GetModbusTcpChs();           // ModbusTcp通道
+    QMap<QString, Dlt645ChStruct::Ch_T> GetDlt645Chs();                 // DLT645通道
+
+    QString GetModbusRtuDevFileName();                                  // ModbusRtu设备的文件名
+    QString GetModbusTcpDevFileName();                                  // ModbusTcp设备的文件名
+    QString GetDlt645DevFileName();                                     // DLT645设备的文件名
+    QMap<QString, ModbusRtuDevStruct::Dev_T> GetModbusRtuDevs();        // ModbusRtu设备
+    QMap<QString, ModbusTcpDevStruct::Dev_T> GetModbusTcpDevs();        // ModbusTcp设备
+    QMap<QString, Dlt645DevStruct::Dev_T> GetDlt645Devs();              // DLT645设备
+
 signals:
 
 private:

@@ -6,6 +6,14 @@
 #include "pointtables.h"
 #include "communchs.h"
 #include "commundevs.h"
+#include "data_struct/modbuspointstruct.h"
+#include "data_struct/dlt645pointstruct.h"
+#include "data_struct/modbusrtuchstruct.h"
+#include "data_struct/modbustcpchstruct.h"
+#include "data_struct/dlt645chstruct.h"
+#include "data_struct/modbusrtudevstruct.h"
+#include "data_struct/modbustcpdevstruct.h"
+#include "data_struct/dlt645devstruct.h"
 
 namespace Ui {
 class ProjectSection;
@@ -20,6 +28,17 @@ public:
     ~ProjectSection();
 
     void ClearAll();
+
+    void SetModbusPointTabs(const QMap<QString, ModbusPointStruct::PointTab_T> &mpts);// Modbus点表
+    void SetDlt645PointTabs(const QMap<QString, Dlt645PointStruct::PointTab_T> &dpts);// DLT645点表
+
+    void SetModbusRtuChs(const QMap<QString, ModbusRtuChStruct::Ch_T> &mrcs);         // ModbusRtu通道
+    void SetModbusTcpChs(const QMap<QString, ModbusTcpChStruct::Ch_T> &mtcs);         // ModbusTcp通道
+    void SetDlt645Chs(const QMap<QString, Dlt645ChStruct::Ch_T> &dlcs);               // DLT645通道
+
+    void SetModbusRtuDevs(const QMap<QString, ModbusRtuDevStruct::Dev_T> &mrds);      // ModbusRtu设备
+    void SetModbusTcpDevs(const QMap<QString, ModbusTcpDevStruct::Dev_T> &mtds);      // ModbusTcp设备
+    void SetDlt645Devs(const QMap<QString, Dlt645DevStruct::Dev_T> &dlds);            // DLT645设备
 
 signals:
     void Form_Signal(QWidget *form, int action); // action:1新增;0显示,-1删除;
@@ -37,14 +56,14 @@ private:
     //// 生成第一个未使用的节点名称
     //QString GenerateUnusedName(const QTreeWidgetItem *item, const QString &name_prefix);
     // 新建点表
-    void NewPointTab(QTreeWidgetItem *parent_item,
-                    App::PointTabType_E type, PointTables *point_tabs);
+    void NewPointTab(QString name, QTreeWidgetItem *parent_item,
+                    App::PointTabType_E type, PointTables *point_tabs, void *arg);
     // 新建通讯通道
-    void NewCommunCh(QTreeWidgetItem *parent_item,
-                     App::ChType_E type, CommunChs *chs);
+    void NewCommunCh(QString name, QTreeWidgetItem *parent_item,
+                     App::ChType_E type, CommunChs *chs, void *arg);
     // 新建通讯设备
-    void NewCommunDev(QTreeWidgetItem *parent_item,
-                      App::DevType_E type, CommunDevs *devs);
+    void NewCommunDev(QString name, QTreeWidgetItem *parent_item,
+                      App::DevType_E type, CommunDevs *devs, void *arg);
 
     // 点表类型单击，内部处理函数
     void PointTabTypeClick(QTreeWidgetItem *item, PointTables *point_tabs, int action);

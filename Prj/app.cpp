@@ -291,3 +291,244 @@ QString App::GenerateRandomString(int length)
 
     return randomString;
 }
+
+/**
+ * @brief 将字符串转换为数字，自动识别十进制和十六进制（0x开头）
+ * @param str 输入的字符串
+ * @param ok 输出参数，转换成功为 true，失败为 false
+ * @return 转换后的数字（qlonglong 类型，可根据需要修改）
+ */
+qlonglong App::StringToNumber(const QString& str, bool& ok)
+{
+    ok = false;
+    if (str.isEmpty()) {
+        return 0; // 空字符串，转换失败
+    }
+
+    // 去除字符串两端的空白字符（处理可能的空格）
+    QString trimmedStr = str.trimmed();
+
+    // 判断是否为十六进制（以 0x 或 0X 开头）
+    if (trimmedStr.startsWith(QLatin1String("0x"), Qt::CaseInsensitive)) {
+        // 十六进制转换，基数为 16
+        return trimmedStr.toLongLong(&ok, 16);
+    } else {
+        // 十进制转换，基数为 10
+        return trimmedStr.toLongLong(&ok, 10);
+    }
+}
+
+// Modbus功能码格式化
+QString App::ModbusCodeFormatting(QString code)
+{
+    if((code == "1") || (code == "0x1") || (code == "0x01") || (code == "1H") || (code == "01H")) {
+        return kStrModbusFunCode_01H;
+    }
+    else if((code == "2") || (code == "0x2") || (code == "0x02") || (code == "2H") || (code == "02H")) {
+        return kStrModbusFunCode_02H;
+    }
+    else if((code == "3") || (code == "0x3") || (code == "0x03") || (code == "3H") || (code == "03H")) {
+        return kStrModbusFunCode_03H;
+    }
+    else if((code == "4") || (code == "0x4") || (code == "0x04") || (code == "4H") || (code == "04H")) {
+        return kStrModbusFunCode_04H;
+    }
+    else {
+        return kStrModbusFunCode_03H;
+    }
+}
+// Modbus数据类型格式化
+QString App::ModbusDataTypeFormatting(QString type)
+{
+    if((type == "U16") || (type == "u16")) {
+        return kStrModbusDateType_U16;
+    }
+    else if((type == "S16") || (type == "s16")) {
+        return kStrModbusDateType_S16;
+    }
+    else if((type == "U32") || (type == "u32")) {
+        return kStrModbusDateType_U32;
+    }
+    else if((type == "S32") || (type == "s32")) {
+        return kStrModbusDateType_S32;
+    }
+    else {
+        return kStrModbusDateType_U16;
+    }
+}
+
+// DLT645数据标识格式化
+QString App::ModbusDataIdentFormatting(QString ident)
+{
+    if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000000, 10)) {  //"0x00000000_(当前)组合有功总电能";
+        return kStrDltDataId07_00000000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000100, 10)) {  //"0x00000100_(当前)组合有功费率 1 电能";
+        return kStrDltDataId07_00000100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000200, 10)) {  //"0x00000200_(当前)组合有功费率 2 电能";
+        return kStrDltDataId07_00000200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000300, 10)) {  //"0x00000300_(当前)组合有功费率 3 电能";
+        return kStrDltDataId07_00000300; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000400, 10)) {  //"0x00000400_(当前)组合有功费率 4 电能";
+        return kStrDltDataId07_00000400; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000500, 10)) {  //"0x00000500_(当前)组合有功费率 5 电能";
+        return kStrDltDataId07_00000500; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000600, 10)) {  //"0x00000600_(当前)组合有功费率 6 电能";
+        return kStrDltDataId07_00000600; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000700, 10)) {  //"0x00000700_(当前)组合有功费率 7 电能";
+        return kStrDltDataId07_00000700; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00000800, 10)) {  //"0x00000800_(当前)组合有功费率 8 电能";
+        return kStrDltDataId07_00000800; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0000FF00, 10)) {  //"0x0000FF00_(当前)组合有功电能数据块";
+    //    return kStrDltDataId07_0000FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010000, 10)) {  //"0x00010000_(当前)正向有功总电能";
+        return kStrDltDataId07_00010000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010100, 10)) {  //"0x00010100_(当前)正向有功费率 1 电能";
+        return kStrDltDataId07_00010100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010200, 10)) {  //"0x00010200_(当前)正向有功费率 2 电能";
+        return kStrDltDataId07_00010200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010300, 10)) {  //"0x00010300_(当前)正向有功费率 3 电能";
+        return kStrDltDataId07_00010300; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010400, 10)) {  //"0x00010400_(当前)正向有功费率 4 电能";
+        return kStrDltDataId07_00010400; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010500, 10)) {  //"0x00010500_(当前)正向有功费率 5 电能";
+        return kStrDltDataId07_00010500; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010600, 10)) {  //"0x00010600_(当前)正向有功费率 6 电能";
+        return kStrDltDataId07_00010600; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010700, 10)) {  //"0x00010700_(当前)正向有功费率 7 电能";
+        return kStrDltDataId07_00010700; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00010800, 10)) {  //"0x00010800_(当前)正向有功费率 8 电能";
+        return kStrDltDataId07_00010800; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0001FF00, 10)) {  //"0x0001FF00_(当前)正向有功电能数据块";
+    //    return kStrDltDataId07_0001FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020000, 10)) {  //"0x00020000_(当前)反向有功总电能";
+        return kStrDltDataId07_00020000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020100, 10)) {  //"0x00020100_(当前)反向有功费率 1 电能";
+        return kStrDltDataId07_00020100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020200, 10)) {  //"0x00020200_(当前)反向有功费率 2 电能";
+        return kStrDltDataId07_00020200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020300, 10)) {  //"0x00020300_(当前)反向有功费率 3 电能";
+        return kStrDltDataId07_00020300; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020400, 10)) {  //"0x00020400_(当前)反向有功费率 4 电能";
+        return kStrDltDataId07_00020400; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020500, 10)) {  //"0x00020500_(当前)反向有功费率 5 电能";
+        return kStrDltDataId07_00020500; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020600, 10)) {  //"0x00020600_(当前)反向有功费率 6 电能";
+        return kStrDltDataId07_00020600; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020700, 10)) {  //"0x00020700_(当前)反向有功费率 7 电能";
+        return kStrDltDataId07_00020700; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_00020800, 10)) {  //"0x00020800_(当前)反向有功费率 8 电能";
+        return kStrDltDataId07_00020800; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0002FF00, 10)) {  //"0x0002FF00_(当前)反向有功电能数据块";
+    //    return kStrDltDataId07_0002FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010000, 10)) {  //"0x01010000_(当前)正向有功总最大需量及发生时间";
+        return kStrDltDataId07_01010000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010100, 10)) {  //"0x01010100_(当前)正向有功费率 1 最大需量及发生时间";
+        return kStrDltDataId07_01010100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010200, 10)) {  //"0x01010200_(当前)正向有功费率 2 最大需量及发生时间";
+        return kStrDltDataId07_01010200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010300, 10)) {  //"0x01010300_(当前)正向有功费率 3 最大需量及发生时间";
+        return kStrDltDataId07_01010300; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010400, 10)) {  //"0x01010400_(当前)正向有功费率 4 最大需量及发生时间";
+        return kStrDltDataId07_01010400; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010500, 10)) {  //"0x01010500_(当前)正向有功费率 5 最大需量及发生时间";
+        return kStrDltDataId07_01010500; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010600, 10)) {  //"0x01010600_(当前)正向有功费率 6 最大需量及发生时间";
+        return kStrDltDataId07_01010600; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010700, 10)) {  //"0x01010700_(当前)正向有功费率 7 最大需量及发生时间";
+        return kStrDltDataId07_01010700; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01010800, 10)) {  //"0x01010800_(当前)正向有功费率 8 最大需量及发生时间";
+        return kStrDltDataId07_01010800; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0101FF00, 10)) {  //"0x0101FF00_(当前)正向有功最大需量及发生时间数据块";
+    //    return kStrDltDataId07_0101FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020000, 10)) {  //"0x01020000_(当前)反向有功总最大需量及发生时间";
+        return kStrDltDataId07_01020000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020100, 10)) {  //"0x01020100_(当前)反向有功费率 1 最大需量及发生时间";
+        return kStrDltDataId07_01020100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020200, 10)) {  //"0x01020200_(当前)反向有功费率 2 最大需量及发生时间";
+        return kStrDltDataId07_01020200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020300, 10)) {  //"0x01020300_(当前)反向有功费率 3 最大需量及发生时间";
+        return kStrDltDataId07_01020300; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020400, 10)) {  //"0x01020400_(当前)反向有功费率 4 最大需量及发生时间";
+        return kStrDltDataId07_01020400; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020500, 10)) {  //"0x01020500_(当前)反向有功费率 5 最大需量及发生时间";
+        return kStrDltDataId07_01020500; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020600, 10)) {  //"0x01020600_(当前)反向有功费率 6 最大需量及发生时间";
+        return kStrDltDataId07_01020600; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020700, 10)) {  //"0x01020700_(当前)反向有功费率 7 最大需量及发生时间";
+        return kStrDltDataId07_01020700; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_01020800, 10)) {  //"0x01020800_(当前)反向有功费率 8 最大需量及发生时间";
+        return kStrDltDataId07_01020800; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0102FF00, 10)) {  //"0x0102FF00_(当前)反向有功最大需量及发生时间数据块";
+    //    return kStrDltDataId07_0102FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02010100, 10)) {  //"0x02010100_A 相电压";
+        return kStrDltDataId07_02010100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02010200, 10)) {  //"0x02010200_B 相电压";
+        return kStrDltDataId07_02010200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02010300, 10)) {  //"0x02010300_C 相电压";
+        return kStrDltDataId07_02010300; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0201FF00, 10)) {  //"0x0201FF00_电压数据块(三相电压1帧读回)";
+    //    return kStrDltDataId07_0201FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02020100, 10)) {  //"0x02020100_A 相电流";
+        return kStrDltDataId07_02020100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02020200, 10)) {  //"0x02020200_B 相电流";
+        return kStrDltDataId07_02020200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02020300, 10)) {  //"0x02020300_C 相电流";
+        return kStrDltDataId07_02020300; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0202FF00, 10)) {  //"0x0202FF00_电流数据块(三相电流1帧读回)";
+    //    return kStrDltDataId07_0202FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02030000, 10)) {  //"0x02030000_瞬时总有功功率";
+        return kStrDltDataId07_02030000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02030100, 10)) {  //"0x02030100_瞬时A相有功功率";
+        return kStrDltDataId07_02030100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02030200, 10)) {  //"0x02030200_瞬时B相有功功率";
+        return kStrDltDataId07_02030200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02030300, 10)) {  //"0x02030300_瞬时C相有功功率";
+        return kStrDltDataId07_02030300; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0203FF00, 10)) {  //"0x0203FF00_有功功率数据块(三相有功功率1帧读回)";
+    //    return kStrDltDataId07_0203FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02040000, 10)) {  //"0x02040000_瞬时总无功功率";
+        return kStrDltDataId07_02040000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02040100, 10)) {  //"0x02040100_瞬时A相无功功率";
+        return kStrDltDataId07_02040100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02040200, 10)) {  //"0x02040200_瞬时B相无功功率";
+        return kStrDltDataId07_02040200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02040300, 10)) {  //"0x02040300_瞬时C相无功功率";
+        return kStrDltDataId07_02040300; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0204FF00, 10)) {  //"0x0204FF00_无功功率数据块(三相无功功率1帧读回)";
+    //    return kStrDltDataId07_0204FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02050000, 10)) {  //"0x02050000_瞬时总功率因数";
+        return kStrDltDataId07_02050000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02050100, 10)) {  //"0x02050100_瞬时A相功率因数";
+        return kStrDltDataId07_02050100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02050200, 10)) {  //"0x02050200_瞬时B相功率因数";
+        return kStrDltDataId07_02050200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02050300, 10)) {  //"0x02050300_瞬时C相功率因数";
+        return kStrDltDataId07_02050300; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0205FF00, 10)) {  //"0x0205FF00_功率因数数据块(三相功率因数1帧读回)";
+    //    return kStrDltDataId07_0205FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02060000, 10)) {  //"0x02060000_瞬时总视在功率";
+        return kStrDltDataId07_02060000; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02060100, 10)) {  //"0x02060100_瞬时A相视在功率";
+        return kStrDltDataId07_02060100; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02060200, 10)) {  //"0x02060200_瞬时B相视在功率";
+        return kStrDltDataId07_02060200; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02060300, 10)) {  //"0x02060300_瞬时C相视在功率";
+        return kStrDltDataId07_02060300; }
+    //else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_0206FF00, 10)) {  //"0x0206FF00_视在功率数据块(三相视在功率1帧读回)";
+    //    return kStrDltDataId07_0206FF00; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02800002, 10)) {  //"0x02800002_电网频率";
+        return kStrDltDataId07_02800002; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02800004, 10)) {  //"0x02800004_当前有功需量";
+        return kStrDltDataId07_02800004; }
+    else if(compareFirstNIgnoreCase(ident, kStrDltDataId07_02800005, 10)) {  //"0x02800005_当前无功需量";
+        return kStrDltDataId07_02800005; }
+    else {
+        return kStrDltDataId07_00000000;
+    }
+}
+
+// 不区分大小写，比较字符串前n个字符是否一致 1-一致；0-不一致；
+bool App::compareFirstNIgnoreCase(const QString &str1, const QString &str2, int n)
+{
+    return str1.left(n).compare(str2.left(n), Qt::CaseInsensitive) == 0;
+}

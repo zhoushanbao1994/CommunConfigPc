@@ -65,8 +65,32 @@ void MainWindow::on_actionImport_triggered()
     qDebug() <<  __FUNCTION__ << __LINE__;
 
     // 解析 JSON 数据
-    JsonParse *json_parse = new JsonParse();
+    JsonParse *jsonParse = new JsonParse();
+    QMap<QString, ModbusPointStruct::PointTab_T> mpts = jsonParse->GetModbusPointTabs();// Modbus点表
+    QMap<QString, Dlt645PointStruct::PointTab_T> dpts = jsonParse->GetDlt645PointTabs();// DLT645点表
+    //QString mrcfn = jsonParse->GetModbusRtuChFileName();                                // ModbusRtu通道的文件名
+    //QString mtcfn = jsonParse->GetModbusTcpChFileName();                                // ModbusTcp通道的文件名
+    //QString dlcfn = jsonParse->GetDlt645ChFileName();                                   // DLT645通道的文件名
+    QMap<QString, ModbusRtuChStruct::Ch_T> mrcs = jsonParse->GetModbusRtuChs();         // ModbusRtu通道
+    QMap<QString, ModbusTcpChStruct::Ch_T> mtcs = jsonParse->GetModbusTcpChs();         // ModbusTcp通道
+    QMap<QString, Dlt645ChStruct::Ch_T> dlcs = jsonParse->GetDlt645Chs();               // DLT645通道
+    //QString mrdfn = jsonParse->GetModbusRtuDevFileName();                               // ModbusRtu设备的文件名
+    //QString mtdfn = jsonParse->GetModbusTcpDevFileName();                               // ModbusTcp设备的文件名
+    //QString dldfn = jsonParse->GetDlt645DevFileName();                                  // DLT645设备的文件名
+    QMap<QString, ModbusRtuDevStruct::Dev_T> mrds = jsonParse->GetModbusRtuDevs();      // ModbusRtu设备
+    QMap<QString, ModbusTcpDevStruct::Dev_T> mtds = jsonParse->GetModbusTcpDevs();      // ModbusTcp设备
+    QMap<QString, Dlt645DevStruct::Dev_T> dlds = jsonParse->GetDlt645Devs();            // DLT645设备
+    delete jsonParse;
+    jsonParse = nullptr;
 
+    ui->widget_PrjSection->SetModbusPointTabs(mpts);    // Modbus点表
+    ui->widget_PrjSection->SetDlt645PointTabs(dpts);    // DLT645点表
+    ui->widget_PrjSection->SetModbusRtuChs(mrcs);       // ModbusRtu通道
+    ui->widget_PrjSection->SetModbusTcpChs(mtcs);       // ModbusTcp通道
+    ui->widget_PrjSection->SetDlt645Chs(dlcs);          // DLT645通道
+    ui->widget_PrjSection->SetModbusRtuDevs(mrds);      // ModbusRtu设备
+    ui->widget_PrjSection->SetModbusTcpDevs(mtds);      // ModbusTcp设备
+    ui->widget_PrjSection->SetDlt645Devs(dlds);         // DLT645设备
 }
 
 // 导出-槽函数

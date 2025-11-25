@@ -221,7 +221,24 @@ public:
     // 生成指定长度的随机字符串
     static QString GenerateRandomString(int length);
 
+    // 将字符串转换为数字，自动识别十进制和十六进制（0x开头）
+    static qlonglong StringToNumber(const QString& str, bool& ok);
+
+    // Modbus功能码格式化
+    static QString ModbusCodeFormatting(QString code);
+    // Modbus数据类型格式化
+    static QString ModbusDataTypeFormatting(QString dataType);
+
+    // DLT645数据标识格式化
+    static QString ModbusDataIdentFormatting(QString dataIdent);
+
+
 signals:
+
+private:
+    // 不区分大小写，比较字符串前n个字符是否一致 1-一致；0-不一致；
+    static bool compareFirstNIgnoreCase(const QString &str1, const QString &str2, int n);
+
 };
 
 #endif // APP_H
