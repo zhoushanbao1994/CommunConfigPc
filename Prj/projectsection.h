@@ -74,37 +74,37 @@ private:
 
 private:
     void initTreeWidget();
-    QTreeWidgetItem *twitem_point_ = nullptr;       // 工程栏  - 点表Item
-    QTreeWidgetItem *twitem_pointmodbus_ = nullptr; // 工程栏  - Modbus点表Item
-    QTreeWidgetItem *twitem_pointdlt645_ = nullptr; // 工程栏  - Dlt645点表Item
-    QTreeWidgetItem *twitem_ch_ = nullptr;          // 工程栏  - 通道Item
-    QTreeWidgetItem *twitem_chmrtu_ = nullptr;      // 工程栏  - MRTU通道Item
-    QTreeWidgetItem *twitem_chmtcp_ = nullptr;      // 工程栏  - MTCP通道Item
-    QTreeWidgetItem *twitem_chdlt645_ = nullptr;    // 工程栏  - DLT645通道Item
-    QTreeWidgetItem *twitem_dev_ = nullptr;         // 工程栏  - 设备Item
-    QTreeWidgetItem *twitem_devmrtu_ = nullptr;     // 工程栏  - MRTU设备Item
-    QTreeWidgetItem *twitem_devmtcp_ = nullptr;     // 工程栏  - MTCP设备Item
-    QTreeWidgetItem *twitem_devdlt645_ = nullptr;   // 工程栏  - DLT645设备Item
-    QTreeWidgetItem *twitem_current_ = nullptr;     // 当前操作的Item
+    QTreeWidgetItem *twitemPoint_ = nullptr;        // 工程栏  - 点表Item
+    QTreeWidgetItem *twitemPointModbus_ = nullptr;  // 工程栏  - Modbus点表Item
+    QTreeWidgetItem *twitemPointDlt645_ = nullptr;  // 工程栏  - Dlt645点表Item
+    QTreeWidgetItem *twitemCh_ = nullptr;           // 工程栏  - 通道Item
+    QTreeWidgetItem *twitemChMrtu_ = nullptr;       // 工程栏  - MRTU通道Item
+    QTreeWidgetItem *twitemChMtcp_ = nullptr;       // 工程栏  - MTCP通道Item
+    QTreeWidgetItem *twitemChDlt645_ = nullptr;     // 工程栏  - DLT645通道Item
+    QTreeWidgetItem *twitemDev_ = nullptr;          // 工程栏  - 设备Item
+    QTreeWidgetItem *twitemDevMrtu_ = nullptr;      // 工程栏  - MRTU设备Item
+    QTreeWidgetItem *twitemDevMtcp_ = nullptr;      // 工程栏  - MTCP设备Item
+    QTreeWidgetItem *twitemDevDlt645_ = nullptr;    // 工程栏  - DLT645设备Item
+    QTreeWidgetItem *twitemCurrent_ = nullptr;      // 当前操作的Item
 
-    QMenu *right_click_menu_master_ = nullptr;      // 工程栏右键菜单-主Item的菜单
-    QAction *right_click_action_new_ = nullptr;     // 新建
-    QMenu *right_click_menu_slave_ = nullptr;       // 工程栏右键菜单-从Item的菜单
-    QAction *right_click_action_del_ = nullptr;     // 删除
+    QMenu *rightClickMenuMaster_ = nullptr;         // 工程栏右键菜单-主Item的菜单
+    QAction *rightClickActionNew_ = nullptr;        // 新建
+    QMenu *rightClickMenuSlave_ = nullptr;          // 工程栏右键菜单-从Item的菜单
+    QAction *rightClickActionDel_ = nullptr;        // 删除
 
 private:
     Ui::ProjectSection *ui;
 
-    PointTables *point_tabs_modbus_ = nullptr;
-    PointTables *point_tabs_dlt645_ = nullptr;
+    PointTables *pointTabsModbus_ = nullptr;
+    PointTables *pointTabsDlt645_ = nullptr;
 
-    CommunChs *ch_modbusrtu_ = nullptr;
-    CommunChs *ch_modbustcp_ = nullptr;
-    CommunChs *ch_dlt645_ = nullptr;
+    CommunChs *chModbusRtu_ = nullptr;
+    CommunChs *chModbusTcp_ = nullptr;
+    CommunChs *chDlt645_ = nullptr;
 
-    CommunDevs *dev_modbusrtu_ = nullptr;
-    CommunDevs *dev_modbustcp_ = nullptr;
-    CommunDevs *dev_dlt645_ = nullptr;
+    CommunDevs *devModbusRtu_ = nullptr;
+    CommunDevs *devModbusTcp_ = nullptr;
+    CommunDevs *devDlt645_ = nullptr;
 };
 
 #endif // PROJECTSECTION_H

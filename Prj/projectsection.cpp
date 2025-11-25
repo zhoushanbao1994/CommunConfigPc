@@ -12,57 +12,57 @@ ProjectSection::ProjectSection(QWidget *parent)
     ui->setupUi(this);
     this->initTreeWidget();
 
-    point_tabs_modbus_ = new PointTables(App::kPointTabType_Modbus);
-    point_tabs_dlt645_ = new PointTables(App::kPointTabType_Dlt645);
+    pointTabsModbus_ = new PointTables(App::kPointTabType_Modbus);
+    pointTabsDlt645_ = new PointTables(App::kPointTabType_Dlt645);
 
-    ch_modbusrtu_ = new CommunChs(App::kChType_ModbusRtu);
-    ch_modbustcp_ = new CommunChs(App::kChType_ModbusTcp);
-    ch_dlt645_ = new CommunChs(App::kChType_Dlt645);
+    chModbusRtu_ = new CommunChs(App::kChType_ModbusRtu);
+    chModbusTcp_ = new CommunChs(App::kChType_ModbusTcp);
+    chDlt645_ = new CommunChs(App::kChType_Dlt645);
 
-    dev_modbusrtu_ = new CommunDevs(App::kDevType_ModbusRtu);
-    dev_modbustcp_ = new CommunDevs(App::kDevType_ModbusTcp);
-    dev_dlt645_ = new CommunDevs(App::kDevType_Dlt645);
+    devModbusRtu_ = new CommunDevs(App::kDevType_ModbusRtu);
+    devModbusTcp_ = new CommunDevs(App::kDevType_ModbusTcp);
+    devDlt645_ = new CommunDevs(App::kDevType_Dlt645);
 }
 
 ProjectSection::~ProjectSection()
 {
     delete ui;
 
-    delete point_tabs_modbus_;
-    delete point_tabs_dlt645_;
+    delete pointTabsModbus_;
+    delete pointTabsDlt645_;
 
-    delete ch_modbusrtu_;
-    delete ch_modbustcp_;
-    delete ch_dlt645_;
+    delete chModbusRtu_;
+    delete chModbusTcp_;
+    delete chDlt645_;
 
-    delete dev_modbusrtu_;
-    delete dev_modbustcp_;
-    delete dev_dlt645_;
+    delete devModbusRtu_;
+    delete devModbusTcp_;
+    delete devDlt645_;
 }
 
 void ProjectSection::ClearAll()
 {
-    point_tabs_modbus_->RemoveAll();
-    point_tabs_dlt645_->RemoveAll();
+    pointTabsModbus_->RemoveAll();
+    pointTabsDlt645_->RemoveAll();
 
-    ch_modbusrtu_->RemoveAll();
-    ch_modbustcp_->RemoveAll();
-    ch_dlt645_->RemoveAll();
+    chModbusRtu_->RemoveAll();
+    chModbusTcp_->RemoveAll();
+    chDlt645_->RemoveAll();
 
-    dev_modbusrtu_->RemoveAll();
-    dev_modbustcp_->RemoveAll();
-    dev_dlt645_->RemoveAll();
+    devModbusRtu_->RemoveAll();
+    devModbusTcp_->RemoveAll();
+    devDlt645_->RemoveAll();
 
-    RemoveChildItem(twitem_pointmodbus_);   // 工程栏  - Modbus点表Item
-    RemoveChildItem(twitem_pointdlt645_);   // 工程栏  - Dlt645点表Item
+    RemoveChildItem(twitemPointModbus_);   // 工程栏  - Modbus点表Item
+    RemoveChildItem(twitemPointDlt645_);   // 工程栏  - Dlt645点表Item
 
-    RemoveChildItem(twitem_chmrtu_);        // 工程栏  - MRTU通道Item
-    RemoveChildItem(twitem_chmtcp_);        // 工程栏  - MTCP通道Item
-    RemoveChildItem(twitem_chdlt645_);      // 工程栏  - DLT645通道Item
+    RemoveChildItem(twitemChMrtu_);        // 工程栏  - MRTU通道Item
+    RemoveChildItem(twitemChMtcp_);        // 工程栏  - MTCP通道Item
+    RemoveChildItem(twitemChDlt645_);      // 工程栏  - DLT645通道Item
 
-    RemoveChildItem(twitem_devmrtu_);       // 工程栏  - MRTU设备Item
-    RemoveChildItem(twitem_devmtcp_);       // 工程栏  - MTCP设备Item
-    RemoveChildItem(twitem_devdlt645_);     // 工程栏  - DLT645设备Item
+    RemoveChildItem(twitemDevMrtu_);       // 工程栏  - MRTU设备Item
+    RemoveChildItem(twitemDevMtcp_);       // 工程栏  - MTCP设备Item
+    RemoveChildItem(twitemDevDlt645_);     // 工程栏  - DLT645设备Item
 }
 
 void ProjectSection::RemoveChildItem(QTreeWidgetItem *top_item)
@@ -107,62 +107,62 @@ void ProjectSection::initTreeWidget()
     QFont topFont("Arial", 12, QFont::Bold); // 字体：Arial，大小：12，加粗
     QFont topFont2("Arial", 11, QFont::Bold); // 字体：Arial，大小：11，加粗
     // 工程栏  - 点表Item
-    twitem_point_ = new QTreeWidgetItem(
+    twitemPoint_ = new QTreeWidgetItem(
         ui->treeWidgetProject, QStringList(QString("01.通讯点表")));
-    twitem_point_->setFont(0, topFont);
-    twitem_pointmodbus_ = new QTreeWidgetItem(
-        twitem_point_, QStringList(QString("Modbus点表")));
-    twitem_pointmodbus_->setFont(0, topFont2);
-    twitem_pointdlt645_ = new QTreeWidgetItem(
-        twitem_point_, QStringList(QString("Dlt645点表")));
-    twitem_pointdlt645_->setFont(0, topFont2);
-    twitem_point_->setExpanded(true);// 展开当前节点
+    twitemPoint_->setFont(0, topFont);
+    twitemPointModbus_ = new QTreeWidgetItem(
+        twitemPoint_, QStringList(QString("Modbus点表")));
+    twitemPointModbus_->setFont(0, topFont2);
+    twitemPointDlt645_ = new QTreeWidgetItem(
+        twitemPoint_, QStringList(QString("Dlt645点表")));
+    twitemPointDlt645_->setFont(0, topFont2);
+    twitemPoint_->setExpanded(true);// 展开当前节点
 
     // 工程栏  - 通道Item
-    twitem_ch_  = new QTreeWidgetItem(
+    twitemCh_  = new QTreeWidgetItem(
         ui->treeWidgetProject, QStringList(QString("02.通讯通道")));
-    twitem_ch_  ->setFont(0, topFont);
-    twitem_chmrtu_ = new QTreeWidgetItem(
-        twitem_ch_, QStringList(QString("ModbusRtu通道")));
-    twitem_chmrtu_->setFont(0, topFont2);
-    twitem_chmtcp_ = new QTreeWidgetItem(
-        twitem_ch_, QStringList(QString("ModbusTcp通道")));
-    twitem_chmtcp_->setFont(0, topFont2);
-    twitem_chdlt645_ = new QTreeWidgetItem(
-        twitem_ch_, QStringList(QString("Dlt645通道")));
-    twitem_chdlt645_->setFont(0, topFont2);
-    twitem_ch_->setExpanded(true);  // 展开当前节点
+    twitemCh_  ->setFont(0, topFont);
+    twitemChMrtu_ = new QTreeWidgetItem(
+        twitemCh_, QStringList(QString("ModbusRtu通道")));
+    twitemChMrtu_->setFont(0, topFont2);
+    twitemChMtcp_ = new QTreeWidgetItem(
+        twitemCh_, QStringList(QString("ModbusTcp通道")));
+    twitemChMtcp_->setFont(0, topFont2);
+    twitemChDlt645_ = new QTreeWidgetItem(
+        twitemCh_, QStringList(QString("Dlt645通道")));
+    twitemChDlt645_->setFont(0, topFont2);
+    twitemCh_->setExpanded(true);  // 展开当前节点
 
     // 工程栏  - 设备Item
-    twitem_dev_ = new QTreeWidgetItem(
+    twitemDev_ = new QTreeWidgetItem(
         ui->treeWidgetProject, QStringList(QString("03.通讯设备")));
-    twitem_dev_ ->setFont(0, topFont);
-    twitem_devmrtu_ = new QTreeWidgetItem(
-        twitem_dev_, QStringList(QString("ModbusRtu设备")));
-    twitem_devmrtu_->setFont(0, topFont2);
-    twitem_devmtcp_ = new QTreeWidgetItem(
-        twitem_dev_, QStringList(QString("ModbusTcp设备")));
-    twitem_devmtcp_->setFont(0, topFont2);
-    twitem_devdlt645_ = new QTreeWidgetItem(
-        twitem_dev_, QStringList(QString("Dlt645设备")));
-    twitem_devdlt645_->setFont(0, topFont2);
-    twitem_dev_->setExpanded(true);// 展开当前节点
+    twitemDev_ ->setFont(0, topFont);
+    twitemDevMrtu_ = new QTreeWidgetItem(
+        twitemDev_, QStringList(QString("ModbusRtu设备")));
+    twitemDevMrtu_->setFont(0, topFont2);
+    twitemDevMtcp_ = new QTreeWidgetItem(
+        twitemDev_, QStringList(QString("ModbusTcp设备")));
+    twitemDevMtcp_->setFont(0, topFont2);
+    twitemDevDlt645_ = new QTreeWidgetItem(
+        twitemDev_, QStringList(QString("Dlt645设备")));
+    twitemDevDlt645_->setFont(0, topFont2);
+    twitemDev_->setExpanded(true);// 展开当前节点
 
     // 工程栏右键菜单-主Item的菜单
-    right_click_menu_master_ = new QMenu();
+    rightClickMenuMaster_ = new QMenu();
     // 新建
-    right_click_action_new_ = new QAction(tr("新建"),
-                                          right_click_menu_master_);
-    right_click_menu_master_->addAction(right_click_action_new_);
-    connect(right_click_action_new_, &QAction::triggered,
+    rightClickActionNew_ = new QAction(tr("新建"),
+                                          rightClickMenuMaster_);
+    rightClickMenuMaster_->addAction(rightClickActionNew_);
+    connect(rightClickActionNew_, &QAction::triggered,
             this, &ProjectSection::RightCheckedActionNew);
     // 工程栏右键菜单-从Item的菜单
-    right_click_menu_slave_ = new QMenu();
+    rightClickMenuSlave_ = new QMenu();
     // 删除
-    right_click_action_del_ = new QAction(tr("删除"),
-                                         right_click_menu_slave_);
-    right_click_menu_slave_->addAction(right_click_action_del_);
-    connect(right_click_action_del_, &QAction::triggered,
+    rightClickActionDel_ = new QAction(tr("删除"),
+                                         rightClickMenuSlave_);
+    rightClickMenuSlave_->addAction(rightClickActionDel_);
+    connect(rightClickActionDel_, &QAction::triggered,
             this, &ProjectSection::RightCheckedActionDel);
 }
 
@@ -311,29 +311,29 @@ void ProjectSection::ItemFindForm(QTreeWidgetItem *item, int action, int del)
     if(parent_item == nullptr) {
         return;
     }
-    if(parent_item == twitem_pointdlt645_) {
-        PointTabItemFindForm(item, point_tabs_dlt645_, action, del);
+    if(parent_item == twitemPointDlt645_) {
+        PointTabItemFindForm(item, pointTabsDlt645_, action, del);
     }
-    else if(parent_item == twitem_pointmodbus_) {
-        PointTabItemFindForm(item, point_tabs_modbus_, action, del);
+    else if(parent_item == twitemPointModbus_) {
+        PointTabItemFindForm(item, pointTabsModbus_, action, del);
     }
-    else if(parent_item == twitem_chmrtu_) {
-        CommunChItemFindForm(item, ch_modbusrtu_, action, del);
+    else if(parent_item == twitemChMrtu_) {
+        CommunChItemFindForm(item, chModbusRtu_, action, del);
     }
-    else if(parent_item == twitem_chmtcp_) {
-        CommunChItemFindForm(item, ch_modbustcp_, action, del);
+    else if(parent_item == twitemChMtcp_) {
+        CommunChItemFindForm(item, chModbusTcp_, action, del);
     }
-    else if(parent_item == twitem_chdlt645_) {
-        CommunChItemFindForm(item, ch_dlt645_, action, del);
+    else if(parent_item == twitemChDlt645_) {
+        CommunChItemFindForm(item, chDlt645_, action, del);
     }
-    else if(parent_item == twitem_devmrtu_) {
-        CommunDevItemFindForm(item, dev_modbusrtu_, action, del);
+    else if(parent_item == twitemDevMrtu_) {
+        CommunDevItemFindForm(item, devModbusRtu_, action, del);
     }
-    else if(parent_item == twitem_devmtcp_) {
-        CommunDevItemFindForm(item, dev_modbustcp_, action, del);
+    else if(parent_item == twitemDevMtcp_) {
+        CommunDevItemFindForm(item, devModbusTcp_, action, del);
     }
-    else if(parent_item == twitem_devdlt645_) {
-        CommunDevItemFindForm(item, dev_dlt645_, action, del);
+    else if(parent_item == twitemDevDlt645_) {
+        CommunDevItemFindForm(item, devDlt645_, action, del);
     }
 }
 
@@ -352,32 +352,32 @@ void ProjectSection::ItemCheckSelf(QTreeWidgetItem *item, int column)
     //    info->getDevInfoDlg()->show(); // 信息窗口显示
     //    return;
     //}
-    if((item == twitem_point_) || (item == twitem_ch_) || (item == twitem_dev_)) { // 当前操作的是主Item
+    if((item == twitemPoint_) || (item == twitemCh_) || (item == twitemDev_)) { // 当前操作的是主Item
 
     }
-    else if(item == twitem_pointdlt645_) {
-        PointTabTypeClick(item, point_tabs_dlt645_, 0);
+    else if(item == twitemPointDlt645_) {
+        PointTabTypeClick(item, pointTabsDlt645_, 0);
     }
-    else if(item == twitem_pointmodbus_) {
-        PointTabTypeClick(item, point_tabs_modbus_, 0);
+    else if(item == twitemPointModbus_) {
+        PointTabTypeClick(item, pointTabsModbus_, 0);
     }
-    else if(item == twitem_chmrtu_) {
-        CommunChTypeClick(item, ch_modbusrtu_, 0);
+    else if(item == twitemChMrtu_) {
+        CommunChTypeClick(item, chModbusRtu_, 0);
     }
-    else if(item == twitem_chmtcp_) {
-        CommunChTypeClick(item, ch_modbustcp_, 0);
+    else if(item == twitemChMtcp_) {
+        CommunChTypeClick(item, chModbusTcp_, 0);
     }
-    else if(item == twitem_chdlt645_) {
-        CommunChTypeClick(item, ch_dlt645_, 0);
+    else if(item == twitemChDlt645_) {
+        CommunChTypeClick(item, chDlt645_, 0);
     }
-    else if(item == twitem_devmrtu_) {
-        CommunDevTypeClick(item, dev_modbusrtu_, 0);
+    else if(item == twitemDevMrtu_) {
+        CommunDevTypeClick(item, devModbusRtu_, 0);
     }
-    else if(item == twitem_devmtcp_) {
-        CommunDevTypeClick(item, dev_modbustcp_, 0);
+    else if(item == twitemDevMtcp_) {
+        CommunDevTypeClick(item, devModbusTcp_, 0);
     }
-    else if(item == twitem_devdlt645_) {
-        CommunDevTypeClick(item, dev_dlt645_, 0);
+    else if(item == twitemDevDlt645_) {
+        CommunDevTypeClick(item, devDlt645_, 0);
     }
     else {
         ItemFindForm(item, 0, 0);
@@ -400,17 +400,17 @@ void ProjectSection::ShowContextMenu(const QPoint& point)
 
     // 当前操作的Item
     QTreeWidgetItem *p = ui->treeWidgetProject->currentItem();
-    twitem_current_ = p;        // 记录从Item右键时，操作的是哪一个Item
-    if((p == twitem_point_) || (p == twitem_ch_) || (p == twitem_dev_)) { // 当前操作的是主Item
+    twitemCurrent_ = p;        // 记录从Item右键时，操作的是哪一个Item
+    if((p == twitemPoint_) || (p == twitemCh_) || (p == twitemDev_)) { // 当前操作的是主Item
 
     }
-    else if((p == twitem_pointdlt645_) || (p == twitem_pointmodbus_) ||
-        (p == twitem_chmrtu_) || (p == twitem_chmtcp_) || (p == twitem_chdlt645_) ||
-        (p == twitem_devmrtu_) || (p == twitem_devmtcp_) || (p == twitem_devdlt645_)) {
-        right_click_menu_master_->exec(QCursor::pos()); // 工程栏右键菜单-主Item的菜单
+    else if((p == twitemPointDlt645_) || (p == twitemPointModbus_) ||
+        (p == twitemChMrtu_) || (p == twitemChMtcp_) || (p == twitemChDlt645_) ||
+        (p == twitemDevMrtu_) || (p == twitemDevMtcp_) || (p == twitemDevDlt645_)) {
+        rightClickMenuMaster_->exec(QCursor::pos());// 工程栏右键菜单-主Item的菜单
     }
     else {
-        right_click_menu_slave_->exec(QCursor::pos());// 工程栏右键菜单-从Item的菜单
+        rightClickMenuSlave_->exec(QCursor::pos()); // 工程栏右键菜单-从Item的菜单
     }
 }
  // 工程栏右键菜单新建
@@ -418,41 +418,41 @@ void ProjectSection::RightCheckedActionNew()
 {
     qDebug() << __FILE__ << __LINE__ << __FUNCTION__;
     // 检查参数
-    if(twitem_current_ == nullptr) {
+    if(twitemCurrent_ == nullptr) {
         return;
     }
 
     // 当前操作的是Dlt645点表
-    if(twitem_current_ == twitem_pointdlt645_) {
-        NewPointTab(twitem_current_, App::kPointTabType_Dlt645, point_tabs_dlt645_);
+    if(twitemCurrent_ == twitemPointDlt645_) {
+        NewPointTab(twitemCurrent_, App::kPointTabType_Dlt645, pointTabsDlt645_);
     }
     // 当前操作的是Modbus点表
-    else if(twitem_current_ == twitem_pointmodbus_) {
-        NewPointTab(twitem_current_, App::kPointTabType_Modbus, point_tabs_modbus_);
+    else if(twitemCurrent_ == twitemPointModbus_) {
+        NewPointTab(twitemCurrent_, App::kPointTabType_Modbus, pointTabsModbus_);
     }
     // 当前操作的是ModbusRtu通讯通道
-    else if(twitem_current_ == twitem_chmrtu_) {
-        NewCommunCh(twitem_current_, App::kChType_ModbusRtu, ch_modbusrtu_);
+    else if(twitemCurrent_ == twitemChMrtu_) {
+        NewCommunCh(twitemCurrent_, App::kChType_ModbusRtu, chModbusRtu_);
     }
     // 当前操作的是ModbusTcp通讯通道
-    else if(twitem_current_ == twitem_chmtcp_) {
-        NewCommunCh(twitem_current_, App::kChType_ModbusTcp, ch_modbustcp_);
+    else if(twitemCurrent_ == twitemChMtcp_) {
+        NewCommunCh(twitemCurrent_, App::kChType_ModbusTcp, chModbusTcp_);
     }
     // 当前操作的是Dlt645通讯通道
-    else if(twitem_current_ == twitem_chdlt645_) {
-        NewCommunCh(twitem_current_, App::kChType_Dlt645, ch_dlt645_);
+    else if(twitemCurrent_ == twitemChDlt645_) {
+        NewCommunCh(twitemCurrent_, App::kChType_Dlt645, chDlt645_);
     }
     // 当前操作的是ModbusRtu通讯设备
-    else if(twitem_current_ == twitem_devmrtu_) {
-        NewCommunDev(twitem_current_, App::kDevType_ModbusRtu, dev_modbusrtu_);
+    else if(twitemCurrent_ == twitemDevMrtu_) {
+        NewCommunDev(twitemCurrent_, App::kDevType_ModbusRtu, devModbusRtu_);
     }
     // 当前操作的是ModbusTcp通讯设备
-    else if(twitem_current_ == twitem_devmtcp_) {
-        NewCommunDev(twitem_current_, App::kDevType_ModbusTcp, dev_modbustcp_);
+    else if(twitemCurrent_ == twitemDevMtcp_) {
+        NewCommunDev(twitemCurrent_, App::kDevType_ModbusTcp, devModbusTcp_);
     }
     // 当前操作的是ModbusRtu通讯设备
-    else if(twitem_current_ == twitem_devdlt645_) {
-        NewCommunDev(twitem_current_, App::kDevType_Dlt645, dev_dlt645_);
+    else if(twitemCurrent_ == twitemDevDlt645_) {
+        NewCommunDev(twitemCurrent_, App::kDevType_Dlt645, devDlt645_);
     }
     // 未知
     else {
@@ -465,70 +465,70 @@ void ProjectSection::RightCheckedActionDel()
 {
     qDebug() << __FILE__ << __LINE__ << __FUNCTION__;
     // 检查参数
-    if(twitem_current_ == nullptr) {
+    if(twitemCurrent_ == nullptr) {
         return;
     }
-    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << twitem_current_->text(0);
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << twitemCurrent_->text(0);
 
     // 根据当前子节点，查找对应窗口，并将窗口从页面删除
-    ItemFindForm(twitem_current_, -1, 0);
-    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << twitem_current_->text(0);
+    ItemFindForm(twitemCurrent_, -1, 0);
+    qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << twitemCurrent_->text(0);
     // 当前节点查找父节点
-    QTreeWidgetItem *parent_item = twitem_current_->parent();
+    QTreeWidgetItem *parent_item = twitemCurrent_->parent();
     if(parent_item == nullptr) {
         qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "parent_item == nullptr";
         return;
     }
 
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_current_:" << twitem_current_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemCurrent_:" << twitemCurrent_;
     //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "parent_item:" << parent_item;
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_pointdlt645_:" << twitem_pointdlt645_;
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_pointmodbus_:" << twitem_pointmodbus_;
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_chmrtu_:" << twitem_chmrtu_;
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_chmtcp_:" << twitem_chmtcp_;
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_chdlt645_:" << twitem_chdlt645_;
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_devmrtu_:" << twitem_devmrtu_;
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_devmtcp_:" << twitem_devmtcp_;
-    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitem_devdlt645_:" << twitem_devdlt645_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemPointDlt645_:" << twitemPointDlt645_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemPointModbus_:" << twitemPointModbus_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemChMrtu_:" << twitemChMrtu_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemChMtcp_:" << twitemChMtcp_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemChDlt645_:" << twitemChDlt645_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemDevMrtu_:" << twitemDevMrtu_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemDevMtcp_:" << twitemDevMtcp_;
+    //qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "twitemDevDlt645_:" << twitemDevDlt645_;
     // 当前父节点是Dlt645点表
-    if(parent_item == twitem_pointdlt645_) {
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "点表DLT645：parent_item == twitem_pointdlt645_";
-        point_tabs_dlt645_->Remove(twitem_current_);
+    if(parent_item == twitemPointDlt645_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "点表DLT645：parent_item == twitemPointDlt645_";
+        pointTabsDlt645_->Remove(twitemCurrent_);
     }
     // 当前父节点是Modbus点表
-    else if(parent_item == twitem_pointmodbus_) {
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "点表Modbus：twitem_current_ == twitem_pointmodbus_";
-        point_tabs_modbus_->Remove(twitem_current_);
+    else if(parent_item == twitemPointModbus_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "点表Modbus：twitemCurrent_ == twitemPointModbus_";
+        pointTabsModbus_->Remove(twitemCurrent_);
     }
     // 当前父节点是ModbusRtu通讯通道
-    else if(parent_item == twitem_chmrtu_) {
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道ModbusRtu：twitem_current_ == twitem_chmrtu_";
-        ch_modbusrtu_->Remove(twitem_current_);
+    else if(parent_item == twitemChMrtu_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道ModbusRtu：twitemCurrent_ == twitemChMrtu_";
+        chModbusRtu_->Remove(twitemCurrent_);
     }
     // 当前父节点是ModbusTcp通讯通道
-    else if(parent_item == twitem_chmtcp_) {
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道ModbusTcp：twitem_current_ == twitem_chmtcp_";
-        ch_modbustcp_->Remove(twitem_current_);
+    else if(parent_item == twitemChMtcp_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道ModbusTcp：twitemCurrent_ == twitemChMtcp_";
+        chModbusTcp_->Remove(twitemCurrent_);
     }
     // 当前父节点是Dlt645通讯通道
-    else if(parent_item == twitem_chdlt645_) {
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道DLT645：twitem_current_ == twitem_chdlt645_";
-        ch_dlt645_->Remove(twitem_current_);
+    else if(parent_item == twitemChDlt645_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "通道DLT645：twitemCurrent_ == twitemChDlt645_";
+        chDlt645_->Remove(twitemCurrent_);
     }
     // 当前父节点是ModbusRtu通讯设备
-    else if(parent_item == twitem_devmrtu_) {
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备ModbusRtu：twitem_current_ == twitem_devmrtu_";
-        dev_modbusrtu_->Remove(twitem_current_);
+    else if(parent_item == twitemDevMrtu_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备ModbusRtu：twitemCurrent_ == twitemDevMrtu_";
+        devModbusRtu_->Remove(twitemCurrent_);
     }
     // 当前父节点是ModbusTcp通讯设备
-    else if(parent_item == twitem_devmtcp_) {
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备ModbusTcp：twitem_current_ == twitem_devmtcp_";
-        dev_modbustcp_->Remove(twitem_current_);
+    else if(parent_item == twitemDevMtcp_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备ModbusTcp：twitemCurrent_ == twitemDevMtcp_";
+        devModbusTcp_->Remove(twitemCurrent_);
     }
     // 当前父节点是ModbusRtu通讯设备
-    else if(parent_item == twitem_devdlt645_) {
-        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备DLT645：twitem_current_ == twitem_devdlt645_";
-        dev_dlt645_->Remove(twitem_current_);
+    else if(parent_item == twitemDevDlt645_) {
+        qDebug() << __FILE__ << __LINE__ << __FUNCTION__ << "设备DLT645：twitemCurrent_ == twitemDevDlt645_";
+        devDlt645_->Remove(twitemCurrent_);
     }
     // 未知父节点
     else {
@@ -537,9 +537,9 @@ void ProjectSection::RightCheckedActionDel()
     qDebug() << __FILE__ << __LINE__ << __FUNCTION__;
 
     // 从父节点中删除当前子节点
-    parent_item->removeChild(twitem_current_);
-    delete twitem_current_;
-    twitem_current_ = nullptr;
+    parent_item->removeChild(twitemCurrent_);
+    delete twitemCurrent_;
+    twitemCurrent_ = nullptr;
 }
 
 /**
@@ -648,14 +648,14 @@ void ProjectSection::NewCommunDev(
 // 获取指定类型设备依赖的点表Map，内部处理函数
 PointTables *ProjectSection::GetRelyPointTabMap(CommunDevs *devs)
 {
-    if(devs == dev_modbusrtu_) {
-        return point_tabs_modbus_;
+    if(devs == devModbusRtu_) {
+        return pointTabsModbus_;
     }
-    else if(devs == dev_modbustcp_) {
-        return point_tabs_modbus_;
+    else if(devs == devModbusTcp_) {
+        return pointTabsModbus_;
     }
-    else if(devs == dev_dlt645_) {
-        return point_tabs_dlt645_;
+    else if(devs == devDlt645_) {
+        return pointTabsDlt645_;
     }
     else {
         return nullptr;
@@ -665,14 +665,14 @@ PointTables *ProjectSection::GetRelyPointTabMap(CommunDevs *devs)
 // 获取指定类型设备依赖的通道Map，内部处理函数
 CommunChs *ProjectSection::GetRelyCommunChMap(CommunDevs *devs)
 {
-    if(devs == dev_modbusrtu_) {
-        return ch_modbusrtu_;
+    if(devs == devModbusRtu_) {
+        return chModbusRtu_;
     }
-    else if(devs == dev_modbustcp_) {
-        return ch_modbustcp_;
+    else if(devs == devModbusTcp_) {
+        return chModbusTcp_;
     }
-    else if(devs == dev_dlt645_) {
-        return ch_dlt645_;
+    else if(devs == devDlt645_) {
+        return chDlt645_;
     }
     else {
         return nullptr;
