@@ -2,16 +2,69 @@
 #include <QRandomGenerator>
 #include <QTime>
 
-const QString App::PointTableTypeModbus = "Modbus";
-const QString App::PointTableTypeDlt645 = "Dlt645";
+const QString App::kPrjName    = "name";
+const QString App::kPointTable = "point_table";
+const QString App::kCommunCh   = "commun_channel";
+const QString App::kCommunDev  = "commun_dev";
 
-const QString App::CommunChTypeModbusRtu = App::PointTableTypeModbus + "Rtu";
-const QString App::CommunChTypeModbusTcp = App::PointTableTypeModbus + "Tcp";
-const QString App::CommunChTypeDlt645 = App::PointTableTypeDlt645;
+const QString App::PointTableTypeModbus = "modbus";
+const QString App::PointTableTypeDlt645 = "dlt645";
+
+const QString App::CommunChTypeModbusRtu = App::PointTableTypeModbus + "rtu";
+const QString App::CommunChTypeModbusTcp = App::PointTableTypeModbus + "tcp";
+const QString App::CommunChTypeDlt645    = App::PointTableTypeDlt645;
 
 const QString App::CommunDevTypeModbusRtu = App::CommunChTypeModbusRtu;
 const QString App::CommunDevTypeModbusTcp = App::CommunChTypeModbusTcp;
-const QString App::CommunDevTypeDlt645 = App::CommunChTypeDlt645;
+const QString App::CommunDevTypeDlt645    = App::CommunChTypeDlt645   ;
+
+const QString App::kStrPointTableModbusName  = "name"  ;
+const QString App::kStrPointTableModbusPoint = "point" ;
+const QString App::kStrPointTableDlt645Name  = App::kStrPointTableModbusName ;
+const QString App::kStrPointTableDlt645Point = App::kStrPointTableModbusPoint;
+
+const QString App::kStrChModbusRtuChannel   = "channel"  ;
+const QString App::kStrChModbusRtuName      = "name"     ;
+const QString App::kStrChModbusRtuInterface = "interface";
+const QString App::kStrChModbusRtuBaudRate  = "baud"     ;
+const QString App::kStrChModbusRtuDataBits  = "data"     ;
+const QString App::kStrChModbusRtuStopBits  = "stop"     ;
+const QString App::kStrChModbusRtuParity    = "check"    ;
+
+const QString App::kStrChModbusTcpChannel = App::kStrChModbusRtuChannel;
+const QString App::kStrChModbusTcpName    = App::kStrChModbusRtuName   ;
+const QString App::kStrChModbusTcpIp      = "ip"  ;
+const QString App::kStrChModbusTcpPort    = "port";
+
+const QString App::kStrChDlt645Channel   = App::kStrChModbusRtuChannel  ;
+const QString App::kStrChDlt645Name      = App::kStrChModbusRtuName     ;
+const QString App::kStrChDlt645Interface = App::kStrChModbusRtuInterface;
+const QString App::kStrChDlt645BaudRate  = App::kStrChModbusRtuBaudRate ;
+const QString App::kStrChDlt645DataBits  = App::kStrChModbusRtuDataBits ;
+const QString App::kStrChDlt645StopBits  = App::kStrChModbusRtuStopBits ;
+const QString App::kStrChDlt645Parity    = App::kStrChModbusRtuParity   ;
+
+const QString App::kStrDevModbusRtuDevice     = "dev"  ;
+const QString App::kStrDevModbusRtuName       = "name" ;
+const QString App::kStrDevModbusRtuChannel    = "ch"   ;
+const QString App::kStrDevModbusRtuPointTable = "point";
+const QString App::kStrDevModbusRtuAddress    = "addr" ;
+
+const QString App::kStrDevModbusTcpDevice     = App::kStrDevModbusRtuDevice    ;
+const QString App::kStrDevModbusTcpName       = App::kStrDevModbusRtuName      ;
+const QString App::kStrDevModbusTcpChannel    = App::kStrDevModbusRtuChannel   ;
+const QString App::kStrDevModbusTcpPointTable = App::kStrDevModbusRtuPointTable;
+const QString App::kStrDevModbusTcpAddress    = App::kStrDevModbusRtuAddress   ;
+
+const QString App::kStrDevDlt645Device     = App::kStrDevModbusRtuDevice    ;
+const QString App::kStrDevDlt645Name       = App::kStrDevModbusRtuName      ;
+const QString App::kStrDevDlt645Channel    = App::kStrDevModbusRtuChannel   ;
+const QString App::kStrDevDlt645PointTable = App::kStrDevModbusRtuPointTable;
+const QString App::kStrDevDlt645Address    = App::kStrDevModbusRtuAddress   ;
+
+QSettings App::settings = QSettings("config.ini", QSettings::IniFormat);
+const QString App::kImportFileName = "ImportFileName";
+
 
 // Modbus功能码
 const QString App::kModbusFunCode_01H        = "01H";

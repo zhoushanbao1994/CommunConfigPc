@@ -18,12 +18,32 @@ DESTDIR         = $$PWD/bin
 
 SOURCES += \
     app.cpp \
+    data_struct/dlt645chstruct.cpp \
+    data_struct/dlt645devstruct.cpp \
+    data_struct/dlt645pointstruct.cpp \
+    data_struct/modbuspointstruct.cpp \
+    data_struct/modbusrtuchstruct.cpp \
+    data_struct/modbusrtudevstruct.cpp \
+    data_struct/modbustcpchstruct.cpp \
+    data_struct/modbustcpdevstruct.cpp \
+    jsongenerat.cpp \
+    jsonparse.cpp \
     main.cpp \
     mainwindow.cpp \
     projectsection.cpp
 
 HEADERS += \
     app.h \
+    data_struct/dlt645chstruct.h \
+    data_struct/dlt645devstruct.h \
+    data_struct/dlt645pointstruct.h \
+    data_struct/modbuspointstruct.h \
+    data_struct/modbusrtuchstruct.h \
+    data_struct/modbusrtudevstruct.h \
+    data_struct/modbustcpchstruct.h \
+    data_struct/modbustcpdevstruct.h \
+    jsongenerat.h \
+    jsonparse.h \
     mainwindow.h \
     projectsection.h
 

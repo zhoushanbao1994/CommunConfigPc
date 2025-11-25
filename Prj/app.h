@@ -2,11 +2,17 @@
 #define APP_H
 
 #include <QObject>
+#include <QSettings>
 
 class App : public QObject
 {
     Q_OBJECT
 public:
+    static const QString kPrjName;               // 工程名KEY
+    static const QString kPointTable;            // 点表KEY
+    static const QString kCommunCh;              // 通讯通道KEY
+    static const QString kCommunDev;             // 通讯设备KEY
+
     static const QString PointTableTypeModbus;
     static const QString PointTableTypeDlt645;
 
@@ -17,6 +23,53 @@ public:
     static const QString CommunDevTypeModbusRtu;
     static const QString CommunDevTypeModbusTcp;
     static const QString CommunDevTypeDlt645;
+
+    static const QString kStrPointTableModbusName;
+    static const QString kStrPointTableModbusPoint;
+    static const QString kStrPointTableDlt645Name;
+    static const QString kStrPointTableDlt645Point;
+
+    static const QString kStrChModbusRtuChannel;
+    static const QString kStrChModbusRtuName;
+    static const QString kStrChModbusRtuInterface;
+    static const QString kStrChModbusRtuBaudRate;
+    static const QString kStrChModbusRtuDataBits;
+    static const QString kStrChModbusRtuStopBits;
+    static const QString kStrChModbusRtuParity;
+
+    static const QString kStrChModbusTcpChannel;
+    static const QString kStrChModbusTcpName;
+    static const QString kStrChModbusTcpIp;
+    static const QString kStrChModbusTcpPort;
+
+    static const QString kStrChDlt645Channel;
+    static const QString kStrChDlt645Name;
+    static const QString kStrChDlt645Interface;
+    static const QString kStrChDlt645BaudRate;
+    static const QString kStrChDlt645DataBits;
+    static const QString kStrChDlt645StopBits;
+    static const QString kStrChDlt645Parity;
+
+    static const QString kStrDevModbusRtuDevice;
+    static const QString kStrDevModbusRtuName;
+    static const QString kStrDevModbusRtuChannel;
+    static const QString kStrDevModbusRtuPointTable;
+    static const QString kStrDevModbusRtuAddress;
+
+    static const QString kStrDevModbusTcpDevice;
+    static const QString kStrDevModbusTcpName;
+    static const QString kStrDevModbusTcpChannel;
+    static const QString kStrDevModbusTcpPointTable;
+    static const QString kStrDevModbusTcpAddress;
+
+    static const QString kStrDevDlt645Device;
+    static const QString kStrDevDlt645Name;
+    static const QString kStrDevDlt645Channel;
+    static const QString kStrDevDlt645PointTable;
+    static const QString kStrDevDlt645Address;
+
+    static QSettings settings;
+    static const QString kImportFileName;
 
     // 点表类型
     typedef enum PointTabType {

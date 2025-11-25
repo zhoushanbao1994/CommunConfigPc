@@ -23,6 +23,13 @@ public:
 public slots:
     void Form_Slot(QWidget *form, int action); // action:1新增;0显示,-1删除;
 
+private slots:
+    void on_actionNew_triggered();
+
+    void on_actionImport_triggered();
+
+    void on_actionExport_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
