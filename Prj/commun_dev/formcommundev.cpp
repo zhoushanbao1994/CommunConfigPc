@@ -32,9 +32,9 @@ FormCommunDev::FormCommunDev(
     // 禁用下拉框
     ui->comboBox_Type->setEnabled(false);
     // 添加下拉框选项
-    ui->comboBox_Type->addItem(App::CommunDevTypeDlt645);
-    ui->comboBox_Type->addItem(App::CommunDevTypeModbusRtu);
-    ui->comboBox_Type->addItem(App::CommunDevTypeModbusTcp);
+    ui->comboBox_Type->addItem(App::kStrCommunDevTypeDlt645);
+    ui->comboBox_Type->addItem(App::kStrCommunDevTypeModbusRtu);
+    ui->comboBox_Type->addItem(App::kStrCommunDevTypeModbusTcp);
 
     ui->comboBox_Type->setCurrentText(App::DevTypeId2Str(type_));
 }
@@ -48,13 +48,13 @@ FormCommunDev::~FormCommunDev()
 // 下拉框槽函数
 void FormCommunDev::on_comboBox_Type_currentTextChanged(const QString &arg1)
 {
-    if(arg1 == App::CommunDevTypeDlt645) {
+    if(arg1 == App::kStrCommunDevTypeDlt645) {
         ui->stackedWidget->setCurrentWidget(ui->page_Dlt645);
     }
-    else if(arg1 == App::CommunDevTypeModbusRtu) {
+    else if(arg1 == App::kStrCommunDevTypeModbusRtu) {
         ui->stackedWidget->setCurrentWidget(ui->page_MRtu);
     }
-    else if(arg1 == App::CommunDevTypeModbusTcp) {
+    else if(arg1 == App::kStrCommunDevTypeModbusTcp) {
         ui->stackedWidget->setCurrentWidget(ui->page_MTcp);
     }
 }

@@ -36,25 +36,25 @@ FormPointTable::FormPointTable(
     // 禁用下拉框
     ui->comboBox_Type->setEnabled(false);
     // 添加下拉框选项
-    ui->comboBox_Type->addItem(App::PointTableTypeDlt645);
-    ui->comboBox_Type->addItem(App::PointTableTypeModbus);
+    ui->comboBox_Type->addItem(App::kStrPointTableTypeDlt645);
+    ui->comboBox_Type->addItem(App::kStrPointTableTypeModbus);
 
     QStringList str1, str2;
     str1 << "起始地址" << "点数量" << "功能码" << "数据类型" << "读取周期ms" << "名称";
     modbus_tab_ = new CustomTableWidget(str1, 1);
-    ModbusTableWidget_RowSet(0, 0x0000, 10, App::kModbusFunCode_03H, App::kModbusDateType_U16, 1000, "数据段1");
+    ModbusTableWidget_RowSet(0, 0x0000, 10, App::kStrModbusFunCode_03H, App::kStrModbusDateType_U16, 1000, "数据段1");
     QObject::connect(modbus_tab_, &CustomTableWidget::InsertLine_Signal,
                      [&](int row_num){
-                         ModbusTableWidget_RowSet(row_num, 0x0000, 10, App::kModbusFunCode_03H, App::kModbusDateType_U16, 1000, "");
+                         ModbusTableWidget_RowSet(row_num, 0x0000, 10, App::kStrModbusFunCode_03H, App::kStrModbusDateType_U16, 1000, "");
                      });
     str2 << "数据标识" << "读取周期ms" << "名称";
     dlt645_tab_ = new CustomTableWidget(str2, 1);
     dlt645_tab_->horizontalHeader()->resizeSection(0, 300);
     Dlt645TableWidget_RowSet(
-        0, App::kDltDataId07_00010000, 50000, App::kDltDataId07_00010000);
+        0, App::kStrDltDataId07_00010000, 50000, App::kStrDltDataId07_00010000);
     QObject::connect(dlt645_tab_, &CustomTableWidget::InsertLine_Signal,
                      [&](int row_num){
-                         Dlt645TableWidget_RowSet(row_num, App::kDltDataId07_00010000, 1000, "");
+                         Dlt645TableWidget_RowSet(row_num, App::kStrDltDataId07_00010000, 1000, "");
                      });
 
     ui->stackedWidget->addWidget(dlt645_tab_);
@@ -91,11 +91,11 @@ FormPointTable::~FormPointTable()
 // 下拉框槽函数
 void FormPointTable::on_comboBox_Type_currentTextChanged(const QString &arg1)
 {
-    if(arg1 == App::PointTableTypeDlt645) {
+    if(arg1 == App::kStrPointTableTypeDlt645) {
         //ui->stackedWidget->setCurrentWidget(ui->page_Dlt645);
         ui->stackedWidget->setCurrentWidget(dlt645_tab_);
     }
-    else if(arg1 == App::PointTableTypeModbus) {
+    else if(arg1 == App::kStrPointTableTypeModbus) {
         //ui->stackedWidget->setCurrentWidget(ui->page_Modbus);
         ui->stackedWidget->setCurrentWidget(modbus_tab_);
     }
@@ -134,19 +134,19 @@ void FormPointTable::ModbusTableWidget_RowSet(
     modbus_tab_->setItem(row, App::kModbusTabColumnId_PointNum, item_point_num);
     // ************ 填充列：功能码 ************
     QStringList text_code;
-    text_code.append(App::kModbusFunCode_01H);
-    text_code.append(App::kModbusFunCode_02H);
-    text_code.append(App::kModbusFunCode_03H);
-    text_code.append(App::kModbusFunCode_04H);
+    text_code.append(App::kStrModbusFunCode_01H);
+    text_code.append(App::kStrModbusFunCode_02H);
+    text_code.append(App::kStrModbusFunCode_03H);
+    text_code.append(App::kStrModbusFunCode_04H);
     QWidgetComBox *item_func_code = new QWidgetComBox(text_code);
     item_func_code->setCurrentText(code);
     modbus_tab_->setCellWidget(row, App::kModbusTabColumnId_Code, item_func_code);
     // ************ 填充列：数据类型 ************
     QStringList text_type;
-    text_type.append(App::kModbusDateType_U16);
-    text_type.append(App::kModbusDateType_S16);
-    text_type.append(App::kModbusDateType_U32);
-    text_type.append(App::kModbusDateType_S32);
+    text_type.append(App::kStrModbusDateType_U16);
+    text_type.append(App::kStrModbusDateType_S16);
+    text_type.append(App::kStrModbusDateType_U32);
+    text_type.append(App::kStrModbusDateType_S32);
     QWidgetComBox *item_date_type = new QWidgetComBox(text_type);
     item_date_type->setCurrentText(data_type);
     modbus_tab_->setCellWidget(row, App::kModbusTabColumnId_DataType, item_date_type);
@@ -174,76 +174,76 @@ void FormPointTable::Dlt645TableWidget_RowSet(
     // ************ 填充列：功能码 ************
     QStringList text_code;
     // DLT645 07数据标识
-    text_code.append(App::kDltDataId07_00000000);    // "0x00000000_(当前)组合有功总电能";
-    text_code.append(App::kDltDataId07_00000100);    // "0x00000100_(当前)组合有功费率 1 电能";
-    text_code.append(App::kDltDataId07_00000200);    // "0x00000200_(当前)组合有功费率 2 电能";
-    text_code.append(App::kDltDataId07_00000300);    // "0x00000300_(当前)组合有功费率 3 电能";
-    text_code.append(App::kDltDataId07_00000400);    // "0x00000400_(当前)组合有功费率 4 电能";
-    text_code.append(App::kDltDataId07_00000500);    // "0x00000500_(当前)组合有功费率 5 电能";
-    text_code.append(App::kDltDataId07_00000600);    // "0x00000600_(当前)组合有功费率 6 电能";
-    text_code.append(App::kDltDataId07_00000700);    // "0x00000700_(当前)组合有功费率 7 电能";
-    text_code.append(App::kDltDataId07_00000800);    // "0x00000800_(当前)组合有功费率 8 电能";
-    text_code.append(App::kDltDataId07_00010000);    // "0x00010000_(当前)正向有功总电能";
-    text_code.append(App::kDltDataId07_00010100);    // "0x00010100_(当前)正向有功费率 1 电能";
-    text_code.append(App::kDltDataId07_00010200);    // "0x00010200_(当前)正向有功费率 2 电能";
-    text_code.append(App::kDltDataId07_00010300);    // "0x00010300_(当前)正向有功费率 3 电能";
-    text_code.append(App::kDltDataId07_00010400);    // "0x00010400_(当前)正向有功费率 4 电能";
-    text_code.append(App::kDltDataId07_00010500);    // "0x00010500_(当前)正向有功费率 5 电能";
-    text_code.append(App::kDltDataId07_00010600);    // "0x00010600_(当前)正向有功费率 6 电能";
-    text_code.append(App::kDltDataId07_00010700);    // "0x00010700_(当前)正向有功费率 7 电能";
-    text_code.append(App::kDltDataId07_00010800);    // "0x00010800_(当前)正向有功费率 8 电能";
-    text_code.append(App::kDltDataId07_00020000);    // "0x00020000_(当前)反向有功总电能";
-    text_code.append(App::kDltDataId07_00020100);    // "0x00020100_(当前)反向有功费率 1 电能";
-    text_code.append(App::kDltDataId07_00020200);    // "0x00020200_(当前)反向有功费率 2 电能";
-    text_code.append(App::kDltDataId07_00020300);    // "0x00020300_(当前)反向有功费率 3 电能";
-    text_code.append(App::kDltDataId07_00020400);    // "0x00020400_(当前)反向有功费率 4 电能";
-    text_code.append(App::kDltDataId07_00020500);    // "0x00020500_(当前)反向有功费率 5 电能";
-    text_code.append(App::kDltDataId07_00020600);    // "0x00020600_(当前)反向有功费率 6 电能";
-    text_code.append(App::kDltDataId07_00020700);    // "0x00020700_(当前)反向有功费率 7 电能";
-    text_code.append(App::kDltDataId07_00020800);    // "0x00020800_(当前)反向有功费率 8 电能";
-    text_code.append(App::kDltDataId07_01010000);    // "0x01010000_(当前)正向有功总最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01010100);    // "0x01010100_(当前)正向有功费率 1 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01010200);    // "0x01010200_(当前)正向有功费率 2 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01010300);    // "0x01010300_(当前)正向有功费率 3 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01010400);    // "0x01010400_(当前)正向有功费率 4 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01010500);    // "0x01010500_(当前)正向有功费率 5 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01010600);    // "0x01010600_(当前)正向有功费率 6 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01010700);    // "0x01010700_(当前)正向有功费率 7 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01010800);    // "0x01010800_(当前)正向有功费率 8 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020000);    // "0x01020000_(当前)反向有功总最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020100);    // "0x01020100_(当前)反向有功费率 1 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020200);    // "0x01020200_(当前)反向有功费率 2 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020300);    // "0x01020300_(当前)反向有功费率 3 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020400);    // "0x01020400_(当前)反向有功费率 4 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020500);    // "0x01020500_(当前)反向有功费率 5 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020600);    // "0x01020600_(当前)反向有功费率 6 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020700);    // "0x01020700_(当前)反向有功费率 7 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_01020800);    // "0x01020800_(当前)反向有功费率 8 最大需量及发生时间";
-    text_code.append(App::kDltDataId07_02010100);    // "0x02010100_A 相电压";
-    text_code.append(App::kDltDataId07_02010200);    // "0x02010200_B 相电压";
-    text_code.append(App::kDltDataId07_02010300);    // "0x02010300_C 相电压";
-    text_code.append(App::kDltDataId07_02020100);    // "0x02020100_A 相电流";
-    text_code.append(App::kDltDataId07_02020200);    // "0x02020200_B 相电流";
-    text_code.append(App::kDltDataId07_02020300);    // "0x02020300_C 相电流";
-    text_code.append(App::kDltDataId07_02030000);    // "0x02030000_瞬时总有功功率";
-    text_code.append(App::kDltDataId07_02030100);    // "0x02030100_瞬时A相有功功率";
-    text_code.append(App::kDltDataId07_02030200);    // "0x02030200_瞬时B相有功功率";
-    text_code.append(App::kDltDataId07_02030300);    // "0x02030300_瞬时C相有功功率";
-    text_code.append(App::kDltDataId07_02040000);    // "0x02040000_瞬时总无功功率";
-    text_code.append(App::kDltDataId07_02040100);    // "0x02040100_瞬时A相无功功率";
-    text_code.append(App::kDltDataId07_02040200);    // "0x02040200_瞬时B相无功功率";
-    text_code.append(App::kDltDataId07_02040300);    // "0x02040300_瞬时C相无功功率";
-    text_code.append(App::kDltDataId07_02050000);    // "0x02050000_瞬时总视在功率";
-    text_code.append(App::kDltDataId07_02050100);    // "0x02050100_瞬时A相视在功率";
-    text_code.append(App::kDltDataId07_02050200);    // "0x02050200_瞬时B相视在功率";
-    text_code.append(App::kDltDataId07_02050300);    // "0x02050300_瞬时C相视在功率";
-    text_code.append(App::kDltDataId07_02060000);    // "0x02060000_总功率因数";
-    text_code.append(App::kDltDataId07_02060100);    // "0x02060100_A相功率因数";
-    text_code.append(App::kDltDataId07_02060200);    // "0x02060200_B相功率因数";
-    text_code.append(App::kDltDataId07_02060300);    // "0x02060300_C相功率因数";
-    text_code.append(App::kDltDataId07_02800002);    // "0x02800002_电网频率";
-    text_code.append(App::kDltDataId07_02800004);    // "0x02800004_当前有功需量";
-    text_code.append(App::kDltDataId07_02800005);    // "0x02800005_当前无功需量";
+    text_code.append(App::kStrDltDataId07_00000000);    // "0x00000000_(当前)组合有功总电能";
+    text_code.append(App::kStrDltDataId07_00000100);    // "0x00000100_(当前)组合有功费率 1 电能";
+    text_code.append(App::kStrDltDataId07_00000200);    // "0x00000200_(当前)组合有功费率 2 电能";
+    text_code.append(App::kStrDltDataId07_00000300);    // "0x00000300_(当前)组合有功费率 3 电能";
+    text_code.append(App::kStrDltDataId07_00000400);    // "0x00000400_(当前)组合有功费率 4 电能";
+    text_code.append(App::kStrDltDataId07_00000500);    // "0x00000500_(当前)组合有功费率 5 电能";
+    text_code.append(App::kStrDltDataId07_00000600);    // "0x00000600_(当前)组合有功费率 6 电能";
+    text_code.append(App::kStrDltDataId07_00000700);    // "0x00000700_(当前)组合有功费率 7 电能";
+    text_code.append(App::kStrDltDataId07_00000800);    // "0x00000800_(当前)组合有功费率 8 电能";
+    text_code.append(App::kStrDltDataId07_00010000);    // "0x00010000_(当前)正向有功总电能";
+    text_code.append(App::kStrDltDataId07_00010100);    // "0x00010100_(当前)正向有功费率 1 电能";
+    text_code.append(App::kStrDltDataId07_00010200);    // "0x00010200_(当前)正向有功费率 2 电能";
+    text_code.append(App::kStrDltDataId07_00010300);    // "0x00010300_(当前)正向有功费率 3 电能";
+    text_code.append(App::kStrDltDataId07_00010400);    // "0x00010400_(当前)正向有功费率 4 电能";
+    text_code.append(App::kStrDltDataId07_00010500);    // "0x00010500_(当前)正向有功费率 5 电能";
+    text_code.append(App::kStrDltDataId07_00010600);    // "0x00010600_(当前)正向有功费率 6 电能";
+    text_code.append(App::kStrDltDataId07_00010700);    // "0x00010700_(当前)正向有功费率 7 电能";
+    text_code.append(App::kStrDltDataId07_00010800);    // "0x00010800_(当前)正向有功费率 8 电能";
+    text_code.append(App::kStrDltDataId07_00020000);    // "0x00020000_(当前)反向有功总电能";
+    text_code.append(App::kStrDltDataId07_00020100);    // "0x00020100_(当前)反向有功费率 1 电能";
+    text_code.append(App::kStrDltDataId07_00020200);    // "0x00020200_(当前)反向有功费率 2 电能";
+    text_code.append(App::kStrDltDataId07_00020300);    // "0x00020300_(当前)反向有功费率 3 电能";
+    text_code.append(App::kStrDltDataId07_00020400);    // "0x00020400_(当前)反向有功费率 4 电能";
+    text_code.append(App::kStrDltDataId07_00020500);    // "0x00020500_(当前)反向有功费率 5 电能";
+    text_code.append(App::kStrDltDataId07_00020600);    // "0x00020600_(当前)反向有功费率 6 电能";
+    text_code.append(App::kStrDltDataId07_00020700);    // "0x00020700_(当前)反向有功费率 7 电能";
+    text_code.append(App::kStrDltDataId07_00020800);    // "0x00020800_(当前)反向有功费率 8 电能";
+    text_code.append(App::kStrDltDataId07_01010000);    // "0x01010000_(当前)正向有功总最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01010100);    // "0x01010100_(当前)正向有功费率 1 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01010200);    // "0x01010200_(当前)正向有功费率 2 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01010300);    // "0x01010300_(当前)正向有功费率 3 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01010400);    // "0x01010400_(当前)正向有功费率 4 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01010500);    // "0x01010500_(当前)正向有功费率 5 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01010600);    // "0x01010600_(当前)正向有功费率 6 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01010700);    // "0x01010700_(当前)正向有功费率 7 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01010800);    // "0x01010800_(当前)正向有功费率 8 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020000);    // "0x01020000_(当前)反向有功总最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020100);    // "0x01020100_(当前)反向有功费率 1 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020200);    // "0x01020200_(当前)反向有功费率 2 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020300);    // "0x01020300_(当前)反向有功费率 3 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020400);    // "0x01020400_(当前)反向有功费率 4 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020500);    // "0x01020500_(当前)反向有功费率 5 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020600);    // "0x01020600_(当前)反向有功费率 6 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020700);    // "0x01020700_(当前)反向有功费率 7 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_01020800);    // "0x01020800_(当前)反向有功费率 8 最大需量及发生时间";
+    text_code.append(App::kStrDltDataId07_02010100);    // "0x02010100_A 相电压";
+    text_code.append(App::kStrDltDataId07_02010200);    // "0x02010200_B 相电压";
+    text_code.append(App::kStrDltDataId07_02010300);    // "0x02010300_C 相电压";
+    text_code.append(App::kStrDltDataId07_02020100);    // "0x02020100_A 相电流";
+    text_code.append(App::kStrDltDataId07_02020200);    // "0x02020200_B 相电流";
+    text_code.append(App::kStrDltDataId07_02020300);    // "0x02020300_C 相电流";
+    text_code.append(App::kStrDltDataId07_02030000);    // "0x02030000_瞬时总有功功率";
+    text_code.append(App::kStrDltDataId07_02030100);    // "0x02030100_瞬时A相有功功率";
+    text_code.append(App::kStrDltDataId07_02030200);    // "0x02030200_瞬时B相有功功率";
+    text_code.append(App::kStrDltDataId07_02030300);    // "0x02030300_瞬时C相有功功率";
+    text_code.append(App::kStrDltDataId07_02040000);    // "0x02040000_瞬时总无功功率";
+    text_code.append(App::kStrDltDataId07_02040100);    // "0x02040100_瞬时A相无功功率";
+    text_code.append(App::kStrDltDataId07_02040200);    // "0x02040200_瞬时B相无功功率";
+    text_code.append(App::kStrDltDataId07_02040300);    // "0x02040300_瞬时C相无功功率";
+    text_code.append(App::kStrDltDataId07_02050000);    // "0x02050000_瞬时总视在功率";
+    text_code.append(App::kStrDltDataId07_02050100);    // "0x02050100_瞬时A相视在功率";
+    text_code.append(App::kStrDltDataId07_02050200);    // "0x02050200_瞬时B相视在功率";
+    text_code.append(App::kStrDltDataId07_02050300);    // "0x02050300_瞬时C相视在功率";
+    text_code.append(App::kStrDltDataId07_02060000);    // "0x02060000_总功率因数";
+    text_code.append(App::kStrDltDataId07_02060100);    // "0x02060100_A相功率因数";
+    text_code.append(App::kStrDltDataId07_02060200);    // "0x02060200_B相功率因数";
+    text_code.append(App::kStrDltDataId07_02060300);    // "0x02060300_C相功率因数";
+    text_code.append(App::kStrDltDataId07_02800002);    // "0x02800002_电网频率";
+    text_code.append(App::kStrDltDataId07_02800004);    // "0x02800004_当前有功需量";
+    text_code.append(App::kStrDltDataId07_02800005);    // "0x02800005_当前无功需量";
     QWidgetComBox *item_func_code = new QWidgetComBox(text_code);
     item_func_code->setCurrentText(code);
     dlt645_tab_->setCellWidget(row, App::kDlt645TabColumnId_DataIdent, item_func_code);

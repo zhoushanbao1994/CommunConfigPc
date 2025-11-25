@@ -99,16 +99,16 @@ void JsonParse::ParseIndex(const QString &fileName)
     // 读取 JSON 中的数据
     qDebug() << "=== JSON 解析结果 ===";
     // 名称
-    if (rootObj.contains(App::kPrjName) && rootObj[App::kPrjName].isString()) {
-        qDebug() << "名称：" << rootObj[App::kPrjName].toString();
+    if (rootObj.contains(App::kStrPrjName) && rootObj[App::kStrPrjName].isString()) {
+        qDebug() << "名称：" << rootObj[App::kStrPrjName].toString();
     }
     // 点表
-    if (rootObj.contains(App::kPointTable) && rootObj[App::kPointTable].isObject()) {
-        QJsonObject pointObj = rootObj[App::kPointTable].toObject();
+    if (rootObj.contains(App::kStrPointTable) && rootObj[App::kStrPointTable].isObject()) {
+        QJsonObject pointObj = rootObj[App::kStrPointTable].toObject();
         // 点表Modbus
-        if(pointObj.contains(App::PointTableTypeModbus) && pointObj[App::PointTableTypeModbus].isObject()) {
-            QJsonObject pointModbusObj = pointObj[App::PointTableTypeModbus].toObject();
-            qDebug() << "通讯点表" << App::PointTableTypeModbus;
+        if(pointObj.contains(App::kStrPointTableTypeModbus) && pointObj[App::kStrPointTableTypeModbus].isObject()) {
+            QJsonObject pointModbusObj = pointObj[App::kStrPointTableTypeModbus].toObject();
+            qDebug() << "通讯点表" << App::kStrPointTableTypeModbus;
             QMap<QString, QString> fileNames = ParseObject(pointModbusObj);
             QMap<QString, QString>::const_iterator it;
             ModbusPointStruct::PointTab_T pointTab;
@@ -127,9 +127,9 @@ void JsonParse::ParseIndex(const QString &fileName)
             }
         }
         // 点表Dlt645
-        if(pointObj.contains(App::PointTableTypeDlt645) && pointObj[App::PointTableTypeDlt645].isObject()) {
-            QJsonObject pointDlt645Obj = pointObj[App::PointTableTypeDlt645].toObject();
-            qDebug() << "通讯点表" << App::PointTableTypeDlt645;
+        if(pointObj.contains(App::kStrPointTableTypeDlt645) && pointObj[App::kStrPointTableTypeDlt645].isObject()) {
+            QJsonObject pointDlt645Obj = pointObj[App::kStrPointTableTypeDlt645].toObject();
+            qDebug() << "通讯点表" << App::kStrPointTableTypeDlt645;
             QMap<QString, QString> fileNames = ParseObject(pointDlt645Obj);
             QMap<QString, QString>::const_iterator it;
             Dlt645PointStruct::PointTab_T pointTab;
@@ -148,12 +148,12 @@ void JsonParse::ParseIndex(const QString &fileName)
         }
     }
     // 通讯通道
-    if (rootObj.contains(App::kCommunCh) && rootObj[App::kCommunCh].isObject()) {
-        QJsonObject chObj = rootObj[App::kCommunCh].toObject();
+    if (rootObj.contains(App::kStrCommunCh) && rootObj[App::kStrCommunCh].isObject()) {
+        QJsonObject chObj = rootObj[App::kStrCommunCh].toObject();
         // 通讯通道ModbusRtu
-        if(chObj.contains(App::CommunChTypeModbusRtu) && chObj[App::CommunChTypeModbusRtu].isString()) {
-            modbusRtuChFileName_ = chObj[App::CommunChTypeModbusRtu].toString();
-            qDebug() << "通讯通道" << App::CommunChTypeModbusRtu << ":" << modbusRtuChFileName_;
+        if(chObj.contains(App::kStrCommunChTypeModbusRtu) && chObj[App::kStrCommunChTypeModbusRtu].isString()) {
+            modbusRtuChFileName_ = chObj[App::kStrCommunChTypeModbusRtu].toString();
+            qDebug() << "通讯通道" << App::kStrCommunChTypeModbusRtu << ":" << modbusRtuChFileName_;
             // 解析ModbusRtu通讯通道文件
             modbusRtuChs_ = ParseModbusRtuChs(dir.filePath(modbusRtuChFileName_));
             QMap<QString, ModbusRtuChStruct::Ch_T>::const_iterator it;
@@ -165,9 +165,9 @@ void JsonParse::ParseIndex(const QString &fileName)
             }
         }
         // 通讯通道ModbusTcp
-        if(chObj.contains(App::CommunChTypeModbusTcp) && chObj[App::CommunChTypeModbusTcp].isString()) {
-            modbusTcpChFileName_ = chObj[App::CommunChTypeModbusTcp].toString();
-            qDebug() << "通讯通道" << App::CommunChTypeModbusTcp << ":" << modbusTcpChFileName_;
+        if(chObj.contains(App::kStrCommunChTypeModbusTcp) && chObj[App::kStrCommunChTypeModbusTcp].isString()) {
+            modbusTcpChFileName_ = chObj[App::kStrCommunChTypeModbusTcp].toString();
+            qDebug() << "通讯通道" << App::kStrCommunChTypeModbusTcp << ":" << modbusTcpChFileName_;
             // 解析ModbusTcp通讯通道文件
             modbusTcpChs_ = ParseModbusTcpChs(dir.filePath(modbusTcpChFileName_));
             QMap<QString, ModbusTcpChStruct::Ch_T>::const_iterator it;
@@ -178,9 +178,9 @@ void JsonParse::ParseIndex(const QString &fileName)
             }
         }
         // 通讯通道Dlt645
-        if(chObj.contains(App::CommunChTypeDlt645) && chObj[App::CommunChTypeDlt645].isString()) {
-            dlt645ChFileName_ = chObj[App::CommunChTypeDlt645].toString();
-            qDebug() << "通讯通道" << App::CommunChTypeDlt645 << ":" << dlt645ChFileName_;
+        if(chObj.contains(App::kStrCommunChTypeDlt645) && chObj[App::kStrCommunChTypeDlt645].isString()) {
+            dlt645ChFileName_ = chObj[App::kStrCommunChTypeDlt645].toString();
+            qDebug() << "通讯通道" << App::kStrCommunChTypeDlt645 << ":" << dlt645ChFileName_;
             // 解析Dlt645通讯通道文件
             dlt645Chs_ = ParseDlt645Chs(dir.filePath(dlt645ChFileName_));
             QMap<QString, Dlt645ChStruct::Ch_T>::const_iterator it;
@@ -193,12 +193,12 @@ void JsonParse::ParseIndex(const QString &fileName)
         }
     }
     // 通讯设备
-    if (rootObj.contains(App::kCommunDev) && rootObj[App::kCommunDev].isObject()) {
-        QJsonObject devObj = rootObj[App::kCommunDev].toObject();
+    if (rootObj.contains(App::kStrCommunDev) && rootObj[App::kStrCommunDev].isObject()) {
+        QJsonObject devObj = rootObj[App::kStrCommunDev].toObject();
         // 通讯设备ModbusRtu
-        if(devObj.contains(App::CommunDevTypeModbusRtu) && devObj[App::CommunDevTypeModbusRtu].isString()) {
-            modbusRtuDevFileName_ = devObj[App::CommunDevTypeModbusRtu].toString();
-            qDebug() << "通讯设备" << App::CommunDevTypeModbusRtu << ":" << modbusRtuDevFileName_;
+        if(devObj.contains(App::kStrCommunDevTypeModbusRtu) && devObj[App::kStrCommunDevTypeModbusRtu].isString()) {
+            modbusRtuDevFileName_ = devObj[App::kStrCommunDevTypeModbusRtu].toString();
+            qDebug() << "通讯设备" << App::kStrCommunDevTypeModbusRtu << ":" << modbusRtuDevFileName_;
             // 解析ModbusRtu通讯设备文件
             modbusRtuDevs_ = ParseModbusRtuDevs(dir.filePath(modbusRtuDevFileName_));
             QMap<QString, ModbusRtuDevStruct::Dev_T>::const_iterator it;
@@ -210,9 +210,9 @@ void JsonParse::ParseIndex(const QString &fileName)
             }
         }
         // 通讯设备ModbusTcp
-        if(devObj.contains(App::CommunDevTypeModbusTcp) && devObj[App::CommunDevTypeModbusTcp].isString()) {
-            modbusTcpDevFileName_ = devObj[App::CommunDevTypeModbusTcp].toString();
-            qDebug() << "通讯设备" << App::CommunDevTypeModbusTcp << ":" << modbusTcpDevFileName_;
+        if(devObj.contains(App::kStrCommunDevTypeModbusTcp) && devObj[App::kStrCommunDevTypeModbusTcp].isString()) {
+            modbusTcpDevFileName_ = devObj[App::kStrCommunDevTypeModbusTcp].toString();
+            qDebug() << "通讯设备" << App::kStrCommunDevTypeModbusTcp << ":" << modbusTcpDevFileName_;
             // 解析ModbusTcp通讯设备文件
             modbusTcpDevs_ = ParseModbusTcpDevs(dir.filePath(modbusTcpDevFileName_));
             QMap<QString, ModbusTcpDevStruct::Dev_T>::const_iterator it;
@@ -224,9 +224,9 @@ void JsonParse::ParseIndex(const QString &fileName)
             }
         }
         // 通讯设备Dlt645
-        if(devObj.contains(App::CommunDevTypeDlt645) && devObj[App::CommunDevTypeDlt645].isString()) {
-            dlt645DevFileName_ = devObj[App::CommunDevTypeDlt645].toString();
-            qDebug() << "通讯设备" << App::CommunDevTypeDlt645 << ":" << dlt645DevFileName_;
+        if(devObj.contains(App::kStrCommunDevTypeDlt645) && devObj[App::kStrCommunDevTypeDlt645].isString()) {
+            dlt645DevFileName_ = devObj[App::kStrCommunDevTypeDlt645].toString();
+            qDebug() << "通讯设备" << App::kStrCommunDevTypeDlt645 << ":" << dlt645DevFileName_;
             // 解析Dlt645通讯设备文件
             dlt645Devs_ = ParseDlt645Devs(dir.filePath(dlt645DevFileName_));
             QMap<QString, Dlt645DevStruct::Dev_T>::const_iterator it;
