@@ -76,3 +76,33 @@ void FormCommunCh::CustomNameTextEdited_Slot(const QString &text)
     QString prj_name = ui->lineEdit_PrjName->text();
     item_->setText(0, prj_name + ":" + text);
 }
+
+// 设置ModbusRtu页面参数
+void FormCommunCh::SetModbusRtuPageParameter(
+    const QString &interface, const QString &baudRate,
+    const QString &dataBits, const QString &parity, const QString &stopBits)
+{
+    ui->comboBox_MrtuInterface->setCurrentText(interface);
+    ui->comboBox_MrtuBaudRate->setCurrentText(baudRate);
+    ui->comboBox_MrtuDataBits->setCurrentText(dataBits);
+    ui->comboBox_MrtuCheckBits->setCurrentText(App::ParityFormatting(parity));
+    ui->comboBox_MrtuStopBits->setCurrentText(stopBits);
+}
+// 设置ModbusTcp页面参数
+void FormCommunCh::SetModbusTcpPageParameter(
+    const QString &ip, quint16 port)
+{
+    ui->lineEdit_MtcpIpAddr->setText(ip);
+    ui->spinBox_MtcpPort->setValue(port);
+}
+// 设置DLT645页面参数
+void FormCommunCh::SetDlt645PageParameter(
+    const QString &interface, const QString &baudRate,
+    const QString &dataBits, const QString &parity, const QString &stopBits)
+{
+    ui->comboBox_DltInterface->setCurrentText(interface);
+    ui->comboBox_DltBaudRate->setCurrentText(baudRate);
+    ui->comboBox_DltDataBits->setCurrentText(dataBits);
+    ui->comboBox_DltCheckBits->setCurrentText(App::ParityFormatting(parity));
+    ui->comboBox_DltStopBits->setCurrentText(stopBits);
+}

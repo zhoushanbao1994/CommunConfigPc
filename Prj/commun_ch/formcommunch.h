@@ -18,6 +18,18 @@ public:
         App::ChType_E type, QTreeWidgetItem *item, QString &prj_name, QWidget *parent = nullptr);
     ~FormCommunCh();
 
+    // 设置ModbusRtu页面参数
+    void SetModbusRtuPageParameter(
+        const QString &interface, const QString &baudRate,
+        const QString &dataBits, const QString &parity, const QString &stopBits);
+    // 设置ModbusTcp页面参数
+    void SetModbusTcpPageParameter(
+        const QString &ip, quint16 port);
+    // 设置DLT645页面参数
+    void SetDlt645PageParameter(
+        const QString &interface, const QString &baudRate,
+        const QString &dataBits, const QString &parity, const QString &stopBits);
+
 private slots:
     void on_comboBox_Type_currentTextChanged(const QString &arg1);
 

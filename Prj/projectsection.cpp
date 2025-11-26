@@ -94,18 +94,36 @@ void ProjectSection::SetModbusRtuChs(const QMap<QString, ModbusRtuChStruct::Ch_T
 {
     chModbusRtu_->RemoveAll();              // 页面 - MRTU通道
     RemoveChildItem(twitemChMrtu_);         // 工程栏  - MRTU通道Item
+    QMap<QString, ModbusRtuChStruct::Ch_T>::const_iterator it;
+    for (it = mrcs.cbegin(); it != mrcs.cend(); ++it) {
+        QString name = it.key();
+        ModbusRtuChStruct::Ch_T ch = it.value();
+        NewCommunCh(name, twitemChMrtu_, App::kChType_ModbusRtu, chModbusRtu_, &ch);
+    }
 }
 // ModbusTcp通道
 void ProjectSection::SetModbusTcpChs(const QMap<QString, ModbusTcpChStruct::Ch_T> &mtcs)
 {
     chModbusTcp_->RemoveAll();              // 页面 - MTCP通道
     RemoveChildItem(twitemChMtcp_);         // 工程栏  - MTCP通道Item
+    QMap<QString, ModbusTcpChStruct::Ch_T>::const_iterator it;
+    for (it = mtcs.cbegin(); it != mtcs.cend(); ++it) {
+        QString name = it.key();
+        ModbusTcpChStruct::Ch_T ch = it.value();
+        NewCommunCh(name, twitemChMtcp_, App::kChType_ModbusTcp, chModbusTcp_, &ch);
+    }
 }
 // DLT645通道
 void ProjectSection::SetDlt645Chs(const QMap<QString, Dlt645ChStruct::Ch_T> &dlcs)
 {
     chDlt645_->RemoveAll();                 // 页面 - DLT645通道
     RemoveChildItem(twitemChDlt645_);       // 工程栏  - DLT645通道Item
+    QMap<QString, Dlt645ChStruct::Ch_T>::const_iterator it;
+    for (it = dlcs.cbegin(); it != dlcs.cend(); ++it) {
+        QString name = it.key();
+        Dlt645ChStruct::Ch_T ch = it.value();
+        NewCommunCh(name, twitemChDlt645_, App::kChType_Dlt645, chDlt645_, &ch);
+    }
 }
 // ModbusRtu设备
 void ProjectSection::SetModbusRtuDevs(const QMap<QString, ModbusRtuDevStruct::Dev_T> &mrds)
@@ -702,6 +720,32 @@ void ProjectSection::NewCommunCh(QString name,
     chs->Add(item, form);
     // 新建通道-发送显示信号
     emit Form_Signal(form, 1);  // 新建通道
+
+    // 是否设置页面内容
+    if(arg == nullptr) {
+        return;
+    }
+    if(type == App::kChType_ModbusRtu) {
+        ModbusRtuChStruct::Ch_T *ch = static_cast<ModbusRtuChStruct::Ch_T *>(arg);
+        //qDebug() << __FUNCTION__ << __LINE__
+        //         << ch->name << ch->interface << ch->baudRate << ch->dataBits << ch->parity << ch->stopBits;
+        // 设置ModbusRtu页面参数
+        form->SetModbusRtuPageParameter(ch->interface, ch->baudRate, ch->dataBits, ch->parity, ch->stopBits);
+    }
+    else if(type == App::kChType_ModbusTcp) {
+        ModbusTcpChStruct::Ch_T *ch = static_cast<ModbusTcpChStruct::Ch_T *>(arg);
+        //qDebug() << __FUNCTION__ << __LINE__
+        //         << ch->name << ch->ip << ch->port;
+        // 设置ModbusTcp页面参数
+        form->SetModbusTcpPageParameter(ch->ip, ch->port);
+    }
+    else if(type == App::kChType_Dlt645) {
+        Dlt645ChStruct::Ch_T *ch = static_cast<Dlt645ChStruct::Ch_T *>(arg);
+        //qDebug() << __FUNCTION__ << __LINE__
+        //         << ch->name << ch->interface << ch->baudRate << ch->dataBits << ch->parity << ch->stopBits;
+        // 设置DLT645页面参数
+        form->SetDlt645PageParameter(ch->interface, ch->baudRate, ch->dataBits, ch->parity, ch->stopBits);
+    }
 }
 
 // 新建通讯设备

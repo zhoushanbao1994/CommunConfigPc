@@ -11,7 +11,7 @@ public:
     typedef struct Ch_ {
         QString name = "";              // 名称
         QString ip = "192.168.123.123"; // IP
-        quint16 point  = 502;           // 端口
+        quint16 port  = 502;            // 端口
     } Ch_T;
     //typedef struct Chs_ {
     //    QString fileName = "";          // 文件名

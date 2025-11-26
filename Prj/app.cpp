@@ -530,5 +530,23 @@ QString App::ModbusDataIdentFormatting(QString ident)
 // 不区分大小写，比较字符串前n个字符是否一致 1-一致；0-不一致；
 bool App::compareFirstNIgnoreCase(const QString &str1, const QString &str2, int n)
 {
-    return str1.left(n).compare(str2.left(n), Qt::CaseInsensitive) == 0;
+    return str1.leftRef(n).compare(str2.leftRef(n), Qt::CaseInsensitive) == 0;
 }
+
+// 校验位标识格式化
+QString App::ParityFormatting(QString parity)
+{
+    if((parity == "None") || (parity == "none") || (parity == "N") || (parity == "n")) {
+        return "None";
+    }
+    else if((parity == "Even") || (parity == "even") || (parity == "E") || (parity == "e")) {
+        return "Even";
+    }
+    else if((parity == "Odd") || (parity == "odd") || (parity == "O") || (parity == "o")) {
+        return "Odd";
+    }
+    else {
+        return "None";
+    }
+}
+

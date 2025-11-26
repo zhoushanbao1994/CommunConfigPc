@@ -245,7 +245,7 @@ void JsonParse::ParseIndex(const QString &fileName)
             for (it = modbusTcpChs_.cbegin(); it != modbusTcpChs_.cend(); ++it) {
                 QString name = it.key();
                 ModbusTcpChStruct::Ch_T ch = it.value();
-                qDebug() << "    通讯通道名称:" << name << ", 通讯通道信息:" << ch.ip << ch.point;
+                qDebug() << "    通讯通道名称:" << name << ", 通讯通道信息:" << ch.ip << ch.port;
             }
         }
         // 通讯通道Dlt645
@@ -560,7 +560,7 @@ ModbusTcpChStruct::Ch_T JsonParse::ParseModbusTcpCh(const QJsonObject &chObj)
     }
     // 端口
     if(chObj.contains(App::kStrChModbusTcpPort) && chObj[App::kStrChModbusTcpPort].isDouble()) {
-        ch.point = chObj[App::kStrChModbusTcpPort].toInt();
+        ch.port = chObj[App::kStrChModbusTcpPort].toInt();
     }
     return ch;
 }

@@ -232,6 +232,8 @@ public:
     // DLT645数据标识格式化
     static QString ModbusDataIdentFormatting(QString dataIdent);
 
+    // 校验位标识格式化
+    static QString ParityFormatting(QString parity);
 
 signals:
 
