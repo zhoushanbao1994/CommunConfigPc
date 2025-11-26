@@ -130,19 +130,36 @@ void ProjectSection::SetModbusRtuDevs(const QMap<QString, ModbusRtuDevStruct::De
 {
     devModbusRtu_->RemoveAll();             // 页面 - MRTU设备
     RemoveChildItem(twitemDevMrtu_);        // 工程栏  - MRTU设备Item
+    QMap<QString, ModbusRtuDevStruct::Dev_T>::const_iterator it;
+    for (it = mrds.cbegin(); it != mrds.cend(); ++it) {
+        QString name = it.key();
+        ModbusRtuDevStruct::Dev_T dev = it.value();
+        NewCommunDev(name, twitemDevMrtu_, App::kDevType_ModbusRtu, devModbusRtu_, &dev);
+    }
 }
 // ModbusTcp设备
 void ProjectSection::SetModbusTcpDevs(const QMap<QString, ModbusTcpDevStruct::Dev_T> &mtds)
 {
     devModbusTcp_->RemoveAll();             // 页面 - MTCP设备
     RemoveChildItem(twitemDevMtcp_);        // 工程栏  - MTCP设备Item
-
+    QMap<QString, ModbusTcpDevStruct::Dev_T>::const_iterator it;
+    for (it = mtds.cbegin(); it != mtds.cend(); ++it) {
+        QString name = it.key();
+        ModbusTcpDevStruct::Dev_T dev = it.value();
+        NewCommunDev(name, twitemDevMtcp_, App::kDevType_ModbusTcp, devModbusTcp_, &dev);
+    }
 }
 // DLT645设备
 void ProjectSection::SetDlt645Devs(const QMap<QString, Dlt645DevStruct::Dev_T> &dlds)
 {
     devDlt645_->RemoveAll();                // 页面 - DLT645设备
     RemoveChildItem(twitemDevDlt645_);      // 工程栏  - DLT645设备Item
+    QMap<QString, Dlt645DevStruct::Dev_T>::const_iterator it;
+    for (it = dlds.cbegin(); it != dlds.cend(); ++it) {
+        QString name = it.key();
+        Dlt645DevStruct::Dev_T dev = it.value();
+        NewCommunDev(name, twitemDevDlt645_, App::kDevType_Dlt645, devDlt645_, &dev);
+    }
 }
 
 void ProjectSection::RemoveChildItem(QTreeWidgetItem *top_item)
@@ -769,6 +786,26 @@ void ProjectSection::NewCommunDev(QString name,
     devs->Add(item, form);
     // 新建设备-发送显示信号
     emit Form_Signal(form, 1);  // 新建设备
+
+    // 是否设置页面内容
+    if(arg ==nullptr) {
+        return;
+    }
+    if(type == App::kDevType_ModbusRtu) {
+        ModbusRtuDevStruct::Dev_T *dev = static_cast<ModbusRtuDevStruct::Dev_T *>(arg);
+        // 设置页面参数
+        form->SetPageParameter(dev->pointTable, dev->channel, dev->address);
+    }
+    else if(type == App::kDevType_ModbusTcp) {
+        ModbusTcpDevStruct::Dev_T *dev = static_cast<ModbusTcpDevStruct::Dev_T *>(arg);
+        // 设置页面参数
+        form->SetPageParameter(dev->pointTable, dev->channel, dev->address);
+    }
+    else if(type == App::kDevType_Dlt645) {
+        Dlt645DevStruct::Dev_T *dev = static_cast<Dlt645DevStruct::Dev_T *>(arg);
+        // 设置页面参数
+        form->SetPageParameter(dev->pointTable, dev->channel, dev->address);
+    }
 }
 
 // 获取指定类型设备依赖的点表Map，内部处理函数

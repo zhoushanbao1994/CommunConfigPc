@@ -77,6 +77,7 @@ void FormCommunDev::CustomNameTextEdited_Slot(const QString &text)
     item_->setText(0, prj_name + ":" + text);
 }
 
+// 刷新下拉框选项
 void FormCommunDev::RefreshCbOption(
     const QStringList &tab_list, const QStringList &ch_list)
 {
@@ -94,6 +95,7 @@ void FormCommunDev::RefreshCbOption(
         break;
     }
 }
+// 刷新ModbusRtu页面下拉框选项
 void FormCommunDev::RefreshMrtuCbOption(
     const QStringList &tab_list, const QStringList &ch_list)
 {
@@ -111,6 +113,7 @@ void FormCommunDev::RefreshMrtuCbOption(
         ui->comboBox_MrtuCh->setCurrentText(curr_ch);
     }
 }
+// 刷新ModbusTcp页面下拉框选项
 void FormCommunDev::RefreshMtcpCbOption(
     const QStringList &tab_list, const QStringList &ch_list)
 {
@@ -128,6 +131,7 @@ void FormCommunDev::RefreshMtcpCbOption(
         ui->comboBox_MtcpCh->setCurrentText(curr_ch);
     }
 }
+// 刷新Dlt645页面下拉框选项
 void FormCommunDev::RefreshDltCbOption(
     const QStringList &tab_list, const QStringList &ch_list)
 {
@@ -144,5 +148,49 @@ void FormCommunDev::RefreshDltCbOption(
     if(ui->comboBox_DltCh->findText(curr_ch) >= 0) {
         ui->comboBox_DltCh->setCurrentText(curr_ch);
     }
+}
+// 设置页面参数
+void FormCommunDev::SetPageParameter(
+    const QString &point, const QString &ch, const QString &addr)
+{
+    bool ok;
+    switch(type_) {
+    case App::kDevType_ModbusRtu:
+        SetModbusRtuPageParameter(point, ch, App::StringToNumber(addr, ok));
+        break;
+    case App::kDevType_ModbusTcp:
+        SetModbusTcpPageParameter(point, ch, App::StringToNumber(addr, ok));
+        break;
+    case App::kDevType_Dlt645:
+        SetDlt645PageParameter(point, ch, addr);
+        break;
+    default:
+        break;
+    }
+}
+// 设置ModbusRtu页面参数
+void FormCommunDev::SetModbusRtuPageParameter(
+    const QString &point, const QString &ch, quint8 addr)
+{
+    ui->comboBox_MrtuPointTab->setCurrentText(point);
+    ui->comboBox_MrtuCh->setCurrentText(ch);
+    ui->spinBox_MrtuDevAddr->setValue(addr);
+}
+// 设置ModbusTcp页面参数
+void FormCommunDev::SetModbusTcpPageParameter(
+    const QString &point, const QString &ch, quint8 addr)
+{
+    ui->comboBox_MtcpPointTab->setCurrentText(point);
+    ui->comboBox_MtcpCh->setCurrentText(ch);
+    ui->spinBox_MtcpDevAddr->setValue(addr);
+}
+// 设置DLT645页面参数
+void FormCommunDev::SetDlt645PageParameter(
+    const QString &point, const QString &ch, const QString &addr)
+{
+
+    ui->comboBox_DltPointTab->setCurrentText(point);
+    ui->comboBox_DltCh->setCurrentText(ch);
+    ui->lineEdit_DltDevAddr->setText(addr);
 }
 
