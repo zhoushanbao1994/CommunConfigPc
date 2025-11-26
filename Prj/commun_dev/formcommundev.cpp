@@ -4,7 +4,8 @@
 #include <QDebug>
 
 FormCommunDev::FormCommunDev(
-    App::DevType_E type, QTreeWidgetItem *item, QString &prj_name, QWidget *parent)
+    App::DevType_E type, QTreeWidgetItem *item,  QString &prjName,
+    QString &customName, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::FormCommunDev)
     , type_(type)
@@ -21,9 +22,11 @@ FormCommunDev::FormCommunDev(
     // 设置提示字符
     ui->lineEdit_PrjName->setPlaceholderText("请输入字母、数字或下划线（最多16位）...");
     // 设置工程名
-    ui->lineEdit_PrjName->setText(prj_name);
+    ui->lineEdit_PrjName->setText(prjName);
     // 工程名设置为只读
     //ui->lineEdit_PrjName->setReadOnly(true);
+    // 设置自定义名称
+    ui->lineEdit_CustomName->setText(customName);
     // 连接 textEdited 信号
     QObject::connect(ui->lineEdit_PrjName, &QLineEdit::textEdited,
                      this, &FormCommunDev::PrjNameTextEdited_Slot);
@@ -151,18 +154,18 @@ void FormCommunDev::RefreshDltCbOption(
 }
 // 设置页面参数
 void FormCommunDev::SetPageParameter(
-    const QString &point, const QString &ch, const QString &addr)
+    const QString &pointPrjName, const QString &chPrjName, const QString &addr)
 {
     bool ok;
     switch(type_) {
     case App::kDevType_ModbusRtu:
-        SetModbusRtuPageParameter(point, ch, App::StringToNumber(addr, ok));
+        SetModbusRtuPageParameter(pointPrjName, chPrjName, App::StringToNumber(addr, ok));
         break;
     case App::kDevType_ModbusTcp:
-        SetModbusTcpPageParameter(point, ch, App::StringToNumber(addr, ok));
+        SetModbusTcpPageParameter(pointPrjName, chPrjName, App::StringToNumber(addr, ok));
         break;
     case App::kDevType_Dlt645:
-        SetDlt645PageParameter(point, ch, addr);
+        SetDlt645PageParameter(pointPrjName, chPrjName, addr);
         break;
     default:
         break;
@@ -170,27 +173,25 @@ void FormCommunDev::SetPageParameter(
 }
 // 设置ModbusRtu页面参数
 void FormCommunDev::SetModbusRtuPageParameter(
-    const QString &point, const QString &ch, quint8 addr)
+    const QString &pointPrjName, const QString &chPrjName, quint8 addr)
 {
-    ui->comboBox_MrtuPointTab->setCurrentText(point);
-    ui->comboBox_MrtuCh->setCurrentText(ch);
+    App::SetComboBoxCurrentText(ui->comboBox_MrtuPointTab, pointPrjName, ':');
+    App::SetComboBoxCurrentText(ui->comboBox_MrtuCh, chPrjName, ':');
     ui->spinBox_MrtuDevAddr->setValue(addr);
 }
 // 设置ModbusTcp页面参数
 void FormCommunDev::SetModbusTcpPageParameter(
-    const QString &point, const QString &ch, quint8 addr)
+    const QString &pointPrjName, const QString &chPrjName, quint8 addr)
 {
-    ui->comboBox_MtcpPointTab->setCurrentText(point);
-    ui->comboBox_MtcpCh->setCurrentText(ch);
+    App::SetComboBoxCurrentText(ui->comboBox_MtcpPointTab, pointPrjName, ':');
+    App::SetComboBoxCurrentText(ui->comboBox_MtcpCh, chPrjName, ':');
     ui->spinBox_MtcpDevAddr->setValue(addr);
 }
 // 设置DLT645页面参数
 void FormCommunDev::SetDlt645PageParameter(
-    const QString &point, const QString &ch, const QString &addr)
+    const QString &pointPrjName, const QString &chPrjName, const QString &addr)
 {
-
-    ui->comboBox_DltPointTab->setCurrentText(point);
-    ui->comboBox_DltCh->setCurrentText(ch);
+    App::SetComboBoxCurrentText(ui->comboBox_DltPointTab, pointPrjName, ':');
+    App::SetComboBoxCurrentText(ui->comboBox_DltCh, chPrjName, ':');
     ui->lineEdit_DltDevAddr->setText(addr);
 }
-

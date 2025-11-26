@@ -15,8 +15,8 @@ class FormPointTable : public QWidget
     Q_OBJECT
 public:
     explicit FormPointTable(
-        App::PointTabType_E type, QTreeWidgetItem *item, QString &prj_name,
-        QWidget *parent = nullptr);
+        App::PointTabType_E type, QTreeWidgetItem *item, QString &prjName,
+        QString &customName, QWidget *parent = nullptr);
     ~FormPointTable();
     // 填充一行数据
     void ModbusTableWidget_RowSet(

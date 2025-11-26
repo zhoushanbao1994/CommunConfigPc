@@ -10,6 +10,7 @@ public:
 
     typedef struct Ch_ {
         QString name = "";              // 名称
+        QString customName = "";        // 自定义名称
         QString ip = "192.168.123.123"; // IP
         quint16 port  = 502;            // 端口
     } Ch_T;

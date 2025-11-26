@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSettings>
+#include <QComboBox>
 
 class App : public QObject
 {
@@ -25,12 +26,15 @@ public:
     static const QString kStrCommunDevTypeDlt645;
 
     static const QString kStrPointTableModbusName;
+    static const QString kStrPointTableModbusCustomName;
     static const QString kStrPointTableModbusPoint;
     static const QString kStrPointTableDlt645Name;
+    static const QString kStrPointTableDlt645CustomName;
     static const QString kStrPointTableDlt645Point;
 
     static const QString kStrChModbusRtuChannel;
     static const QString kStrChModbusRtuName;
+    static const QString kStrChModbusRtuCustomName;
     static const QString kStrChModbusRtuInterface;
     static const QString kStrChModbusRtuBaudRate;
     static const QString kStrChModbusRtuDataBits;
@@ -39,11 +43,13 @@ public:
 
     static const QString kStrChModbusTcpChannel;
     static const QString kStrChModbusTcpName;
+    static const QString kStrChModbusTcpCustomName;
     static const QString kStrChModbusTcpIp;
     static const QString kStrChModbusTcpPort;
 
     static const QString kStrChDlt645Channel;
     static const QString kStrChDlt645Name;
+    static const QString kStrChDlt645CustomName;
     static const QString kStrChDlt645Interface;
     static const QString kStrChDlt645BaudRate;
     static const QString kStrChDlt645DataBits;
@@ -52,18 +58,21 @@ public:
 
     static const QString kStrDevModbusRtuDevice;
     static const QString kStrDevModbusRtuName;
+    static const QString kStrDevModbusRtuCustomName;
     static const QString kStrDevModbusRtuChannel;
     static const QString kStrDevModbusRtuPointTable;
     static const QString kStrDevModbusRtuAddress;
 
     static const QString kStrDevModbusTcpDevice;
     static const QString kStrDevModbusTcpName;
+    static const QString kStrDevModbusTcpCustomName;
     static const QString kStrDevModbusTcpChannel;
     static const QString kStrDevModbusTcpPointTable;
     static const QString kStrDevModbusTcpAddress;
 
     static const QString kStrDevDlt645Device;
     static const QString kStrDevDlt645Name;
+    static const QString kStrDevDlt645CustomName;
     static const QString kStrDevDlt645Channel;
     static const QString kStrDevDlt645PointTable;
     static const QString kStrDevDlt645Address;
@@ -234,6 +243,13 @@ public:
 
     // 校验位标识格式化
     static QString ParityFormatting(QString parity);
+
+    // 比较指定字符前的字符串是否一致（默认区分大小写）
+    static bool compareBeforeChar(const QString &str1, const QString &str2,
+            QChar delimiter, Qt::CaseSensitivity caseSensitive = Qt::CaseSensitive);
+
+    // 设置QCombobox的选项
+    static bool SetComboBoxCurrentText(QComboBox *comboBox, const QString &text, QChar delimiter);
 
 signals:
 

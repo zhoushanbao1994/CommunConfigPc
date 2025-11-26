@@ -9,10 +9,11 @@ public:
     explicit ModbusTcpDevStruct();
 
     typedef struct Dev_ {
-        QString name = "";          // 名称
-        QString channel = "";       // 所在通道
-        QString pointTable = "";    // 所使用的点表
-        QString address = "1";      // 地址
+        QString name = "";              // 名称
+        QString customName = "";        // 自定义名称
+        QString channelPrjName = "";    // 所在通道的工程名
+        QString pointTablePrjName = ""; // 所使用点表的工程名
+        QString address = "1";          // 地址
     } Dev_T;
 };
 

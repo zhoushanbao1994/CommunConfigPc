@@ -4,7 +4,8 @@
 #include <QDebug>
 
 FormCommunCh::FormCommunCh(
-    App::ChType_E type, QTreeWidgetItem *item, QString &prj_name, QWidget *parent)
+    App::ChType_E type, QTreeWidgetItem *item,  QString &prjName,
+    QString &customName, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::FormCommunCh)
     , type_(type)
@@ -21,9 +22,11 @@ FormCommunCh::FormCommunCh(
     // 设置提示字符
     ui->lineEdit_PrjName->setPlaceholderText("请输入字母、数字或下划线（最多16位）...");
     // 设置工程名
-    ui->lineEdit_PrjName->setText(prj_name);
+    ui->lineEdit_PrjName->setText(prjName);
     // 工程名设置为只读
     //ui->lineEdit_PrjName->setReadOnly(true);
+    // 设置自定义名称
+    ui->lineEdit_CustomName->setText(customName);
     // 连接 textEdited 信号
     QObject::connect(ui->lineEdit_PrjName, &QLineEdit::textEdited,
                      this, &FormCommunCh::PrjNameTextEdited_Slot);

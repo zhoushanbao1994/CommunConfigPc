@@ -56,13 +56,13 @@ private:
     //// 生成第一个未使用的节点名称
     //QString GenerateUnusedName(const QTreeWidgetItem *item, const QString &name_prefix);
     // 新建点表
-    void NewPointTab(QString name, QTreeWidgetItem *parent_item,
+    void NewPointTab(QString name, QString customName, QTreeWidgetItem *parent_item,
                     App::PointTabType_E type, PointTables *point_tabs, void *arg);
     // 新建通讯通道
-    void NewCommunCh(QString name, QTreeWidgetItem *parent_item,
+    void NewCommunCh(QString name, QString customName, QTreeWidgetItem *parent_item,
                      App::ChType_E type, CommunChs *chs, void *arg);
     // 新建通讯设备
-    void NewCommunDev(QString name, QTreeWidgetItem *parent_item,
+    void NewCommunDev(QString name, QString customName, QTreeWidgetItem *parent_item,
                       App::DevType_E type, CommunDevs *devs, void *arg);
 
     // 点表类型单击，内部处理函数

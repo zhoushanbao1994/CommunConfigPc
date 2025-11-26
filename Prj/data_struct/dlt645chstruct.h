@@ -10,6 +10,7 @@ public:
 
     typedef struct Ch_ {
         QString name = "";              // 名称
+        QString customName = "";        // 自定义名称
         QString interface = "RS485_1";  // 接口
         QString baudRate = "9600";      // 波特率
         QString dataBits = "8";         // 数据位

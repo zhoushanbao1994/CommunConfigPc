@@ -19,6 +19,7 @@ public:
     typedef struct PointTab_ {
         QString fileName = "";          // 文件名
         QString name = "";              // 名称
+        QString customName = "";        // 自定义名称
         QList<Point_T> points;          // 点结构
     } PointTab_T;
 };

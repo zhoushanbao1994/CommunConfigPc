@@ -189,7 +189,7 @@ void JsonParse::ParseIndex(const QString &fileName)
                 pointTab = ParseModbusPoint(dir.filePath(it.value()));
                 // 将点表信息记录到Map容器中
                 modbusPointTabs_.insert(it.key(), pointTab);
-                qDebug() << "Modbus点表名称：" << pointTab.name;
+                qDebug() << "Modbus点表名称：" << pointTab.name << ", 自定义名称：" << pointTab.customName;
                 for(auto &it : pointTab.points) {
                     qDebug() << "    " << QString("起始地址:0x%1, 点位数量:%2, 功能码:%3, 数据类型:%4, 读取周期:%5, 名称:%6")
                         .arg(it.startAddr, 4, 16, QChar('0')).arg(it.pointNum, 4, 16, QChar('0')).arg(it.code, it.dataType)
@@ -210,7 +210,7 @@ void JsonParse::ParseIndex(const QString &fileName)
                 pointTab = ParseDlt645Point(dir.filePath(it.value()));
                 // 将点表信息记录到Map容器中
                 dlt645PointTabs_.insert(it.key(), pointTab);
-                qDebug() << "Dlt645点表名称：" << pointTab.name;
+                qDebug() << "Dlt645点表名称：" << pointTab.name << ", 自定义名称：" << pointTab.customName;
                 for(auto &it : pointTab.points) {
                     qDebug() << "    " << QString("数据标识:%1, 读取周期:%2, 名称:%3")
                               .arg(it.dataIdent).arg(it.readCycle).arg(it.customName);
@@ -231,7 +231,7 @@ void JsonParse::ParseIndex(const QString &fileName)
             for (it = modbusRtuChs_.cbegin(); it != modbusRtuChs_.cend(); ++it) {
                 QString name = it.key();
                 ModbusRtuChStruct::Ch_T ch = it.value();
-                qDebug() << "    通讯通道名称:" << name << ", 通讯通道信息:"
+                qDebug() << "    通讯通道名称:" << name << ", 自定义名称：" << ch.customName << ", 通讯通道信息:"
                          << ch.interface << ch.baudRate << ch.dataBits << ch.parity << ch.stopBits;
             }
         }
@@ -245,7 +245,7 @@ void JsonParse::ParseIndex(const QString &fileName)
             for (it = modbusTcpChs_.cbegin(); it != modbusTcpChs_.cend(); ++it) {
                 QString name = it.key();
                 ModbusTcpChStruct::Ch_T ch = it.value();
-                qDebug() << "    通讯通道名称:" << name << ", 通讯通道信息:" << ch.ip << ch.port;
+                qDebug() << "    通讯通道名称:" << name << ", 自定义名称：" << ch.customName << ", 通讯通道信息:" << ch.ip << ch.port;
             }
         }
         // 通讯通道Dlt645
@@ -258,7 +258,7 @@ void JsonParse::ParseIndex(const QString &fileName)
             for (it = dlt645Chs_.cbegin(); it != dlt645Chs_.cend(); ++it) {
                 QString name = it.key();
                 Dlt645ChStruct::Ch_T ch = it.value();
-                qDebug() << "    通讯通道名称:" << name << ", 通讯通道信息:"
+                qDebug() << "    通讯通道名称:" << name << ", 自定义名称：" << ch.customName << ", 通讯通道信息:"
                          << ch.interface << ch.baudRate << ch.dataBits << ch.parity << ch.stopBits;
             }
         }
@@ -276,8 +276,8 @@ void JsonParse::ParseIndex(const QString &fileName)
             for (it = modbusRtuDevs_.cbegin(); it != modbusRtuDevs_.cend(); ++it) {
                 QString name = it.key();
                 ModbusRtuDevStruct::Dev_T dev = it.value();
-                qDebug() << "    通讯设备名称:" << name << ", 通讯设备信息:"
-                         << dev.channel << dev.pointTable << dev.address;
+                qDebug() << "    通讯设备名称:" << name << ", 自定义名称：" << dev.customName << ", 通讯设备信息:"
+                         << dev.channelPrjName << dev.pointTablePrjName << dev.address;
             }
         }
         // 通讯设备ModbusTcp
@@ -290,8 +290,8 @@ void JsonParse::ParseIndex(const QString &fileName)
             for (it = modbusTcpDevs_.cbegin(); it != modbusTcpDevs_.cend(); ++it) {
                 QString name = it.key();
                 ModbusTcpDevStruct::Dev_T dev = it.value();
-                qDebug() << "    通讯设备名称:" << name << ", 通讯设备信息:"
-                         << dev.channel << dev.pointTable << dev.address;
+                qDebug() << "    通讯设备名称:" << name << ", 自定义名称：" << dev.customName << ", 通讯设备信息:"
+                         << dev.channelPrjName << dev.pointTablePrjName << dev.address;
             }
         }
         // 通讯设备Dlt645
@@ -304,8 +304,8 @@ void JsonParse::ParseIndex(const QString &fileName)
             for (it = dlt645Devs_.cbegin(); it != dlt645Devs_.cend(); ++it) {
                 QString name = it.key();
                 Dlt645DevStruct::Dev_T dev = it.value();
-                qDebug() << "    通讯设备名称:" << name << ", 通讯设备信息:"
-                         << dev.channel << dev.pointTable << dev.address;
+                qDebug() << "    通讯设备名称:" << name << ", 自定义名称：" << dev.customName << ", 通讯设备信息:"
+                         << dev.channelPrjName << dev.pointTablePrjName << dev.address;
             }
         }
     }
@@ -347,6 +347,10 @@ ModbusPointStruct::PointTab_T JsonParse::ParseModbusPoint(const QString &fileNam
     // 名称
     if (rootObj.contains(App::kStrPointTableModbusName) && rootObj[App::kStrPointTableModbusName].isString()) {
         pointTab.name = rootObj[App::kStrPointTableModbusName].toString();
+    }
+    // 自定义名称
+    if (rootObj.contains(App::kStrPointTableModbusCustomName) && rootObj[App::kStrPointTableModbusCustomName].isString()) {
+        pointTab.customName = rootObj[App::kStrPointTableModbusCustomName].toString();
     }
     // 点表
     if (rootObj.contains(App::kStrPointTableModbusPoint) && rootObj[App::kStrPointTableModbusPoint].isArray()) {
@@ -425,6 +429,10 @@ Dlt645PointStruct::PointTab_T JsonParse::ParseDlt645Point(const QString &fileNam
     if (rootObj.contains(App::kStrPointTableDlt645Name) && rootObj[App::kStrPointTableDlt645Name].isString()) {
         pointTab.name = rootObj[App::kStrPointTableDlt645Name].toString();
     }
+    // 自定义名称
+    if (rootObj.contains(App::kStrPointTableDlt645CustomName) && rootObj[App::kStrPointTableDlt645CustomName].isString()) {
+        pointTab.customName = rootObj[App::kStrPointTableDlt645CustomName].toString();
+    }
     // 点表
     if (rootObj.contains(App::kStrPointTableDlt645Point) && rootObj[App::kStrPointTableDlt645Point].isArray()) {
         QJsonArray pointsArray = rootObj[App::kStrPointTableDlt645Point].toArray();
@@ -501,6 +509,10 @@ ModbusRtuChStruct::Ch_T JsonParse::ParseModbusRtuCh(const QJsonObject &chObj)
     if(chObj.contains(App::kStrChModbusRtuName) && chObj[App::kStrChModbusRtuName].isString()) {
         ch.name = chObj[App::kStrChModbusRtuName].toString();
     }
+    // 自定义名称
+    if(chObj.contains(App::kStrChModbusRtuCustomName) && chObj[App::kStrChModbusRtuCustomName].isString()) {
+        ch.customName = chObj[App::kStrChModbusRtuCustomName].toString();
+    }
     // 接口
     if(chObj.contains(App::kStrChModbusRtuInterface) && chObj[App::kStrChModbusRtuInterface].isString()) {
         ch.interface = chObj[App::kStrChModbusRtuInterface].toString();
@@ -554,6 +566,10 @@ ModbusTcpChStruct::Ch_T JsonParse::ParseModbusTcpCh(const QJsonObject &chObj)
     if(chObj.contains(App::kStrChModbusTcpName) && chObj[App::kStrChModbusTcpName].isString()) {
         ch.name = chObj[App::kStrChModbusTcpName].toString();
     }
+    // 自定义名称
+    if(chObj.contains(App::kStrChModbusTcpCustomName) && chObj[App::kStrChModbusTcpCustomName].isString()) {
+        ch.customName = chObj[App::kStrChModbusTcpCustomName].toString();
+    }
     // IP
     if(chObj.contains(App::kStrChModbusTcpIp) && chObj[App::kStrChModbusTcpIp].isString()) {
         ch.ip = chObj[App::kStrChModbusTcpIp].toString();
@@ -594,6 +610,10 @@ Dlt645ChStruct::Ch_T JsonParse::ParseDlt645Ch(const QJsonObject &chObj)
     // 名称
     if(chObj.contains(App::kStrChDlt645Name) && chObj[App::kStrChDlt645Name].isString()) {
         ch.name = chObj[App::kStrChDlt645Name].toString();
+    }
+    // 自定义名称
+    if(chObj.contains(App::kStrChDlt645CustomName) && chObj[App::kStrChDlt645CustomName].isString()) {
+        ch.customName = chObj[App::kStrChDlt645CustomName].toString();
     }
     // 接口
     if(chObj.contains(App::kStrChDlt645Interface) && chObj[App::kStrChDlt645Interface].isString()) {
@@ -648,13 +668,17 @@ ModbusRtuDevStruct::Dev_T JsonParse::ParseModbusRtuDev(const QJsonObject &chObj)
     if(chObj.contains(App::kStrDevModbusRtuName) && chObj[App::kStrDevModbusRtuName].isString()) {
         dev.name = chObj[App::kStrDevModbusRtuName].toString();
     }
-    // 所处通讯通道
-    if(chObj.contains(App::kStrDevModbusRtuChannel) && chObj[App::kStrDevModbusRtuChannel].isString()) {
-        dev.channel = chObj[App::kStrDevModbusRtuChannel].toString();
+    // 自定义名称
+    if(chObj.contains(App::kStrDevModbusRtuCustomName) && chObj[App::kStrDevModbusRtuCustomName].isString()) {
+        dev.customName = chObj[App::kStrDevModbusRtuCustomName].toString();
     }
-    // 所使用的点表
+    // 所处通讯通道的工程名
+    if(chObj.contains(App::kStrDevModbusRtuChannel) && chObj[App::kStrDevModbusRtuChannel].isString()) {
+        dev.channelPrjName = chObj[App::kStrDevModbusRtuChannel].toString();
+    }
+    // 所使用点表的工程名
     if(chObj.contains(App::kStrDevModbusRtuPointTable) && chObj[App::kStrDevModbusRtuPointTable].isString()) {
-        dev.pointTable = chObj[App::kStrDevModbusRtuPointTable].toString();
+        dev.pointTablePrjName = chObj[App::kStrDevModbusRtuPointTable].toString();
     }
     // 地址
     if(chObj.contains(App::kStrDevModbusRtuAddress) && chObj[App::kStrDevModbusRtuAddress].isString()) {
@@ -693,13 +717,17 @@ ModbusTcpDevStruct::Dev_T JsonParse::ParseModbusTcpDev(const QJsonObject &chObj)
     if(chObj.contains(App::kStrDevModbusTcpName) && chObj[App::kStrDevModbusTcpName].isString()) {
         dev.name = chObj[App::kStrDevModbusTcpName].toString();
     }
-    // 所处通讯通道
-    if(chObj.contains(App::kStrDevModbusTcpChannel) && chObj[App::kStrDevModbusTcpChannel].isString()) {
-        dev.channel = chObj[App::kStrDevModbusTcpChannel].toString();
+    // 自定义名称
+    if(chObj.contains(App::kStrDevModbusTcpCustomName) && chObj[App::kStrDevModbusTcpCustomName].isString()) {
+        dev.customName = chObj[App::kStrDevModbusTcpCustomName].toString();
     }
-    // 所使用的点表
+    // 所处通讯通道的工程名
+    if(chObj.contains(App::kStrDevModbusTcpChannel) && chObj[App::kStrDevModbusTcpChannel].isString()) {
+        dev.channelPrjName = chObj[App::kStrDevModbusTcpChannel].toString();
+    }
+    // 所使用点表的工程名
     if(chObj.contains(App::kStrDevModbusTcpPointTable) && chObj[App::kStrDevModbusTcpPointTable].isString()) {
-        dev.pointTable = chObj[App::kStrDevModbusTcpPointTable].toString();
+        dev.pointTablePrjName = chObj[App::kStrDevModbusTcpPointTable].toString();
     }
     // 地址
     if(chObj.contains(App::kStrDevModbusTcpAddress) && chObj[App::kStrDevModbusTcpAddress].isString()) {
@@ -738,13 +766,17 @@ Dlt645DevStruct::Dev_T JsonParse::ParseDlt645Dev(const QJsonObject &chObj)
     if(chObj.contains(App::kStrDevDlt645Name) && chObj[App::kStrDevDlt645Name].isString()) {
         dev.name = chObj[App::kStrDevDlt645Name].toString();
     }
-    // 所处通讯通道
-    if(chObj.contains(App::kStrDevDlt645Channel) && chObj[App::kStrDevDlt645Channel].isString()) {
-        dev.channel = chObj[App::kStrDevDlt645Channel].toString();
+    // 自定义名称
+    if(chObj.contains(App::kStrDevDlt645CustomName) && chObj[App::kStrDevDlt645CustomName].isString()) {
+        dev.customName = chObj[App::kStrDevDlt645CustomName].toString();
     }
-    // 所使用的点表
+    // 所处通讯通道的工程名
+    if(chObj.contains(App::kStrDevDlt645Channel) && chObj[App::kStrDevDlt645Channel].isString()) {
+        dev.channelPrjName = chObj[App::kStrDevDlt645Channel].toString();
+    }
+    // 所使用点表的工程名
     if(chObj.contains(App::kStrDevDlt645PointTable) && chObj[App::kStrDevDlt645PointTable].isString()) {
-        dev.pointTable = chObj[App::kStrDevDlt645PointTable].toString();
+        dev.pointTablePrjName = chObj[App::kStrDevDlt645PointTable].toString();
     }
     // 地址
     if(chObj.contains(App::kStrDevDlt645Address) && chObj[App::kStrDevDlt645Address].isString()) {

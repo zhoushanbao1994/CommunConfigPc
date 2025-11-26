@@ -18,46 +18,54 @@ const QString App::kStrCommunDevTypeModbusRtu = App::kStrCommunChTypeModbusRtu;
 const QString App::kStrCommunDevTypeModbusTcp = App::kStrCommunChTypeModbusTcp;
 const QString App::kStrCommunDevTypeDlt645    = App::kStrCommunChTypeDlt645   ;
 
-const QString App::kStrPointTableModbusName  = "name"  ;
-const QString App::kStrPointTableModbusPoint = "point" ;
-const QString App::kStrPointTableDlt645Name  = App::kStrPointTableModbusName ;
-const QString App::kStrPointTableDlt645Point = App::kStrPointTableModbusPoint;
+const QString App::kStrPointTableModbusName       = "name"       ;
+const QString App::kStrPointTableModbusCustomName = "custom_name";
+const QString App::kStrPointTableModbusPoint      = "point"      ;
+const QString App::kStrPointTableDlt645Name       = App::kStrPointTableModbusName      ;
+const QString App::kStrPointTableDlt645CustomName = App::kStrPointTableModbusCustomName;
+const QString App::kStrPointTableDlt645Point      = App::kStrPointTableModbusPoint     ;
 
-const QString App::kStrChModbusRtuChannel   = "channel"  ;
-const QString App::kStrChModbusRtuName      = "name"     ;
-const QString App::kStrChModbusRtuInterface = "interface";
-const QString App::kStrChModbusRtuBaudRate  = "baud"     ;
-const QString App::kStrChModbusRtuDataBits  = "data"     ;
-const QString App::kStrChModbusRtuStopBits  = "stop"     ;
-const QString App::kStrChModbusRtuParity    = "check"    ;
+const QString App::kStrChModbusRtuChannel    = "channel"    ;
+const QString App::kStrChModbusRtuName       = "name"       ;
+const QString App::kStrChModbusRtuCustomName = "custom_name";
+const QString App::kStrChModbusRtuInterface  = "interface"  ;
+const QString App::kStrChModbusRtuBaudRate   = "baud"       ;
+const QString App::kStrChModbusRtuDataBits   = "data"       ;
+const QString App::kStrChModbusRtuStopBits   = "stop"       ;
+const QString App::kStrChModbusRtuParity     = "check"      ;
 
-const QString App::kStrChModbusTcpChannel = App::kStrChModbusRtuChannel;
-const QString App::kStrChModbusTcpName    = App::kStrChModbusRtuName   ;
-const QString App::kStrChModbusTcpIp      = "ip"  ;
-const QString App::kStrChModbusTcpPort    = "port";
+const QString App::kStrChModbusTcpChannel    = App::kStrChModbusRtuChannel   ;
+const QString App::kStrChModbusTcpName       = App::kStrChModbusRtuName      ;
+const QString App::kStrChModbusTcpCustomName = App::kStrChModbusRtuCustomName;
+const QString App::kStrChModbusTcpIp         = "ip"  ;
+const QString App::kStrChModbusTcpPort       = "port";
 
-const QString App::kStrChDlt645Channel   = App::kStrChModbusRtuChannel  ;
-const QString App::kStrChDlt645Name      = App::kStrChModbusRtuName     ;
-const QString App::kStrChDlt645Interface = App::kStrChModbusRtuInterface;
-const QString App::kStrChDlt645BaudRate  = App::kStrChModbusRtuBaudRate ;
-const QString App::kStrChDlt645DataBits  = App::kStrChModbusRtuDataBits ;
-const QString App::kStrChDlt645StopBits  = App::kStrChModbusRtuStopBits ;
-const QString App::kStrChDlt645Parity    = App::kStrChModbusRtuParity   ;
+const QString App::kStrChDlt645Channel    = App::kStrChModbusRtuChannel   ;
+const QString App::kStrChDlt645Name       = App::kStrChModbusRtuName      ;
+const QString App::kStrChDlt645CustomName = App::kStrChModbusRtuCustomName;
+const QString App::kStrChDlt645Interface  = App::kStrChModbusRtuInterface ;
+const QString App::kStrChDlt645BaudRate   = App::kStrChModbusRtuBaudRate  ;
+const QString App::kStrChDlt645DataBits   = App::kStrChModbusRtuDataBits  ;
+const QString App::kStrChDlt645StopBits   = App::kStrChModbusRtuStopBits  ;
+const QString App::kStrChDlt645Parity     = App::kStrChModbusRtuParity    ;
 
-const QString App::kStrDevModbusRtuDevice     = "dev"  ;
-const QString App::kStrDevModbusRtuName       = "name" ;
-const QString App::kStrDevModbusRtuChannel    = "ch"   ;
-const QString App::kStrDevModbusRtuPointTable = "point";
-const QString App::kStrDevModbusRtuAddress    = "addr" ;
+const QString App::kStrDevModbusRtuDevice     = "dev"        ;
+const QString App::kStrDevModbusRtuName       = "name"       ;
+const QString App::kStrDevModbusRtuCustomName = "custom_name";
+const QString App::kStrDevModbusRtuChannel    = "ch"         ;
+const QString App::kStrDevModbusRtuPointTable = "point"      ;
+const QString App::kStrDevModbusRtuAddress    = "addr"       ;
 
 const QString App::kStrDevModbusTcpDevice     = App::kStrDevModbusRtuDevice    ;
 const QString App::kStrDevModbusTcpName       = App::kStrDevModbusRtuName      ;
+const QString App::kStrDevModbusTcpCustomName = App::kStrDevModbusRtuCustomName;
 const QString App::kStrDevModbusTcpChannel    = App::kStrDevModbusRtuChannel   ;
 const QString App::kStrDevModbusTcpPointTable = App::kStrDevModbusRtuPointTable;
 const QString App::kStrDevModbusTcpAddress    = App::kStrDevModbusRtuAddress   ;
 
 const QString App::kStrDevDlt645Device     = App::kStrDevModbusRtuDevice    ;
 const QString App::kStrDevDlt645Name       = App::kStrDevModbusRtuName      ;
+const QString App::kStrDevDlt645CustomName = App::kStrDevModbusRtuCustomName;
 const QString App::kStrDevDlt645Channel    = App::kStrDevModbusRtuChannel   ;
 const QString App::kStrDevDlt645PointTable = App::kStrDevModbusRtuPointTable;
 const QString App::kStrDevDlt645Address    = App::kStrDevModbusRtuAddress   ;
@@ -548,5 +556,40 @@ QString App::ParityFormatting(QString parity)
     else {
         return "None";
     }
+}
+
+// 比较指定字符前的字符串是否一致（默认区分大小写）
+bool App::compareBeforeChar(const QString &str1, const QString &str2,
+                              QChar delimiter, Qt::CaseSensitivity caseSensitive)
+{
+    QString s1 = str1.section(delimiter, 0, 0);
+    QString s2 = str2.section(delimiter, 0, 0);
+
+    return s1.compare(s2, caseSensitive) == 0;
+}
+
+// 设置QCombobox的选项
+bool App::SetComboBoxCurrentText(QComboBox *comboBox, const QString &text, QChar delimiter)
+{
+    // 获取项数
+    int count = comboBox->count();
+    // 项数为0，直接返回false
+    if(count <= 0) {
+        return false;
+    }
+
+    // 遍历所有选项文本
+    for (int i = 0; i < count; ++i) {
+        QString itemTtext = comboBox->itemText(i); // 获取第i项的文本
+        if(compareBeforeChar(text, itemTtext, delimiter) != true) {
+            continue;
+        }
+        // 找到前缀相同的项，设置未找到的项
+        comboBox->setCurrentText(itemTtext);
+        return true;
+    }
+    // 未找到相同的项，设置为第0项
+    comboBox->setCurrentIndex(0);
+    return false;
 }
 

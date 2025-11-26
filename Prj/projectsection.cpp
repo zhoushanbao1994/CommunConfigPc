@@ -74,7 +74,8 @@ void ProjectSection::SetModbusPointTabs(const QMap<QString, ModbusPointStruct::P
     for (it = mpts.cbegin(); it != mpts.cend(); ++it) {
         QString name = it.key();
         ModbusPointStruct::PointTab_T pt = it.value();
-        NewPointTab(name, twitemPointModbus_, App::kPointTabType_Modbus, pointTabsModbus_, &pt);
+        NewPointTab(name, pt.customName, twitemPointModbus_,
+                    App::kPointTabType_Modbus, pointTabsModbus_, &pt);
     }
 }
 // DLT645点表
@@ -86,7 +87,8 @@ void ProjectSection::SetDlt645PointTabs(const QMap<QString, Dlt645PointStruct::P
     for (it = dpts.cbegin(); it != dpts.cend(); ++it) {
         QString name = it.key();
         Dlt645PointStruct::PointTab_T pt = it.value();
-        NewPointTab(name, twitemPointDlt645_, App::kPointTabType_Dlt645, pointTabsDlt645_, &pt);
+        NewPointTab(name, pt.customName, twitemPointDlt645_,
+                    App::kPointTabType_Dlt645, pointTabsDlt645_, &pt);
     }
 }
 // ModbusRtu通道
@@ -98,7 +100,8 @@ void ProjectSection::SetModbusRtuChs(const QMap<QString, ModbusRtuChStruct::Ch_T
     for (it = mrcs.cbegin(); it != mrcs.cend(); ++it) {
         QString name = it.key();
         ModbusRtuChStruct::Ch_T ch = it.value();
-        NewCommunCh(name, twitemChMrtu_, App::kChType_ModbusRtu, chModbusRtu_, &ch);
+        NewCommunCh(name, ch.customName, twitemChMrtu_,
+                    App::kChType_ModbusRtu, chModbusRtu_, &ch);
     }
 }
 // ModbusTcp通道
@@ -110,7 +113,8 @@ void ProjectSection::SetModbusTcpChs(const QMap<QString, ModbusTcpChStruct::Ch_T
     for (it = mtcs.cbegin(); it != mtcs.cend(); ++it) {
         QString name = it.key();
         ModbusTcpChStruct::Ch_T ch = it.value();
-        NewCommunCh(name, twitemChMtcp_, App::kChType_ModbusTcp, chModbusTcp_, &ch);
+        NewCommunCh(name, ch.customName, twitemChMtcp_,
+                    App::kChType_ModbusTcp, chModbusTcp_, &ch);
     }
 }
 // DLT645通道
@@ -122,7 +126,8 @@ void ProjectSection::SetDlt645Chs(const QMap<QString, Dlt645ChStruct::Ch_T> &dlc
     for (it = dlcs.cbegin(); it != dlcs.cend(); ++it) {
         QString name = it.key();
         Dlt645ChStruct::Ch_T ch = it.value();
-        NewCommunCh(name, twitemChDlt645_, App::kChType_Dlt645, chDlt645_, &ch);
+        NewCommunCh(name, ch.customName, twitemChDlt645_,
+                    App::kChType_Dlt645, chDlt645_, &ch);
     }
 }
 // ModbusRtu设备
@@ -134,7 +139,8 @@ void ProjectSection::SetModbusRtuDevs(const QMap<QString, ModbusRtuDevStruct::De
     for (it = mrds.cbegin(); it != mrds.cend(); ++it) {
         QString name = it.key();
         ModbusRtuDevStruct::Dev_T dev = it.value();
-        NewCommunDev(name, twitemDevMrtu_, App::kDevType_ModbusRtu, devModbusRtu_, &dev);
+        NewCommunDev(name, dev.customName, twitemDevMrtu_,
+                     App::kDevType_ModbusRtu, devModbusRtu_, &dev);
     }
 }
 // ModbusTcp设备
@@ -146,7 +152,8 @@ void ProjectSection::SetModbusTcpDevs(const QMap<QString, ModbusTcpDevStruct::De
     for (it = mtds.cbegin(); it != mtds.cend(); ++it) {
         QString name = it.key();
         ModbusTcpDevStruct::Dev_T dev = it.value();
-        NewCommunDev(name, twitemDevMtcp_, App::kDevType_ModbusTcp, devModbusTcp_, &dev);
+        NewCommunDev(name, dev.customName, twitemDevMtcp_,
+                     App::kDevType_ModbusTcp, devModbusTcp_, &dev);
     }
 }
 // DLT645设备
@@ -158,7 +165,8 @@ void ProjectSection::SetDlt645Devs(const QMap<QString, Dlt645DevStruct::Dev_T> &
     for (it = dlds.cbegin(); it != dlds.cend(); ++it) {
         QString name = it.key();
         Dlt645DevStruct::Dev_T dev = it.value();
-        NewCommunDev(name, twitemDevDlt645_, App::kDevType_Dlt645, devDlt645_, &dev);
+        NewCommunDev(name, dev.customName, twitemDevDlt645_,
+                     App::kDevType_Dlt645, devDlt645_, &dev);
     }
 }
 
@@ -521,35 +529,35 @@ void ProjectSection::RightCheckedActionNew()
 
     // 当前操作的是Dlt645点表
     if(twitemCurrent_ == twitemPointDlt645_) {
-        NewPointTab("", twitemCurrent_, App::kPointTabType_Dlt645, pointTabsDlt645_, nullptr);
+        NewPointTab("", "", twitemCurrent_, App::kPointTabType_Dlt645, pointTabsDlt645_, nullptr);
     }
     // 当前操作的是Modbus点表
     else if(twitemCurrent_ == twitemPointModbus_) {
-        NewPointTab("", twitemCurrent_, App::kPointTabType_Modbus, pointTabsModbus_, nullptr);
+        NewPointTab("", "", twitemCurrent_, App::kPointTabType_Modbus, pointTabsModbus_, nullptr);
     }
     // 当前操作的是ModbusRtu通讯通道
     else if(twitemCurrent_ == twitemChMrtu_) {
-        NewCommunCh("", twitemCurrent_, App::kChType_ModbusRtu, chModbusRtu_, nullptr);
+        NewCommunCh("", "", twitemCurrent_, App::kChType_ModbusRtu, chModbusRtu_, nullptr);
     }
     // 当前操作的是ModbusTcp通讯通道
     else if(twitemCurrent_ == twitemChMtcp_) {
-        NewCommunCh("", twitemCurrent_, App::kChType_ModbusTcp, chModbusTcp_, nullptr);
+        NewCommunCh("", "", twitemCurrent_, App::kChType_ModbusTcp, chModbusTcp_, nullptr);
     }
     // 当前操作的是Dlt645通讯通道
     else if(twitemCurrent_ == twitemChDlt645_) {
-        NewCommunCh("", twitemCurrent_, App::kChType_Dlt645, chDlt645_, nullptr);
+        NewCommunCh("", "", twitemCurrent_, App::kChType_Dlt645, chDlt645_, nullptr);
     }
     // 当前操作的是ModbusRtu通讯设备
     else if(twitemCurrent_ == twitemDevMrtu_) {
-        NewCommunDev("", twitemCurrent_, App::kDevType_ModbusRtu, devModbusRtu_, nullptr);
+        NewCommunDev("", "", twitemCurrent_, App::kDevType_ModbusRtu, devModbusRtu_, nullptr);
     }
     // 当前操作的是ModbusTcp通讯设备
     else if(twitemCurrent_ == twitemDevMtcp_) {
-        NewCommunDev("", twitemCurrent_, App::kDevType_ModbusTcp, devModbusTcp_, nullptr);
+        NewCommunDev("", "", twitemCurrent_, App::kDevType_ModbusTcp, devModbusTcp_, nullptr);
     }
     // 当前操作的是ModbusRtu通讯设备
     else if(twitemCurrent_ == twitemDevDlt645_) {
-        NewCommunDev("", twitemCurrent_, App::kDevType_Dlt645, devDlt645_, nullptr);
+        NewCommunDev("", "", twitemCurrent_, App::kDevType_Dlt645, devDlt645_, nullptr);
     }
     // 未知
     else {
@@ -684,17 +692,19 @@ bool ProjectSection::HasChild(const QTreeWidgetItem *parent_item, const QString 
 //}
 
 // 新建点表
-void ProjectSection::NewPointTab(QString name,
+void ProjectSection::NewPointTab(QString name, QString customName,
     QTreeWidgetItem *parent_item, App::PointTabType_E type, PointTables *point_tabs, void *arg)
 {
-    // 生成随机名称
-    QString random_name = (name != "") ? name : App::GenerateRandomString(16);
-    qDebug() << __FUNCTION__ << __LINE__ << random_name;
+    // 生成点表工程名称
+    QString prjName = (name != "") ? name : App::GenerateRandomString(16);
+    qDebug() << __FUNCTION__ << __LINE__
+             << "新建点表 工程名称:"<< prjName << ", 自定义名称:" << customName;
     // 创建子节点
-    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));
+    QTreeWidgetItem *item = new QTreeWidgetItem(
+        parent_item, QStringList(prjName + ":" + customName));
     parent_item->setExpanded(true);
     // 创建点表窗口
-    FormPointTable *form = new FormPointTable(type, item, random_name);
+    FormPointTable *form = new FormPointTable(type, item, prjName, customName);
     // Map存储 节点 与 窗口 的关系
     point_tabs->Add(item, form);
     // 新建点表-发送显示信号
@@ -722,17 +732,19 @@ void ProjectSection::NewPointTab(QString name,
 }
 
 // 新建通讯通道
-void ProjectSection::NewCommunCh(QString name,
+void ProjectSection::NewCommunCh(QString name, QString customName,
     QTreeWidgetItem *parent_item, App::ChType_E type, CommunChs *chs, void *arg)
 {
-    // 生成随机名称
-    QString random_name = (name != "") ? name : App::GenerateRandomString(16);
-    qDebug() << __FUNCTION__ << __LINE__ << random_name;
+    // 生成通道工程名称
+    QString prjName = (name != "") ? name : App::GenerateRandomString(16);
+    qDebug() << __FUNCTION__ << __LINE__
+             << "新建通道 工程名称:"<< prjName << ", 自定义名称:" << customName;
     // 创建子节点
-    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));
+    QTreeWidgetItem *item = new QTreeWidgetItem(
+        parent_item, QStringList(prjName + ":" + customName));
     parent_item->setExpanded(true);
     // 创建通讯通道窗口
-    FormCommunCh *form = new FormCommunCh(type, item, random_name);
+    FormCommunCh *form = new FormCommunCh(type, item, prjName, customName);
     // Map存储 节点 与 窗口 的关系
     chs->Add(item, form);
     // 新建通道-发送显示信号
@@ -745,9 +757,11 @@ void ProjectSection::NewCommunCh(QString name,
     if(type == App::kChType_ModbusRtu) {
         ModbusRtuChStruct::Ch_T *ch = static_cast<ModbusRtuChStruct::Ch_T *>(arg);
         //qDebug() << __FUNCTION__ << __LINE__
-        //         << ch->name << ch->interface << ch->baudRate << ch->dataBits << ch->parity << ch->stopBits;
+        //         << ch->name << ch->interface << ch->baudRate
+        //         << ch->dataBits << ch->parity << ch->stopBits;
         // 设置ModbusRtu页面参数
-        form->SetModbusRtuPageParameter(ch->interface, ch->baudRate, ch->dataBits, ch->parity, ch->stopBits);
+        form->SetModbusRtuPageParameter(
+            ch->interface, ch->baudRate, ch->dataBits, ch->parity, ch->stopBits);
     }
     else if(type == App::kChType_ModbusTcp) {
         ModbusTcpChStruct::Ch_T *ch = static_cast<ModbusTcpChStruct::Ch_T *>(arg);
@@ -759,29 +773,35 @@ void ProjectSection::NewCommunCh(QString name,
     else if(type == App::kChType_Dlt645) {
         Dlt645ChStruct::Ch_T *ch = static_cast<Dlt645ChStruct::Ch_T *>(arg);
         //qDebug() << __FUNCTION__ << __LINE__
-        //         << ch->name << ch->interface << ch->baudRate << ch->dataBits << ch->parity << ch->stopBits;
+        //         << ch->name << ch->interface << ch->baudRate
+        //         << ch->dataBits << ch->parity << ch->stopBits;
         // 设置DLT645页面参数
-        form->SetDlt645PageParameter(ch->interface, ch->baudRate, ch->dataBits, ch->parity, ch->stopBits);
+        form->SetDlt645PageParameter(
+            ch->interface, ch->baudRate, ch->dataBits, ch->parity, ch->stopBits);
     }
 }
 
 // 新建通讯设备
-void ProjectSection::NewCommunDev(QString name,
+void ProjectSection::NewCommunDev(QString name, QString customName,
     QTreeWidgetItem *parent_item, App::DevType_E type, CommunDevs *devs, void *arg)
 {
-    // 生成随机名称
-    QString random_name = (name != "") ? name : App::GenerateRandomString(16);
-    qDebug() << __FUNCTION__ << __LINE__ << random_name;
+    // 生成设备工程名称
+    QString prjName = (name != "") ? name : App::GenerateRandomString(16);
+    qDebug() << __FUNCTION__ << __LINE__
+             << "新建设备 工程名称:"<< prjName << ", 自定义名称:" << customName;
     // 创建子节点
-    QTreeWidgetItem *item = new QTreeWidgetItem(parent_item, QStringList(random_name));
+    QTreeWidgetItem *item = new QTreeWidgetItem(
+        parent_item, QStringList(prjName + ":" + customName));
     parent_item->setExpanded(true);
     // 获取指定类型设备依赖的点表工程名，内部处理函数
     QStringList point_tab_name = GetRelyPointTabPrjCustomName(devs);
     // 获取指定类型设备依赖的通道工程名
     QStringList ch_name = GetRelyCommunChPrjCustomName(devs);
     // 创建通讯通道窗口
-    FormCommunDev *form = new FormCommunDev(type, item, random_name);
+    FormCommunDev *form = new FormCommunDev(type, item, prjName, customName);
     form->RefreshCbOption(point_tab_name, ch_name);
+    qDebug() << __FUNCTION__ << __LINE__ << "point_tab_name:" << point_tab_name;
+    qDebug() << __FUNCTION__ << __LINE__ << "ch_name:" << ch_name;
     // Map存储 节点 与 窗口 的关系
     devs->Add(item, form);
     // 新建设备-发送显示信号
@@ -794,17 +814,17 @@ void ProjectSection::NewCommunDev(QString name,
     if(type == App::kDevType_ModbusRtu) {
         ModbusRtuDevStruct::Dev_T *dev = static_cast<ModbusRtuDevStruct::Dev_T *>(arg);
         // 设置页面参数
-        form->SetPageParameter(dev->pointTable, dev->channel, dev->address);
+        form->SetPageParameter(dev->pointTablePrjName, dev->channelPrjName, dev->address);
     }
     else if(type == App::kDevType_ModbusTcp) {
         ModbusTcpDevStruct::Dev_T *dev = static_cast<ModbusTcpDevStruct::Dev_T *>(arg);
         // 设置页面参数
-        form->SetPageParameter(dev->pointTable, dev->channel, dev->address);
+        form->SetPageParameter(dev->pointTablePrjName, dev->channelPrjName, dev->address);
     }
     else if(type == App::kDevType_Dlt645) {
         Dlt645DevStruct::Dev_T *dev = static_cast<Dlt645DevStruct::Dev_T *>(arg);
         // 设置页面参数
-        form->SetPageParameter(dev->pointTable, dev->channel, dev->address);
+        form->SetPageParameter(dev->pointTablePrjName, dev->channelPrjName, dev->address);
     }
 }
 

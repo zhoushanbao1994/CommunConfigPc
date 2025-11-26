@@ -15,7 +15,8 @@ class FormCommunCh : public QWidget
 
 public:
     explicit FormCommunCh(
-        App::ChType_E type, QTreeWidgetItem *item, QString &prj_name, QWidget *parent = nullptr);
+        App::ChType_E type, QTreeWidgetItem *item,  QString &prjName,
+        QString &customName, QWidget *parent = nullptr);
     ~FormCommunCh();
 
     // 设置ModbusRtu页面参数
