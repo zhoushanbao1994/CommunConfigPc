@@ -19,6 +19,8 @@ public:
     FormCommunDev *GetForm(QTreeWidgetItem *item);
     // 获取所有工程名
     QStringList GetAllPrjCustomName();
+    // 获取所有的QTreeWidgetItem*
+    QList<QTreeWidgetItem *> GetAllTreeWidgetItem();
 
 private:
     App::DevType_E type_;

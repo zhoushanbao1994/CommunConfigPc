@@ -310,7 +310,8 @@ void JsonParse::ParseIndex(const QString &fileName)
         }
     }
 
-    QMessageBox::information(nullptr, "解析成功", "JSON 文件解析完成，详情见调试输出！");
+    qDebug() << __FUNCTION__ << __LINE__ <<  "解析成功: JSON 文件解析完成，详情见调试输出！";
+    //QMessageBox::information(nullptr, "解析成功", "JSON 文件解析完成，详情见调试输出！");
 }
 
 QMap<QString, QString> JsonParse::ParseObject(const QJsonObject& obj)

@@ -79,6 +79,7 @@ public:
 
     static QSettings settings;
     static const QString kImportFileName;
+    static const QString kExportFolderName;
 
     // 点表类型
     typedef enum PointTabType {
@@ -256,6 +257,25 @@ public:
 
     // 获取指定字符前的字符串
     static QString GetStringBeforeChar(const QString &str, QChar delimiter);
+
+    /**
+     * @brief 检查文件夹是否为空，若非空则弹窗询问是否继续
+     * @param parent 父窗口（用于弹窗居中显示）
+     * @param folderPath 要检查的文件夹路径
+     * @return true：文件夹为空 或 用户选择继续；false：用户选择取消
+     */
+    static bool checkFolderEmptyAndConfirm(QWidget* parent, const QString& folderPath);
+
+    /**
+     * @brief 选择现有文件夹，并作QSettings记录，且可以判断文件夹是否为空
+     * @param parent 父窗口（用于弹窗居中显示）
+     * @param settings 用于记录的QSettings
+     * @param key QSettings中的key
+     * @param checkEmpty 是否判断文件夹是否为空
+     * @return 选择的路径，若取消选择则返回空字符
+     */
+    static QString SelectExistFolder(
+        QWidget* parent, QSettings &settings, const QString &key, bool checkEmpty = false);
 
 signals:
 

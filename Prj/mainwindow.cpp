@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "jsonparse.h"
+#include "jsongenerat.h"
 #include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -96,6 +97,38 @@ void MainWindow::on_actionImport_triggered()
 // 导出-槽函数
 void MainWindow::on_actionExport_triggered()
 {
-    qDebug() <<  __FUNCTION__ << __LINE__;
+    qDebug() << __FUNCTION__ << __LINE__;
+    QString path = App::SelectExistFolder(
+        this, App::settings, App::kExportFolderName, true);
+    if (path.isEmpty()) {
+        qDebug() << __FUNCTION__ << __LINE__ << "用户取消选择";
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "用户选择路径:" << path;
+
+    QMap<QString, ModbusPointStruct::PointTab_T> mpts;  // 获取Modbus点表
+    QMap<QString, Dlt645PointStruct::PointTab_T> dpts;  // 获取DLT645点表
+    QMap<QString, ModbusRtuChStruct::Ch_T> mrcs;        // 获取ModbusRtu通道
+    QMap<QString, ModbusTcpChStruct::Ch_T> mtcs;        // 获取ModbusTcp通道
+    QMap<QString, Dlt645ChStruct::Ch_T> dlcs;           // 获取DLT645通道
+    QMap<QString, ModbusRtuDevStruct::Dev_T> mrds;      // 获取ModbusRtu设备
+    QMap<QString, ModbusTcpDevStruct::Dev_T> mtds;      // 获取ModbusTcp设备
+    QMap<QString, Dlt645DevStruct::Dev_T> dlds;         // 获取DLT645设备
+
+    bool debug = true;
+    ui->widget_PrjSection->GetModbusPointTabs(mpts, debug); // 获取Modbus点表
+    ui->widget_PrjSection->GetDlt645PointTabs(dpts, debug); // 获取DLT645点表
+    ui->widget_PrjSection->GetModbusRtuChs(mrcs, debug);    // 获取ModbusRtu通道
+    ui->widget_PrjSection->GetModbusTcpChs(mtcs, debug);    // 获取ModbusTcp通道
+    ui->widget_PrjSection->GetDlt645Chs(dlcs, debug);       // 获取DLT645通道
+    ui->widget_PrjSection->GetModbusRtuDevs(mrds, debug);   // 获取ModbusRtu设备
+    ui->widget_PrjSection->GetModbusTcpDevs(mtds, debug);   // 获取ModbusTcp设备
+    ui->widget_PrjSection->GetDlt645Devs(dlds, debug);      // 获取DLT645设备
+
+    JsonGenerate *json_generate = new JsonGenerate(
+        path, mpts, dpts, mrcs, mtcs, dlcs, mrds, mtds, dlds, debug);
+
+    delete json_generate;
+    json_generate = nullptr;
 }
 

@@ -315,12 +315,12 @@ void FormPointTable::GetAllDlt645Table(QList<Dlt645PointStruct::Point_T> &points
     for(int row = 0; row < rowCount; row++) {
         Dlt645PointStruct::Point_T point;
         // 数据标识
-        point.dataIdent = App::GetStringBeforeChar(
-            dlt645_tab_->item(row, App::kDlt645TabColumnId_DataIdent)->text(), '_');
+        QWidgetComBox *pComBoxDataIdent = (QWidgetComBox*)(dlt645_tab_->cellWidget (row, App::kDlt645TabColumnId_DataIdent));
+        point.dataIdent = App::GetStringBeforeChar(pComBoxDataIdent->currentText(), '_');
         // 读取周期
-        point.readCycle = modbus_tab_->item(row, App::kDlt645TabColumnId_ReadCycle)->text().toInt();
+        point.readCycle = dlt645_tab_->item(row, App::kDlt645TabColumnId_ReadCycle)->text().toInt();
         // 名称
-        point.customName = modbus_tab_->item(row, App::kDlt645TabColumnId_Name)->text();
+        point.customName = dlt645_tab_->item(row, App::kDlt645TabColumnId_Name)->text();
         // 添加到QList
         points.append(point);
     }

@@ -88,3 +88,18 @@ QStringList CommunDevs::GetAllPrjCustomName()
 
     return name_list;
 }
+
+// 获取所有的QTreeWidgetItem*
+QList<QTreeWidgetItem *> CommunDevs::GetAllTreeWidgetItem()
+{
+    QList<QTreeWidgetItem *> item_list;
+    // 使用 const_iterator 只读遍历
+    QMap<QTreeWidgetItem *, FormCommunDev *>::const_iterator const_it;
+    for (const_it = map_dev_.constBegin(); const_it != map_dev_.constEnd(); ++const_it) {
+        QTreeWidgetItem *item = const_it.key();
+        //FormCommunDev *form = const_it.value();
+        item_list.append(item);
+    }
+
+    return item_list;
+}

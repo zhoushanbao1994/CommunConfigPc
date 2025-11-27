@@ -40,6 +40,17 @@ public:
     void SetModbusTcpDevs(const QMap<QString, ModbusTcpDevStruct::Dev_T> &mtds);      // ModbusTcp设备
     void SetDlt645Devs(const QMap<QString, Dlt645DevStruct::Dev_T> &dlds);            // DLT645设备
 
+    void GetModbusPointTabs(QMap<QString, ModbusPointStruct::PointTab_T> &mpts, bool debug);// 获取Modbus点表
+    void GetDlt645PointTabs(QMap<QString, Dlt645PointStruct::PointTab_T> &dpts, bool debug);// 获取DLT645点表
+
+    void GetModbusRtuChs(QMap<QString, ModbusRtuChStruct::Ch_T> &mrcs, bool debug);         // 获取ModbusRtu通道
+    void GetModbusTcpChs(QMap<QString, ModbusTcpChStruct::Ch_T> &mtcs, bool debug);         // 获取ModbusTcp通道
+    void GetDlt645Chs(QMap<QString, Dlt645ChStruct::Ch_T> &dlcs, bool debug);               // 获取DLT645通道
+
+    void GetModbusRtuDevs(QMap<QString, ModbusRtuDevStruct::Dev_T> &mrds, bool debug);      // 获取ModbusRtu设备
+    void GetModbusTcpDevs(QMap<QString, ModbusTcpDevStruct::Dev_T> &mtds, bool debug);      // 获取ModbusTcp设备
+    void GetDlt645Devs(QMap<QString, Dlt645DevStruct::Dev_T> &dlds, bool debug);            // 获取DLT645设备
+
 signals:
     void Form_Signal(QWidget *form, int action); // action:1新增;0显示,-1删除;
 

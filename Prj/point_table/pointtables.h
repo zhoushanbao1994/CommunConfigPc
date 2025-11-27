@@ -19,6 +19,8 @@ public:
     FormPointTable *GetForm(QTreeWidgetItem *item);
     // 获取所有工程名
     QStringList GetAllPrjCustomName();
+    // 获取所有的QTreeWidgetItem*
+    QList<QTreeWidgetItem *> GetAllTreeWidgetItem();
 
 private:
     App::PointTabType_E type_;

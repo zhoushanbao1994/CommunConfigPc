@@ -211,11 +211,11 @@ void FormCommunDev::GetPageParameter(
     switch(type_) {
     case App::kDevType_ModbusRtu:
         GetModbusRtuPageParameter(pointPrjName, chPrjName, u8_addr);
-        addr = QString(u8_addr);
+        addr = QString("%1").arg(u8_addr);
         break;
     case App::kDevType_ModbusTcp:
         GetModbusTcpPageParameter(pointPrjName, chPrjName, u8_addr);
-        addr = QString(u8_addr);
+        addr = QString("%1").arg(u8_addr);
         break;
     case App::kDevType_Dlt645:
         GetDlt645PageParameter(pointPrjName, chPrjName, addr);

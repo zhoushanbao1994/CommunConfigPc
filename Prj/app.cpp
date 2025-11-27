@@ -1,6 +1,10 @@
 #include "app.h"
 #include <QRandomGenerator>
 #include <QTime>
+#include <QDir>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QDebug>
 
 const QString App::kStrPrjName    = "name";
 const QString App::kStrPointTable = "point_table";
@@ -72,7 +76,7 @@ const QString App::kStrDevDlt645Address    = App::kStrDevModbusRtuAddress   ;
 
 QSettings App::settings = QSettings("config.ini", QSettings::IniFormat);
 const QString App::kImportFileName = "ImportFileName";
-
+const QString App::kExportFolderName = "ExportFolderName";
 
 // Modbus功能码
 const QString App::kStrModbusFunCode_01H        = "01H";
@@ -603,4 +607,82 @@ QString App::GetComboBoxCurrentText(QComboBox *comboBox, QChar delimiter)
 QString App::GetStringBeforeChar(const QString &str, QChar delimiter)
 {
     return str.section(delimiter, 0, 0);
+}
+
+/**
+ * @brief 检查文件夹是否为空，若非空则弹窗询问是否继续
+ * @param parent 父窗口（用于弹窗居中显示）
+ * @param folderPath 要检查的文件夹路径
+ * @return true：文件夹为空 或 用户选择继续；false：用户选择取消
+ */
+bool App::checkFolderEmptyAndConfirm(QWidget* parent, const QString& folderPath)
+{
+    // 1. 用 QFileInfo 检查路径是否存在且为目录
+    QFileInfo fileInfo(folderPath);
+    if (!fileInfo.exists() || !fileInfo.isDir()) {
+        // 路径不存在或不是目录（视为“空”或提示）
+        return true;
+    }
+
+    // 2. 判断 QDir 文件夹是否为空（排除 . 和 ..，包含所有条目）
+    QDir dir(folderPath);
+    QStringList entries = dir.entryList(QDir::NoDotAndDotDot | QDir::AllEntries);
+    if (entries.isEmpty()) {
+        return true; // 文件夹为空，直接返回继续
+    }
+
+    // 3. 文件夹不为空，弹出警告弹窗
+    QMessageBox::StandardButton result = QMessageBox::warning(
+        parent,
+        "警告",
+        QString("文件夹 \"%1\" 不为空，继续操作可能会覆盖/删除现有内容！是否继续？").arg(folderPath),
+        QMessageBox::Yes | QMessageBox::No, // 按钮：是/否
+        QMessageBox::No // 默认选中“否”，更安全
+        );
+
+    // 4. 根据用户选择返回结果
+    return (result == QMessageBox::Yes);
+}
+
+/**
+ * @brief 选择现有文件夹，并作QSettings记录，且可以判断文件夹是否为空
+ * @param parent 父窗口（用于弹窗居中显示）
+ * @param settings 用于记录的QSettings
+ * @param key QSettings中的key
+ * @param checkEmpty 是否判断文件夹是否为空
+ * @return 选择的路径，若取消选择则返回空字符
+ */
+QString App::SelectExistFolder(
+    QWidget* parent, QSettings &settings, const QString &key, bool checkEmpty)
+{
+    QString path = settings.value(key, QDir::homePath()).toString();
+    // 弹出选择文件夹对话框
+    QString selectedDir = QFileDialog::getExistingDirectory(
+        parent,                   // 父窗口
+        "选择文件夹",               // 对话框标题
+        path,                     // 默认打开用户主目录
+        QFileDialog::ShowDirsOnly // 仅显示文件夹（默认选项，可省略）
+        );
+    // 判断用户是否选择了文件夹（点击“取消”则返回空字符串）
+    if (selectedDir.isEmpty()) {
+        qDebug() << "用户取消选择";
+        return "";
+    }
+
+    // 不判断文件夹是否为空，直接返回选择的文件夹
+    if(checkEmpty == false) {
+        settings.setValue(key, selectedDir);
+        qDebug() << "选中的文件夹路径：" << selectedDir;
+        return selectedDir;
+    }
+
+    // 检查文件夹是否为空，若非空则弹窗询问是否继续
+    if(checkFolderEmptyAndConfirm(parent, selectedDir) != true) {
+        return "";
+    }
+
+    // 检查文件夹为空后，保存选择路径
+    settings.setValue(key, selectedDir);
+    qDebug() << "选中的文件夹路径：" << selectedDir;
+    return selectedDir;
 }

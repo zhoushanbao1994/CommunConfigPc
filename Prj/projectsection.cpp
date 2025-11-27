@@ -170,6 +170,278 @@ void ProjectSection::SetDlt645Devs(const QMap<QString, Dlt645DevStruct::Dev_T> &
     }
 }
 
+// 获取Modbus点表
+void ProjectSection::GetModbusPointTabs(QMap<QString, ModbusPointStruct::PointTab_T> &mpts, bool debug)
+{
+    // 清空当前Map
+    mpts.clear();
+    // 获取当前所有的item
+    QList<QTreeWidgetItem *> items = pointTabsModbus_->GetAllTreeWidgetItem();
+    // 遍历每一个item
+    for(const auto & item : items) {
+        // 根据item找到对应的窗体Form
+        FormPointTable *form = pointTabsModbus_->GetForm(item);
+        // 定义一个点表信息结构体
+        ModbusPointStruct::PointTab_T pointTab;
+        // 取窗体头信息
+        form->GetHeaderParameter(pointTab.name, pointTab.customName);
+        // 取窗体页面信息
+        form->GetAllModbusTable(pointTab.points);
+        // 将当前点表信息插入到Map容器中
+        mpts.insert(pointTab.name, pointTab);
+    }
+
+    // 是否打印调试信息
+    if(debug != true) {
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "Modbus点表";
+    QMap<QString, ModbusPointStruct::PointTab_T>::const_iterator mpt;  // 获取Modbus点表
+    for(mpt = mpts.cbegin(); mpt != mpts.cend(); ++mpt) {
+        ModbusPointStruct::PointTab_T pointTab = mpt.value();
+        qDebug() << "  key:" << mpt.key() << "工程名:" << pointTab.name << ", 自定义名:" << pointTab.customName;
+        for(/*const */auto &point : pointTab.points) {
+            qDebug() << "    起始地址:" << point.startAddr << ", 点数量:" << point.pointNum
+                     << ", 功能码:" << point.code << ", 数据类型:" << point.dataType
+                     << ", 读取周期:" << point.readCycle << ", 名称:" << point.customName;
+        }
+    }
+}
+// 获取DLT645点表
+void ProjectSection::GetDlt645PointTabs(QMap<QString, Dlt645PointStruct::PointTab_T> &dpts, bool debug)
+{
+    // 清空当前Map
+    dpts.clear();
+    // 获取当前所有的item
+    QList<QTreeWidgetItem *> items = pointTabsDlt645_->GetAllTreeWidgetItem();
+    // 遍历每一个item
+    for(const auto & item : items) {
+        // 根据item找到对应的窗体Form
+        FormPointTable *form = pointTabsDlt645_->GetForm(item);
+        // 定义一个点表信息结构体
+        Dlt645PointStruct::PointTab_T pointTab;
+        // 取窗体头信息
+        form->GetHeaderParameter(pointTab.name, pointTab.customName);
+        // 取窗体页面信息
+        form->GetAllDlt645Table(pointTab.points);
+        // 将当前点表信息插入到Map容器中
+        dpts.insert(pointTab.name, pointTab);
+    }
+
+    // 是否打印调试信息
+    if(debug != true) {
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "Dlt645点表";
+    QMap<QString, Dlt645PointStruct::PointTab_T>::const_iterator dpt;  // 获取DLT645点表
+    for(dpt = dpts.cbegin(); dpt != dpts.cend(); ++dpt) {
+        Dlt645PointStruct::PointTab_T pointTab = dpt.value();
+        qDebug() << "  key:" << dpt.key() << "工程名:" << pointTab.name << ", 自定义名:" << pointTab.customName;
+        for(/*const */auto &point : pointTab.points) {
+            qDebug() << "    数据标识:" << point.dataIdent
+                     << ", 读取周期:" << point.readCycle << ", 名称:" << point.customName;
+        }
+    }
+}
+ // 获取ModbusRtu通道
+void ProjectSection::GetModbusRtuChs(QMap<QString, ModbusRtuChStruct::Ch_T> &mrcs, bool debug)
+{
+    // 清空当前Map
+    mrcs.clear();
+    // 获取当前所有的item
+    QList<QTreeWidgetItem *> items = chModbusRtu_->GetAllTreeWidgetItem();
+    // 遍历每一个item
+    for(const auto & item : items) {
+        // 根据item找到对应的窗体Form
+        FormCommunCh *form = chModbusRtu_->GetForm(item);
+        // 定义一个通道信息结构体
+        ModbusRtuChStruct::Ch_T ch;
+        // 取窗体头信息
+        form->GetHeaderParameter(ch.name, ch.customName);
+        // 取窗体页面信息
+        form->GetModbusRtuPageParameter(ch.interface, ch.baudRate, ch.dataBits, ch.parity, ch.stopBits);
+        // 将当前通道信息插入到Map容器中
+        mrcs.insert(ch.name, ch);
+    }
+
+    // 是否打印调试信息
+    if(debug != true) {
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "ModbusRtu通道";
+    QMap<QString, ModbusRtuChStruct::Ch_T>::const_iterator mrc;        // 获取ModbusRtu通道
+    for(mrc = mrcs.cbegin(); mrc != mrcs.cend(); ++mrc) {
+        ModbusRtuChStruct::Ch_T ch = mrc.value();
+        qDebug() << "  key:" << mrc.key() << "通道名:" << ch.name << ", 自定义名:" << ch.customName
+                 << ", 参数:" << ch.interface << ch.baudRate << ch.dataBits << ch.parity << ch.stopBits;
+    }
+}
+// 获取ModbusTcp通道
+void ProjectSection::GetModbusTcpChs(QMap<QString, ModbusTcpChStruct::Ch_T> &mtcs, bool debug)
+{
+    // 清空当前Map
+    mtcs.clear();
+    // 获取当前所有的item
+    QList<QTreeWidgetItem *> items = chModbusTcp_->GetAllTreeWidgetItem();
+    // 遍历每一个item
+    for(const auto & item : items) {
+        // 根据item找到对应的窗体Form
+        FormCommunCh *form = chModbusTcp_->GetForm(item);
+        // 定义一个通道信息结构体
+        ModbusTcpChStruct::Ch_T ch;
+        // 取窗体头信息
+        form->GetHeaderParameter(ch.name, ch.customName);
+        // 取窗体页面信息
+        form->GetModbusTcpPageParameter(ch.ip, ch.port);
+        // 将当前通道信息插入到Map容器中
+        mtcs.insert(ch.name, ch);
+    }
+
+    // 是否打印调试信息
+    if(debug != true) {
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "ModbusTcp通道";
+    QMap<QString, ModbusTcpChStruct::Ch_T>::const_iterator mtc;        // 获取ModbusTcp通道
+    for(mtc = mtcs.cbegin(); mtc != mtcs.cend(); ++mtc) {
+        ModbusTcpChStruct::Ch_T ch = mtc.value();
+        qDebug() << "  key:" << mtc.key() << "通道名:" << ch.name << ", 自定义名:" << ch.customName
+                 << ", 参数:" << ch.ip << ch.port;
+    }
+}
+// 获取DLT645通道
+void ProjectSection::GetDlt645Chs(QMap<QString, Dlt645ChStruct::Ch_T> &dlcs, bool debug)
+{
+    // 清空当前Map
+    dlcs.clear();
+    // 获取当前所有的item
+    QList<QTreeWidgetItem *> items = chDlt645_->GetAllTreeWidgetItem();
+    // 遍历每一个item
+    for(const auto & item : items) {
+        // 根据item找到对应的窗体Form
+        FormCommunCh *form = chDlt645_->GetForm(item);
+        // 定义一个通道信息结构体
+        Dlt645ChStruct::Ch_T ch;
+        // 取窗体头信息
+        form->GetHeaderParameter(ch.name, ch.customName);
+        // 取窗体页面信息
+        form->GetDlt645PageParameter(ch.interface, ch.baudRate, ch.dataBits, ch.parity, ch.stopBits);
+        // 将当前通道信息插入到Map容器中
+        dlcs.insert(ch.name, ch);
+    }
+
+    // 是否打印调试信息
+    if(debug != true) {
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "ModbusDlt645通道";
+    QMap<QString, Dlt645ChStruct::Ch_T>::const_iterator dlc;           // 获取DLT645通道
+    for(dlc = dlcs.cbegin(); dlc != dlcs.cend(); ++dlc) {
+        Dlt645ChStruct::Ch_T ch = dlc.value();
+        qDebug() << "  key:" << dlc.key() << "通道名:" << ch.name << ", 自定义名:" << ch.customName
+                 << ", 参数:" << ch.interface << ch.baudRate << ch.dataBits << ch.parity << ch.stopBits;
+    }
+}
+// 获取ModbusRtu设备
+void ProjectSection::GetModbusRtuDevs(QMap<QString, ModbusRtuDevStruct::Dev_T> &mrds, bool debug)
+{
+    // 清空当前Map
+    mrds.clear();
+    // 获取当前所有的item
+    QList<QTreeWidgetItem *> items = devModbusRtu_->GetAllTreeWidgetItem();
+    // 遍历每一个item
+    for(const auto & item : items) {
+        // 根据item找到对应的窗体Form
+        FormCommunDev *form = devModbusRtu_->GetForm(item);
+        // 定义一个设备信息结构体
+        ModbusRtuDevStruct::Dev_T dev;
+        // 取窗体头信息
+        form->GetHeaderParameter(dev.name, dev.customName);
+        // 取窗体页面信息
+        form->GetPageParameter(dev.pointTablePrjName, dev.channelPrjName, dev.address);
+        // 将当前设备信息插入到Map容器中
+        mrds.insert(dev.name, dev);
+    }
+
+    // 是否打印调试信息
+    if(debug != true) {
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "ModbusRtu设备";
+    QMap<QString, ModbusRtuDevStruct::Dev_T>::const_iterator mrd;      // 获取ModbusRtu设备
+    for(mrd = mrds.cbegin(); mrd != mrds.cend(); ++mrd) {
+        ModbusRtuDevStruct::Dev_T dev = mrd.value();
+        qDebug() << "  key:" << mrd.key() << "设备名:" << dev.name << ", 自定义名:" << dev.customName
+                 << ", 参数:" << dev.pointTablePrjName << dev.channelPrjName << dev.address;
+    }
+}
+// 获取ModbusTcp设备
+void ProjectSection::GetModbusTcpDevs(QMap<QString, ModbusTcpDevStruct::Dev_T> &mtds, bool debug)
+{
+    // 清空当前Map
+    mtds.clear();
+    // 获取当前所有的item
+    QList<QTreeWidgetItem *> items = devModbusTcp_->GetAllTreeWidgetItem();
+    // 遍历每一个item
+    for(const auto & item : items) {
+        // 根据item找到对应的窗体Form
+        FormCommunDev *form = devModbusTcp_->GetForm(item);
+        // 定义一个设备信息结构体
+        ModbusTcpDevStruct::Dev_T dev;
+        // 取窗体头信息
+        form->GetHeaderParameter(dev.name, dev.customName);
+        // 取窗体页面信息
+        form->GetPageParameter(dev.pointTablePrjName, dev.channelPrjName, dev.address);
+        // 将当前设备信息插入到Map容器中
+        mtds.insert(dev.name, dev);
+    }
+
+    // 是否打印调试信息
+    if(debug != true) {
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "ModbusTcp设备";
+    QMap<QString, ModbusTcpDevStruct::Dev_T>::const_iterator mtd;      // 获取ModbusTcp设备
+    for(mtd = mtds.cbegin(); mtd != mtds.cend(); ++mtd) {
+        ModbusTcpDevStruct::Dev_T dev = mtd.value();
+        qDebug() << "  key:" << mtd.key() << "设备名:" << dev.name << ", 自定义名:" << dev.customName
+                 << ", 参数:" << dev.pointTablePrjName << dev.channelPrjName << dev.address;
+    }
+}
+// 获取DLT645设备
+void ProjectSection::GetDlt645Devs(QMap<QString, Dlt645DevStruct::Dev_T> &dlds, bool debug)
+{
+    // 清空当前Map
+    dlds.clear();
+    // 获取当前所有的item
+    QList<QTreeWidgetItem *> items = devDlt645_->GetAllTreeWidgetItem();
+    // 遍历每一个item
+    for(const auto & item : items) {
+        // 根据item找到对应的窗体Form
+        FormCommunDev *form = devDlt645_->GetForm(item);
+        // 定义一个设备信息结构体
+        Dlt645DevStruct::Dev_T dev;
+        // 取窗体头信息
+        form->GetHeaderParameter(dev.name, dev.customName);
+        // 取窗体页面信息
+        form->GetPageParameter(dev.pointTablePrjName, dev.channelPrjName, dev.address);
+        // 将当前设备信息插入到Map容器中
+        dlds.insert(dev.name, dev);
+    }
+
+    // 是否打印调试信息
+    if(debug != true) {
+        return;
+    }
+    qDebug() << __FUNCTION__ << __LINE__ << "Dlt645设备";
+    QMap<QString, Dlt645DevStruct::Dev_T>::const_iterator dld;         // 获取DLT645设备
+    for(dld = dlds.cbegin(); dld != dlds.cend(); ++dld) {
+        Dlt645DevStruct::Dev_T dev = dld.value();
+        qDebug() << "  key:" << dld.key() << "设备名:" << dev.name << ", 自定义名:" << dev.customName
+                 << ", 参数:" << dev.pointTablePrjName << dev.channelPrjName << dev.address;
+    }
+}
+
 void ProjectSection::RemoveChildItem(QTreeWidgetItem *top_item)
 {
     qDebug() << "删除前，顶层节点的子节点数:" << top_item->childCount();
