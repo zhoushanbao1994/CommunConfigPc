@@ -718,15 +718,14 @@ void ProjectSection::NewPointTab(QString name, QString customName,
         ModbusPointStruct::PointTab_T *pt = static_cast<ModbusPointStruct::PointTab_T *>(arg);
         for (int i = 0; i < pt->points.size(); i++) {
             ModbusPointStruct::Point_T point = pt->points.at(i);
-            form->ModbusTableWidget_RowSet(i, point.startAddr, point.pointNum,
-                    point.code, point.dataType, point.readCycle, point.customName);
+            form->ModbusTableWidget_RowSet(i, point);
         }
     }
     else if(type == App::kPointTabType_Dlt645) {
         Dlt645PointStruct::PointTab_T *pt = static_cast<Dlt645PointStruct::PointTab_T *>(arg);
         for (int i = 0; i < pt->points.size(); i++) {
             Dlt645PointStruct::Point_T point = pt->points.at(i);
-            form->Dlt645TableWidget_RowSet(i, point.dataIdent, point.readCycle, point.customName);
+            form->Dlt645TableWidget_RowSet(i, point);
         }
     }
 }

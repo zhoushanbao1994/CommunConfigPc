@@ -109,3 +109,40 @@ void FormCommunCh::SetDlt645PageParameter(
     ui->comboBox_DltCheckBits->setCurrentText(App::ParityFormatting(parity));
     ui->comboBox_DltStopBits->setCurrentText(stopBits);
 }
+
+// 获取页头参数
+void FormCommunCh::GetHeaderParameter(
+    QString &prjName, QString &customName)
+{
+    prjName = ui->lineEdit_PrjName->text();
+    customName = ui->lineEdit_CustomName->text();
+}
+// 获取ModbusRtu页面参数
+void FormCommunCh::GetModbusRtuPageParameter(
+    QString &interface, QString &baudRate,
+    QString &dataBits, QString &parity, QString &stopBits)
+{
+    interface = ui->comboBox_MrtuInterface->currentText();
+    baudRate  = ui->comboBox_MrtuBaudRate ->currentText();
+    dataBits  = ui->comboBox_MrtuDataBits ->currentText();
+    parity    = ui->comboBox_MrtuCheckBits->currentText();
+    stopBits  = ui->comboBox_MrtuStopBits ->currentText();
+}
+// 获取ModbusTcp页面参数
+void FormCommunCh::GetModbusTcpPageParameter(
+    QString &ip, quint16 &port)
+{
+    ip = ui->lineEdit_MtcpIpAddr->text();
+    port = ui->spinBox_MtcpPort->value();
+}
+// 获取DLT645页面参数
+void FormCommunCh::GetDlt645PageParameter(
+    QString &interface, QString &baudRate,
+    QString &dataBits, QString &parity, QString &stopBits)
+{
+    interface = ui->comboBox_DltInterface->currentText();
+    baudRate  = ui->comboBox_DltBaudRate ->currentText();
+    dataBits  = ui->comboBox_DltDataBits ->currentText();
+    parity    = ui->comboBox_DltCheckBits->currentText();
+    stopBits  = ui->comboBox_DltStopBits ->currentText();
+}

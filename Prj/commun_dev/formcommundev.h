@@ -26,6 +26,13 @@ public:
     void SetPageParameter(
         const QString &pointPrjName, const QString &chPrjName, const QString &addr);
 
+    // 获取页头参数
+    void GetHeaderParameter(
+        QString &prjName, QString &customName);
+    // 获取页面参数
+    void GetPageParameter(
+        QString &pointPrjName, QString &chPrjName, QString &addr);
+
 private:
     // 刷新ModbusRtu页面下拉框选项
     void RefreshMrtuCbOption(const QStringList &tab_list, const QStringList &ch_list);
@@ -43,6 +50,16 @@ private:
     // 设置DLT645页面参数
     void SetDlt645PageParameter(
         const QString &pointPrjName, const QString &chPrjName, const QString &addr);
+
+    // 获取ModbusRtu页面参数
+    void GetModbusRtuPageParameter(
+        QString &pointPrjName, QString &chPrjName, quint8 &addr);
+    // 获取ModbusTcp页面参数
+    void GetModbusTcpPageParameter(
+        QString &pointPrjName, QString &chPrjName, quint8 &addr);
+    // 获取DLT645页面参数
+    void GetDlt645PageParameter(
+        QString &pointPrjName, QString &chPrjName, QString &addr);
 
 private slots:
     void on_comboBox_Type_currentTextChanged(const QString &arg1);

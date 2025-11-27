@@ -593,3 +593,14 @@ bool App::SetComboBoxCurrentText(QComboBox *comboBox, const QString &text, QChar
     return false;
 }
 
+// 取QComboBox的当前项字符
+QString App::GetComboBoxCurrentText(QComboBox *comboBox, QChar delimiter)
+{
+    return GetStringBeforeChar(comboBox->currentText(), delimiter);
+}
+
+// 获取指定字符前的字符串
+QString App::GetStringBeforeChar(const QString &str, QChar delimiter)
+{
+    return str.section(delimiter, 0, 0);
+}

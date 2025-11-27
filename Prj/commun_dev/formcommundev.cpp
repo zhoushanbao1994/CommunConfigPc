@@ -195,3 +195,56 @@ void FormCommunDev::SetDlt645PageParameter(
     App::SetComboBoxCurrentText(ui->comboBox_DltCh, chPrjName, ':');
     ui->lineEdit_DltDevAddr->setText(addr);
 }
+
+// 获取页头参数
+void FormCommunDev::GetHeaderParameter(
+    QString &prjName, QString &customName)
+{
+    prjName = ui->lineEdit_PrjName->text();
+    customName = ui->lineEdit_CustomName->text();
+}
+// 获取页面参数
+void FormCommunDev::GetPageParameter(
+    QString &pointPrjName, QString &chPrjName, QString &addr)
+{
+    quint8 u8_addr = 1;
+    switch(type_) {
+    case App::kDevType_ModbusRtu:
+        GetModbusRtuPageParameter(pointPrjName, chPrjName, u8_addr);
+        addr = QString(u8_addr);
+        break;
+    case App::kDevType_ModbusTcp:
+        GetModbusTcpPageParameter(pointPrjName, chPrjName, u8_addr);
+        addr = QString(u8_addr);
+        break;
+    case App::kDevType_Dlt645:
+        GetDlt645PageParameter(pointPrjName, chPrjName, addr);
+        break;
+    default:
+        break;
+    }
+}
+// 获取ModbusRtu页面参数
+void FormCommunDev::GetModbusRtuPageParameter(
+    QString &pointPrjName, QString &chPrjName, quint8 &addr)
+{
+    pointPrjName = App::GetComboBoxCurrentText(ui->comboBox_MrtuPointTab, ':');
+    chPrjName = App::GetComboBoxCurrentText(ui->comboBox_MrtuCh, ':');
+    addr = ui->spinBox_MrtuDevAddr->value();
+}
+// 获取ModbusTcp页面参数
+void FormCommunDev::GetModbusTcpPageParameter(
+    QString &pointPrjName, QString &chPrjName, quint8 &addr)
+{
+    pointPrjName = App::GetComboBoxCurrentText(ui->comboBox_MtcpPointTab, ':');
+    chPrjName = App::GetComboBoxCurrentText(ui->comboBox_MtcpCh, ':');
+    addr = ui->spinBox_MtcpDevAddr->value();
+}
+// 获取DLT645页面参数
+void FormCommunDev::GetDlt645PageParameter(
+    QString &pointPrjName, QString &chPrjName, QString &addr)
+{
+    pointPrjName = App::GetComboBoxCurrentText(ui->comboBox_DltPointTab, ':');
+    chPrjName = App::GetComboBoxCurrentText(ui->comboBox_DltCh, ':');
+    addr = ui->lineEdit_DltDevAddr->text();
+}

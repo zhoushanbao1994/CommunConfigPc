@@ -251,6 +251,12 @@ public:
     // 设置QCombobox的选项
     static bool SetComboBoxCurrentText(QComboBox *comboBox, const QString &text, QChar delimiter);
 
+    // 取QComboBox的当前项字符
+    static QString GetComboBoxCurrentText(QComboBox *comboBox, QChar delimiter);
+
+    // 获取指定字符前的字符串
+    static QString GetStringBeforeChar(const QString &str, QChar delimiter);
+
 signals:
 
 private:

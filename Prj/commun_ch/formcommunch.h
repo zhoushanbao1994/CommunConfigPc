@@ -31,6 +31,21 @@ public:
         const QString &interface, const QString &baudRate,
         const QString &dataBits, const QString &parity, const QString &stopBits);
 
+    // 获取页头参数
+    void GetHeaderParameter(
+        QString &prjName, QString &customName);
+    // 获取ModbusRtu页面参数
+    void GetModbusRtuPageParameter(
+        QString &interface, QString &baudRate,
+        QString &dataBits, QString &parity, QString &stopBits);
+    // 获取ModbusTcp页面参数
+    void GetModbusTcpPageParameter(
+        QString &ip, quint16 &port);
+    // 获取DLT645页面参数
+    void GetDlt645PageParameter(
+        QString &interface, QString &baudRate,
+        QString &dataBits, QString &parity, QString &stopBits);
+
 private slots:
     void on_comboBox_Type_currentTextChanged(const QString &arg1);
 

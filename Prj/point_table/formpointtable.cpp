@@ -47,14 +47,16 @@ FormPointTable::FormPointTable(
     modbus_tab_ = new CustomTableWidget(str1);
     QObject::connect(modbus_tab_, &CustomTableWidget::InsertLine_Signal,
                      [&](int row_num){
-                         ModbusTableWidget_RowSet(row_num, 0x0000, 10, App::kStrModbusFunCode_03H, App::kStrModbusDateType_U16, 1000, "");
+                         ModbusPointStruct::Point_T point;
+                         ModbusTableWidget_RowSet(row_num, point);
                      });
     str2 << "数据标识" << "读取周期ms" << "名称";
     dlt645_tab_ = new CustomTableWidget(str2);
     dlt645_tab_->horizontalHeader()->resizeSection(0, 300);
     QObject::connect(dlt645_tab_, &CustomTableWidget::InsertLine_Signal,
                      [&](int row_num){
-                         Dlt645TableWidget_RowSet(row_num, App::kStrDltDataId07_00010000, 1000, "");
+                         Dlt645PointStruct::Point_T point;
+                         Dlt645TableWidget_RowSet(row_num, point);
                      });
 
     ui->stackedWidget->addWidget(dlt645_tab_);
@@ -121,8 +123,7 @@ void FormPointTable::CustomNameTextEdited_Slot(const QString &text)
 
 // 填充一行数据
 void FormPointTable::ModbusTableWidget_RowSet(
-    int row, quint16 start_addr, quint16 point_num, const QString &code,
-    const QString &data_type, int read_cycle, const QString &name)
+    int row, ModbusPointStruct::Point_T &point)
 {
     // ************ 调整表格行数 ************
     int rowCount = modbus_tab_->rowCount();
@@ -131,11 +132,11 @@ void FormPointTable::ModbusTableWidget_RowSet(
     }
     // ************ 填充列：起始地址 ************
     QTableWidgetItem *item_start_addr = new QTableWidgetItem(
-        QString("0x") + QString("%1").arg(start_addr, 4, 16, QChar('0')).toUpper() );
+        QString("0x") + QString("%1").arg(point.startAddr, 4, 16, QChar('0')).toUpper() );
     modbus_tab_->setItem(row, App::kModbusTabColumnId_StartAddr, item_start_addr);
     // ************ 填充列：点数量 ************
     QTableWidgetItem *item_point_num = new QTableWidgetItem(
-        QString("%1").arg(point_num) );
+        QString("%1").arg(point.pointNum) );
     modbus_tab_->setItem(row, App::kModbusTabColumnId_PointNum, item_point_num);
     // ************ 填充列：功能码 ************
     QStringList text_code;
@@ -144,7 +145,7 @@ void FormPointTable::ModbusTableWidget_RowSet(
     text_code.append(App::kStrModbusFunCode_03H);
     text_code.append(App::kStrModbusFunCode_04H);
     QWidgetComBox *item_func_code = new QWidgetComBox(text_code);
-    item_func_code->setCurrentText(App::ModbusCodeFormatting(code));
+    item_func_code->setCurrentText(App::ModbusCodeFormatting(point.code));
     modbus_tab_->setCellWidget(row, App::kModbusTabColumnId_Code, item_func_code);
     // ************ 填充列：数据类型 ************
     QStringList text_type;
@@ -153,15 +154,15 @@ void FormPointTable::ModbusTableWidget_RowSet(
     text_type.append(App::kStrModbusDateType_U32);
     text_type.append(App::kStrModbusDateType_S32);
     QWidgetComBox *item_date_type = new QWidgetComBox(text_type);
-    item_date_type->setCurrentText(App::ModbusDataTypeFormatting(data_type));
+    item_date_type->setCurrentText(App::ModbusDataTypeFormatting(point.dataType));
     modbus_tab_->setCellWidget(row, App::kModbusTabColumnId_DataType, item_date_type);
     // ************ 填充列：读取周期 ************
     QTableWidgetItem *item_read_cycle = new QTableWidgetItem(
-        QString("%1").arg(read_cycle) );
+        QString("%1").arg(point.readCycle));
     modbus_tab_->setItem(row, App::kModbusTabColumnId_ReadCycle, item_read_cycle);
     // ************ 填充列：名称 ************
     QTableWidgetItem *item_name = new QTableWidgetItem(
-        QString("%1").arg(name) );
+        QString("%1").arg(point.customName));
     modbus_tab_->setItem(row, App::kModbusTabColumnId_Name, item_name);
     //// ************ 填充复选框:"使能" ************
     //QWidgetCheckBox *enable = new QWidgetCheckBox ();    // 创建CheckBox
@@ -174,7 +175,7 @@ void FormPointTable::ModbusTableWidget_RowSet(
 
 // 填充一行数据
 void FormPointTable::Dlt645TableWidget_RowSet(
-    int row, const QString &code, int read_cycle, const QString &name)
+    int row, Dlt645PointStruct::Point_T &point)
 {
     // ************ 调整表格行数 ************
     int rowCount = dlt645_tab_->rowCount();
@@ -255,14 +256,72 @@ void FormPointTable::Dlt645TableWidget_RowSet(
     text_code.append(App::kStrDltDataId07_02800004);    // "0x02800004_当前有功需量";
     text_code.append(App::kStrDltDataId07_02800005);    // "0x02800005_当前无功需量";
     QWidgetComBox *item_func_code = new QWidgetComBox(text_code);
-    item_func_code->setCurrentText(App::ModbusDataIdentFormatting(code));
+    item_func_code->setCurrentText(App::ModbusDataIdentFormatting(point.dataIdent));
     dlt645_tab_->setCellWidget(row, App::kDlt645TabColumnId_DataIdent, item_func_code);
     // ************ 填充列：读取周期 ************
     QTableWidgetItem *item_read_cycle = new QTableWidgetItem(
-        QString("%1").arg(read_cycle) );
+        QString("%1").arg(point.readCycle));
     dlt645_tab_->setItem(row, App::kDlt645TabColumnId_ReadCycle, item_read_cycle);
     // ************ 填充列：名称 ************
     QTableWidgetItem *item_name = new QTableWidgetItem(
-        QString("%1").arg(name) );
+        QString("%1").arg(point.customName));
     dlt645_tab_->setItem(row, App::kDlt645TabColumnId_Name, item_name);
+}
+
+// 获取页头参数
+void FormPointTable::GetHeaderParameter(
+    QString &prjName, QString &customName)
+{
+    prjName = ui->lineEdit_PrjName->text();
+    customName = ui->lineEdit_CustomName->text();
+}
+// 获取Modbus点表数据
+void FormPointTable::GetAllModbusTable(QList<ModbusPointStruct::Point_T> &points)
+{
+    bool ok;
+    points.clear();
+
+    // 获取表格行数
+    int rowCount = modbus_tab_->rowCount();
+
+    for(int row = 0; row < rowCount; row++) {
+        ModbusPointStruct::Point_T point;
+        // 起始地址
+        point.startAddr = App::StringToNumber(modbus_tab_->item(row, App::kModbusTabColumnId_StartAddr)->text(), ok);
+        // 点位数量
+        point.pointNum = App::StringToNumber(modbus_tab_->item(row, App::kModbusTabColumnId_PointNum)->text(), ok);
+        // 功能码
+        QWidgetComBox *pComBoxCode = (QWidgetComBox*)(modbus_tab_->cellWidget (row, App::kModbusTabColumnId_Code));
+        point.code = pComBoxCode->currentText();
+        // 数据类型
+        QWidgetComBox *pComBoxDataType = (QWidgetComBox*)(modbus_tab_->cellWidget (row, App::kModbusTabColumnId_DataType));
+        point.dataType = pComBoxDataType->currentText();
+        // 读取周期
+        point.readCycle = modbus_tab_->item(row, App::kModbusTabColumnId_ReadCycle)->text().toInt();
+        // 名称
+        point.customName = modbus_tab_->item(row, App::kModbusTabColumnId_Name)->text();
+        // 添加到QList
+        points.append(point);
+    }
+}
+// 获取Dlt645点表数据
+void FormPointTable::GetAllDlt645Table(QList<Dlt645PointStruct::Point_T> &points)
+{
+    points.clear();
+
+    // 获取表格行数
+    int rowCount = dlt645_tab_->rowCount();
+
+    for(int row = 0; row < rowCount; row++) {
+        Dlt645PointStruct::Point_T point;
+        // 数据标识
+        point.dataIdent = App::GetStringBeforeChar(
+            dlt645_tab_->item(row, App::kDlt645TabColumnId_DataIdent)->text(), '_');
+        // 读取周期
+        point.readCycle = modbus_tab_->item(row, App::kDlt645TabColumnId_ReadCycle)->text().toInt();
+        // 名称
+        point.customName = modbus_tab_->item(row, App::kDlt645TabColumnId_Name)->text();
+        // 添加到QList
+        points.append(point);
+    }
 }
